@@ -7,7 +7,7 @@ provider:
   # Environment variables
   environment:
     APP_ENV: ${sls:stage}
-    APP_NAME: House-hunter
+    APP_NAME: ${env:APP_NAME}
     APP_KEY: ${env:APP_KEY}
     APP_DEBUG: true
     APP_URL: ${env:APP_URL}
