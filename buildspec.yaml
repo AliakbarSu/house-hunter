@@ -13,7 +13,6 @@ phases:
       - php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
   pre_build:
     commands:
-      - cd src
       - composer install --prefer-dist --optimize-autoloader --no-dev
       - npm install
       - sudo npm i serverless -g
