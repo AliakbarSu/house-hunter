@@ -87,7 +87,7 @@ constructs:
     type: server-side-website
     assets:
       '/build/*': public/build/
-      '/favicon_io/*': public/favicon_io/
+      'favicon.ico': public/favicon.ico
       'robots.txt': public/robots.txt
     forwardedHeaders:
       - Accept
