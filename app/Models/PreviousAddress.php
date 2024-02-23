@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class PreviousAddress extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -18,9 +18,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'address',
+        'move_in_at',
+        'move_out_at',
     ];
 
     /**
@@ -28,10 +28,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast.
@@ -39,22 +36,7 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'move_in_at' => 'datetime',
+        'move_out_at' => 'datetime',
     ];
-
-    public function findUser($id)
-    {
-        return $this->all()->find($id)->load(['boards', 'listings']);
-    }
-
-    public function boards()
-    {
-        return $this->hasMany(Board::class);
-    }
-
-    public function listings()
-    {
-        return $this->hasManyThrough(Listing::class, Board::class);
-    }
 }
