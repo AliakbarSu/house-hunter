@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BoardController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -70,6 +71,10 @@ Route::middleware('auth:sanctum')->controller(ProfileController::class)->prefix(
     Route::get('/{id}', 'getProfile');
     Route::put('/{id}', 'updateProfile');
     Route::delete('/{id}', 'deleteProfile');
+});
+
+Route::middleware('auth:sanctum')->controller(ProfileController::class)->prefix('checkout')->group(function () {
+    Route::get('/plans', [CheckoutController::class, 'getPlans']);
 });
 
 Route::post('token', function (Request $request) {
