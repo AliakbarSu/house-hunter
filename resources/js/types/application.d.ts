@@ -34,6 +34,14 @@ export interface Board {
   updated_at: string;
 }
 
+export interface Image {
+  id: string;
+  listing_id: string;
+  url: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Listing {
   id: string;
   address: string;
@@ -51,6 +59,7 @@ export interface Listing {
   board_id: string;
   notes: Note[];
   board: Board;
+  images: Image[];
   created_at: string;
   updated_at: string;
 }
