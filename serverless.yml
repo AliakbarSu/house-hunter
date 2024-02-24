@@ -13,6 +13,7 @@ provider:
     role:
       managedPolicies:
         - arn:aws:iam::aws:policy/AmazonRDSFullAccess
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
   region: ap-southeast-1
   httpApi:
     cors: true
