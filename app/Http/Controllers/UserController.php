@@ -17,7 +17,7 @@ class UserController extends Controller
 
     public function getUser(Request $request, User $profile)
     {
-        return $profile->findUser($request->id);
+        return $profile->find($request->id)->load(['listings' => ['notes', 'images'], 'boards']);
     }
 
     /**

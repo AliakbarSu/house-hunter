@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -48,7 +49,7 @@ class User extends Authenticatable
         return $this->all()->find($id)->load(['boards', 'listings']);
     }
 
-    public function boards()
+    public function boards(): HasMany
     {
         return $this->hasMany(Board::class);
     }
@@ -56,5 +57,10 @@ class User extends Authenticatable
     public function listings()
     {
         return $this->hasManyThrough(Listing::class, Board::class);
+    }
+
+    public function profiles(): HasMany
+    {
+        return $this->hasMany(Profile::class);
     }
 }
