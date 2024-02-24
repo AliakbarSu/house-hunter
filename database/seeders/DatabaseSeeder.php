@@ -12,7 +12,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        $users = \App\Models\User::factory(1)->create();
+
+        $profiles = \App\Models\Profile::factory(1)->create([
+            'user_id' => $users->random()->id
+        ]);
+
+        $boards = \App\Models\Board::factory(1)->create([
+            'user_id' => $users->random()->id
+        ]);
+
+        $listings = \App\Models\Listing::factory(1)->create([
+            'board_id' => $boards->random()->id
+        ]);
+
+        $notes = \App\Models\ListingNotes::factory(1)->create([
+            'listing_id' => $listings->random()->id
+        ]);
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class ProfileController extends Controller
+class UserController extends Controller
 {
 
-    public function getProfile(Request $request, User $profile)
+    public function getUser(Request $request, User $profile)
     {
         return $profile->findUser($request->id);
     }
