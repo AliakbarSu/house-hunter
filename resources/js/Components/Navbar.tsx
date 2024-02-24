@@ -55,12 +55,18 @@ export default function Navbar() {
         {/*        Log in <span aria-hidden="true">&rarr;</span>*/}
         {/*    </a>*/}
         {/*</div>*/}
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-3">
           <Link
             href={route('login')}
             className="text-sm font-semibold leading-6 text-gray-900"
           >
             Log in <span aria-hidden="true">&rarr;</span>
+          </Link>
+          <Link
+            href={route('register')}
+            className="text-sm font-semibold leading-6 text-gray-900"
+          >
+            Register <span aria-hidden="true">&rarr;</span>
           </Link>
         </div>
       </nav>
@@ -105,10 +111,16 @@ export default function Navbar() {
               </div>
               <div className="py-6">
                 <a
-                  href="#"
+                  href={route('login')}
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Log in
+                </a>
+                <a
+                  href={route('register')}
+                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                >
+                  Register
                 </a>
               </div>
             </div>
