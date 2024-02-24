@@ -8,7 +8,9 @@
         "build": "tsc && vite build && vite build --ssr",
         "lint": "eslint \"resources/**/*.{js,jsx,ts,tsx}\"",
         "lint:fix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
-        "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,md}\" --config ./.prettierrc.json"
+        "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,md}\" --config ./.prettierrc.json",
+        "migrate": "./vendor/bin/sail php artisan migrate:fresh",
+        "seed": "./vendor/bin/sail php artisan db:seed"
     },
     "devDependencies": {
         "@headlessui/react": "^1.4.2",
