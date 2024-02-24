@@ -22,7 +22,7 @@ class AddListingRequest extends FormRequest
             'rent' => ['required', 'numeric'],
             'bedrooms' => ['required', 'numeric'],
             'bathrooms' => ['required', 'numeric'],
-            'board_id' => ['required', 'numeric', "exists:boards,id"]
+            'board_id' => ['required', 'numeric', "exists:boards,id"],
         ];
     }
 

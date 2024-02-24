@@ -30,4 +30,9 @@ class Listing extends Model
     {
         return $this->belongsTo(Board::class);
     }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(Image::class);
+    }
 }

@@ -13,13 +13,13 @@ class BoardController extends Controller
 
     public function getAllboards(Request $request, Board $board)
     {
-        return $board->get()->load(['listings' => ['notes']]);
+        return $board->get()->load(['listings' => ['notes', 'images']]);
     }
 
     public function getBoard(Request $request, Board $board)
     {
         $boardId = $request->id;
-        return $board->find($boardId)->load(['listings' => ['notes']]);
+        return $board->find($boardId)->load(['listings' => ['notes', 'images']]);
     }
 
     public function addBoard(Request $request, User $user)
