@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddProfileRequest;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -29,6 +31,14 @@ class ProfileController extends Controller
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
         ]);
+    }
+
+    public function addProfile(AddProfileRequest $request)
+    {
+        $newProfile = new Profile($request->validated());
+        $newProfile->user()->associate($request->user()->id);
+        $newProfile->save();
+        return $newProfile;
     }
 
     /**

@@ -26,8 +26,7 @@ class BoardController extends Controller
     {
         try {
             $validated = $request->validate([
-                'name' => ['required', 'string', 'max:255'],
-                'user_id' => ['required', 'numeric', 'exists:users,id']
+                'name' => ['required', 'string', 'max:255']
             ]);
         } catch (ValidationException $e) {
             return response()->json([
@@ -35,7 +34,7 @@ class BoardController extends Controller
                 'status' => true
             ], 422);
         }
-        $user = $user->find($validated['user_id']);
+        $user = $user->find($request->user()->id);
         $newBoard = new Board($validated);
         $newBoard->user()->associate($user);
         $newBoard->save();

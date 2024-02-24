@@ -4,8 +4,11 @@ use App\Http\Controllers\BoardController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\ValidationException;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->middleware('auth:sanctum')->group(function () {
 
     Route::prefix("/notes")->group(function () {
         Route::get("/", "NoteController@index");
@@ -33,7 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
-Route::controller(ProfileController::class)->prefix('profile')->group(function () {
+Route::middleware('auth:sanctum')->controller(ProfileController::class)->prefix('profile')->group(function () {
     Route::get('/{id}', 'getProfile');
 });
 
@@ -41,7 +44,7 @@ Route::controller(UserController::class)->prefix('user')->group(function () {
     Route::get('/{id}', 'getUser');
 });
 
-Route::controller(ListingController::class)->prefix('listing')->group(function () {
+Route::middleware('auth:sanctum')->controller(ListingController::class)->prefix('listing')->group(function () {
 
     Route::get('/', 'getAllListings');
     Route::get('/{id}', 'getListing');
@@ -54,10 +57,43 @@ Route::controller(ListingController::class)->prefix('listing')->group(function (
 });
 
 
-Route::controller(BoardController::class)->prefix('board')->group(function () {
+Route::middleware('auth:sanctum')->controller(BoardController::class)->prefix('board')->group(function () {
     Route::post('/', 'addBoard');
     Route::get('/', 'getAllBoards');
     Route::get('/{id}', 'getBoard');
     Route::put('/{id}', 'updateBoard');
     Route::delete('/{id}', 'deleteBoard');
+});
+
+Route::middleware('auth:sanctum')->controller(ProfileController::class)->prefix('profile')->group(function () {
+    Route::post('/', 'addProfile');
+    Route::get('/{id}', 'getProfile');
+    Route::put('/{id}', 'updateProfile');
+    Route::delete('/{id}', 'deleteProfile');
+});
+
+Route::post('token', function (Request $request) {
+    try {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+            'device_name' => 'required',
+        ]);
+
+    } catch (ValidationException $e) {
+        return response()->json([
+            'errors' => $e->errors(),
+            'status' => true
+        ], 422);
+    }
+
+    $user = User::where('email', $request->email)->first();
+
+    if (!$user || !Hash::check($request->password, $user->password)) {
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials are incorrect.'],
+        ]);
+    }
+
+    return $user->createToken($request->device_name)->plainTextToken;
 });
