@@ -2,8 +2,20 @@ service: laravel
 
 provider:
   name: aws
-  # The AWS region in which to deploy (us-east-1 is the default)
+  vpc:
+    securityGroupIds:
+      - sg-0ddd2f27eec1e3126
+    subnetIds:
+      - subnet-037dcb355ceb7a124
+      - subnet-066e124b81eaeb6dd
+      - subnet-051b0ebebce823bff
+  iam:
+    role:
+      managedPolicies:
+        - arn:aws:iam::aws:policy/AmazonRDSFullAccess
   region: ap-southeast-1
+  httpApi:
+    cors: true
   # Environment variables
   environment:
     APP_ENV: ${sls:stage}
