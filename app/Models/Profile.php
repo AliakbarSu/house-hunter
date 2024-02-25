@@ -5,6 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Profile extends Model
 {
@@ -18,6 +20,13 @@ class Profile extends Model
     protected $fillable = [
         'first_name',
         'last_name',
+        'phone',
+        'mobile',
+        'email',
+        'main_applicant',
+        'current_address',
+        'move_in_at',
+        'move_out_at'
     ];
 
     /**
@@ -34,13 +43,18 @@ class Profile extends Model
      */
     protected $casts = [];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function addresses()
+    public function addresses(): HasMany
     {
         return $this->hasMany(PreviousAddress::class);
+    }
+
+    public function references(): HasMany
+    {
+        return $this->hasMany(Reference::class);
     }
 }

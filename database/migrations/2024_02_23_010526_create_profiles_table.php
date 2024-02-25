@@ -20,6 +20,13 @@ return new class extends Migration {
                 ->onDelete('cascade');
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('phone');
+            $table->string('mobile');
+            $table->string('email');
+            $table->boolean('main_applicant')->default(true);
+            $table->string('current_address');
+            $table->timestamp('move_in_at');
+            $table->timestamp('move_out_at');
             $table->timestamps();
         });
     }
