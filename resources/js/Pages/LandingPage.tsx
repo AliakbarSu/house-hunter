@@ -5,7 +5,9 @@ import { PageProps, Plan } from '@/types';
 
 export default function LandingPage({
   plans,
+  hasSubscription,
 }: PageProps<{
+  hasSubscription: boolean;
   plans: Plan[];
 }>) {
   return (

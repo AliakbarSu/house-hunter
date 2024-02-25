@@ -22,6 +22,7 @@ class StripeController extends Controller
                 'metadata' => $product->metadata,
                 'features' => $product->features,
                 'price' => $price->unit_amount / 100,
+                'price_id' => $price->id,
                 'currency' => $price->currency,
             ];
         }, $products->data);

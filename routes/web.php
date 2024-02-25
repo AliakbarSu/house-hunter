@@ -33,9 +33,29 @@ Route::get('/', function (StripeController $stripeController) {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'hasSubscription' => auth()->user()?->subscribed('default'),
         'plans' => $stripeController->getPlans(),
     ]);
-});
+})->name('home');
+
+Route::get('/checkout/item/{priceId}', function (Request $request) {
+    $priceId = $request->priceId;
+    return $request->user()
+        ->newSubscription('default', $priceId)
+        ->allowPromotionCodes()
+        ->checkout([
+            'success_url' => route('stripe.checkout-success'),
+            'cancel_url' => route('home'),
+        ]);
+})->middleware(["auth:sanctum"])->name('stripe.checkout');
+
+Route::get('checkout/success', function () {
+    return Inertia::render('Checkout/Success');
+})->name('stripe.checkout-success');
+
+Route::get('/billing-portal', function (Request $request) {
+    return $request->user()->redirectToBillingPortal();
+})->middleware(["auth:sanctum"])->name('stripe.billing-portal');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

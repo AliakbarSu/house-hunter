@@ -82,6 +82,7 @@ export interface Plan {
   name: string;
   description: string;
   price: number;
+  price_id: string;
   currency: string;
   images: string[];
   features: { name: string }[];
