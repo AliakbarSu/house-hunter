@@ -82,7 +82,10 @@ export interface Plan {
   name: string;
   description: string;
   price: number;
-  features: string[];
+  currency: string;
+  images: string[];
+  features: { name: string }[];
+  metadata: string[];
   created_at: string;
   updated_at: string;
 }

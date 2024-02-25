@@ -3,6 +3,7 @@
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StripeController;
 use App\Http\Requests\AddListingNoteRequest;
 use App\Http\Requests\AddListingRequest;
 use App\Http\Requests\AddProfileRequest;
@@ -26,12 +27,13 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function (StripeController $stripeController) {
     return Inertia::render('LandingPage', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'plans' => $stripeController->getPlans(),
     ]);
 });
 
