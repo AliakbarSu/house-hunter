@@ -74,6 +74,7 @@ export interface User {
   listings: Listing[];
   created_at: string;
   updated_at: string;
+  email_verified_at: string;
 }
 
 export interface Plan {
