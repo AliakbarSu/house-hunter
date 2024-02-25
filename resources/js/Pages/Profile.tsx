@@ -1,9 +1,12 @@
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useEffect } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { PageProps } from '@/types';
 
-export default function Profile({ auth: { user } }: PageProps) {
+export default function Profile({
+  auth: { user },
+  profile,
+}: PageProps & { profile: never }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     first_name: '',
     last_name: '',
@@ -38,6 +41,12 @@ export default function Profile({ auth: { user } }: PageProps) {
       },
     ],
   });
+
+  useEffect(() => {
+    if (profile) {
+      setData(profile);
+    }
+  }, [profile]);
 
   const submit: FormEventHandler = e => {
     e.preventDefault();

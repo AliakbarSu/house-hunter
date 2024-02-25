@@ -1,8 +1,17 @@
 <?php
 
+use App\Http\Controllers\BoardController;
+use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Requests\AddListingNoteRequest;
+use App\Http\Requests\AddListingRequest;
 use App\Http\Requests\AddProfileRequest;
+use App\Http\Requests\UpdateListingRequest;
+use App\Models\Board;
+use App\Models\Listing;
+use App\Models\Profile;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -43,9 +52,55 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+Route::middleware('auth:sanctum')->prefix('listing')->group(function () {
+
+    Route::get('/', function (Request $request, ListingController $listingController, Listing $listing) {
+        return $listingController->getAllListings($request, $listing);
+    });
+    Route::get('/{id}', function (Request $request, ListingController $listingController, Listing $listing) {
+        return $listingController->getListing($request, $listing);
+    });
+    Route::post('/', function (AddListingRequest $request, ListingController $listingController) {
+        return $listingController->addListing($request);
+    });
+    Route::put('/{id}', function (UpdateListingRequest $request, ListingController $listingController, Listing $listing) {
+        return $listingController->updateListing($request, $listing);
+    });
+    Route::delete('/{id}', function (Request $request, ListingController $listingController, Listing $listing) {
+        return $listingController->deleteListing($request, $listing);
+    });
+
+    Route::post('/{listing_id}/note', function (AddListingNoteRequest $request, ListingController $listingController, Listing $listing) {
+        return $listingController->addNote($request, $listing);
+    });
+    Route::delete('/{listing_id}/note/{note_id}', function (Request $request, ListingController $listingController, Listing $listing) {
+        return $listingController->deleteNote($request, $listing);
+    });
+});
+
+Route::middleware('auth:sanctum')->prefix('board')->group(function () {
+    Route::post('/', function (Request $request, BoardController $boardController) {
+        return $boardController->addBoard($request);
+    });
+    Route::get('/', function (Request $request, BoardController $boardController, Board $board) {
+        return $boardController->getAllboards($request, $board);
+    });
+    Route::get('/{id}', function (Request $request, BoardController $boardController, Board $board) {
+        return $boardController->getBoard($request, $board);
+    });
+    Route::put('/{id}', function (Request $request, BoardController $boardController, Board $board) {
+        return $boardController->updateBoard($request, $board);
+    });
+    Route::delete('/{id}', function (Request $request, BoardController $boardController, Board $board) {
+        return $boardController->deleteBoard($request, $board);
+    });
+});
+
 Route::middleware('auth')->group(function () {
-    Route::get('/rental-profile', function () {
-        return Inertia::render('Profile');
+    Route::get('/rental-profile', function (Request $request, ProfileController $profileController, Profile $profile) {
+        $fetchedProfile = $profileController->getProfile($request, $profile);
+        return Inertia::render('Profile', ['profile' => $fetchedProfile]);
     });
 });
 

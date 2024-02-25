@@ -7,7 +7,6 @@ use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Address;
 use App\Models\Profile;
 use App\Models\Reference;
-use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,9 +18,14 @@ use Inertia\Response;
 class ProfileController extends Controller
 {
 
-    public function getProfile(Request $request, User $profile)
+    public function getProfile(Request $request, Profile $profile)
     {
-        return $profile->findUser($request->id);
+        $fetchedProfile = $profile->find($request->user()->id);
+        if ($fetchedProfile) {
+            return $fetchedProfile->load('addresses', 'references');
+        } else {
+            return null;
+        }
     }
 
     /**

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Board;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -22,7 +21,7 @@ class BoardController extends Controller
         return $board->find($boardId)->load(['listings' => ['notes', 'images']]);
     }
 
-    public function addBoard(Request $request, User $user)
+    public function addBoard(Request $request)
     {
         try {
             $validated = $request->validate([
@@ -34,7 +33,7 @@ class BoardController extends Controller
                 'status' => true
             ], 422);
         }
-        $user = $user->find($request->user()->id);
+        $user = $request->user();
         $newBoard = new Board($validated);
         $newBoard->user()->associate($user);
         $newBoard->save();
