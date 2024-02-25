@@ -24,9 +24,6 @@ class Profile extends Model
         'mobile',
         'email',
         'main_applicant',
-        'current_address',
-        'move_in_at',
-        'move_out_at'
     ];
 
     /**
@@ -50,7 +47,7 @@ class Profile extends Model
 
     public function addresses(): HasMany
     {
-        return $this->hasMany(PreviousAddress::class);
+        return $this->hasMany(Address::class);
     }
 
     public function references(): HasMany

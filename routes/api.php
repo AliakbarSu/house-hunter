@@ -37,8 +37,9 @@ Route::middleware('auth:sanctum')->middleware('auth:sanctum')->group(function ()
     });
 });
 
-Route::middleware('auth:sanctum')->controller(ProfileController::class)->prefix('profile')->group(function () {
-    Route::get('/{id}', 'getProfile');
+Route::middleware('auth:sanctum')->prefix('profile')->group(function () {
+    Route::post('/', [ProfileController::class, 'addProfile']);
+    Route::get('/{id}', [ProfileController::class, 'getProfile']);
 });
 
 Route::controller(UserController::class)->prefix('user')->group(function () {

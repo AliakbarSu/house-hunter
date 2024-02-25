@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PreviousAddress>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Address>
  */
-class PreviousAddressFactory extends Factory
+class AddressFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -25,6 +25,7 @@ class PreviousAddressFactory extends Factory
             'landlord_name' => $this->faker->name,
             'landlord_phone' => $this->faker->phoneNumber,
             'landlord_mobile' => $this->faker->phoneNumber,
+            'address_type' => $this->faker->randomElement(['current', 'previous']),
             'landlord_type' => $this->faker->randomElement(['agent', 'landlord', 'property_manager']),
         ];
     }

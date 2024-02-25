@@ -24,9 +24,6 @@ return new class extends Migration {
             $table->string('mobile');
             $table->string('email');
             $table->boolean('main_applicant')->default(true);
-            $table->string('current_address');
-            $table->timestamp('move_in_at');
-            $table->timestamp('move_out_at');
             $table->timestamps();
         });
     }

@@ -14,7 +14,8 @@ class Reference extends Model
         'name',
         'relationship',
         'phone',
-        'mobile'
+        'mobile',
+        'relationship',
     ];
 
     public function profile(): BelongsTo

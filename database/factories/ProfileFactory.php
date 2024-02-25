@@ -28,9 +28,6 @@ class ProfileFactory extends Factory
             'mobile' => fake()->phoneNumber(),
             'email' => fake()->unique()->safeEmail(),
             'main_applicant' => true,
-            'current_address' => fake()->address(),
-            'move_in_at' => fake()->dateTimeThisCentury()->format('Y-m-d H:i:s'),
-            'move_out_at' => fake()->dateTimeThisCentury()->format('Y-m-d H:i:s'),
         ];
     }
 
