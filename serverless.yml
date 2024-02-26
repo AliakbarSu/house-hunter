@@ -100,6 +100,8 @@ plugins:
 constructs:
   website:
     type: server-side-website
+    domain: ${env:APP_DOMAIN}
+    certificate: arn:aws:acm:us-east-1:092355519212:certificate/96f64b78-6cd2-4487-b7ef-f6f0d04c4669
     assets:
       '/build/*': public/build/
       'favicon.ico': public/favicon.ico
