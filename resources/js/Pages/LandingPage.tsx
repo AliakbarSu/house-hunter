@@ -5,15 +5,16 @@ import { PageProps, Plan } from '@/types';
 
 export default function LandingPage({
   plans,
-  hasSubscription,
+  isAuthenticated,
 }: PageProps<{
   hasSubscription: boolean;
+  isAuthenticated: boolean;
   plans: Plan[];
 }>) {
   return (
     <div className="bg-white">
       <header className="absolute inset-x-0 top-0 z-50">
-        <Navbar />
+        <Navbar isAuthenticated={isAuthenticated} />
       </header>
 
       <Hero />

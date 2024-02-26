@@ -31,12 +31,13 @@ Route::get('/', function (StripeController $stripeController) {
     return Inertia::render('LandingPage', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
+        'isAuthenticated' => auth()->check(),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
         'hasSubscription' => auth()->user()?->subscribed('default'),
         'plans' => $stripeController->getPlans(),
     ]);
-})->name('home');
+})->middleware(['listing.limit'])->name('home');
 
 Route::get('/checkout/item/{priceId}', function (Request $request) {
     $priceId = $request->priceId;
@@ -49,7 +50,8 @@ Route::get('/checkout/item/{priceId}', function (Request $request) {
         ]);
 })->middleware(["auth:sanctum"])->name('stripe.checkout');
 
-Route::get('checkout/success', function () {
+
+Route::get('/checkout/success', function () {
     return Inertia::render('Checkout/Success');
 })->name('stripe.checkout-success');
 
@@ -57,12 +59,17 @@ Route::get('/billing-portal', function (Request $request) {
     return $request->user()->redirectToBillingPortal();
 })->middleware(["auth:sanctum"])->name('stripe.billing-portal');
 
+
+Route::get('/dashboard', function () {
+    return Inertia::render('Checkout/Success');
+})->name('free.plan.limit.reached');
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth:sanctum', 'verified'])->name('dashboard');
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::post('/profile', function (AddProfileRequest $request, ProfileController $profileController) {
         $createdProfile = $profileController->addProfile($request);
         return Inertia::render('Profile', [
@@ -85,7 +92,7 @@ Route::middleware('auth:sanctum')->prefix('listing')->group(function () {
     });
     Route::post('/', function (AddListingRequest $request, ListingController $listingController) {
         return $listingController->addListing($request);
-    });
+    })->middleware('listing.limit');
     Route::put('/{id}', function (UpdateListingRequest $request, ListingController $listingController, Listing $listing) {
         return $listingController->updateListing($request, $listing);
     });
@@ -119,7 +126,7 @@ Route::middleware('auth:sanctum')->prefix('board')->group(function () {
     });
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('/rental-profile', function (Request $request, ProfileController $profileController, Profile $profile) {
         $fetchedProfile = $profileController->getProfile($request, $profile);
         return Inertia::render('Profile', ['profile' => $fetchedProfile]);

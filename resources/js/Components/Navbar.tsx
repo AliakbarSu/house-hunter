@@ -10,7 +10,11 @@ const navigation = [
   { name: 'Company', href: '#' },
 ];
 
-export default function Navbar() {
+export default function Navbar({
+  isAuthenticated,
+}: {
+  isAuthenticated: boolean;
+}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -56,18 +60,31 @@ export default function Navbar() {
         {/*    </a>*/}
         {/*</div>*/}
         <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-3">
-          <Link
-            href={route('login')}
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Log in <span aria-hidden="true">&rarr;</span>
-          </Link>
-          <Link
-            href={route('register')}
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Register <span aria-hidden="true">&rarr;</span>
-          </Link>
+          {!isAuthenticated && (
+            <Link
+              href={route('login')}
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              Log in <span aria-hidden="true">&rarr;</span>
+            </Link>
+          )}
+          {!isAuthenticated && (
+            <Link
+              href={route('register')}
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              Register <span aria-hidden="true">&rarr;</span>
+            </Link>
+          )}
+          {isAuthenticated && (
+            <Link
+              method="post"
+              href={route('logout')}
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              Logout <span aria-hidden="true">&rarr;</span>
+            </Link>
+          )}
         </div>
       </nav>
       <Dialog
@@ -110,18 +127,30 @@ export default function Navbar() {
                 ))}
               </div>
               <div className="py-6">
-                <a
-                  href={route('login')}
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Log in
-                </a>
-                <a
-                  href={route('register')}
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Register
-                </a>
+                {!isAuthenticated ? (
+                  <>
+                    <a
+                      href={route('login')}
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    >
+                      Log in
+                    </a>
+                    <a
+                      href={route('register')}
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    >
+                      Register
+                    </a>
+                  </>
+                ) : (
+                  <Link
+                    href={route('logout')}
+                    method="post"
+                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  >
+                    Logout
+                  </Link>
+                )}
               </div>
             </div>
           </div>
