@@ -2,13 +2,13 @@ service: laravel
 
 provider:
   name: aws
-  vpc:
-    securityGroupIds:
-      - sg-0ddd2f27eec1e3126
-    subnetIds:
-      - subnet-037dcb355ceb7a124
-      - subnet-066e124b81eaeb6dd
-      - subnet-051b0ebebce823bff
+  #  vpc:
+  #    securityGroupIds:
+  #      - sg-0ddd2f27eec1e3126
+  #    subnetIds:
+  #      - subnet-037dcb355ceb7a124
+  #      - subnet-066e124b81eaeb6dd
+  #      - subnet-051b0ebebce823bff
   iam:
     role:
       managedPolicies:
