@@ -1,7 +1,13 @@
 import { CheckIcon } from '@heroicons/react/20/solid';
 import { Plan } from '@/types';
 
-export default function Plans({ plans }: { plans: Plan[] }) {
+export default function Plans({
+  plans,
+  isAuthenticated,
+}: {
+  plans: Plan[];
+  isAuthenticated: boolean;
+}) {
   const plan = plans[0];
   return (
     <div className="bg-white py-24 sm:py-32">
@@ -59,7 +65,10 @@ export default function Plans({ plans }: { plans: Plan[] }) {
                   </span>
                 </p>
                 <a
-                  href={route('stripe.checkout', plan.price_id)}
+                  href={route(
+                    isAuthenticated ? 'stripe.checkout' : 'login',
+                    plan.price_id
+                  )}
                   className="mt-10 block w-full rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   Get access

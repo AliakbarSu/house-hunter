@@ -18,7 +18,7 @@ export default function LandingPage({
       </header>
 
       <Hero />
-      <Pricing plans={plans} />
+      <Pricing isAuthenticated={isAuthenticated} plans={plans} />
     </div>
   );
 }
