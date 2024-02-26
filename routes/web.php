@@ -35,7 +35,7 @@ Route::get('/', function (StripeController $stripeController) {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
         'hasSubscription' => auth()->user()?->subscribed('default'),
-        'plans' => $stripeController->getPlans(),
+//        'plans' => $stripeController->getPlans(),
     ]);
 })->middleware(['listing.limit'])->name('home');
 
