@@ -60,6 +60,9 @@ provider:
     PUSHER_SCHEME: https
     PUSHER_APP_CLUSTER: mt1
     VITE_APP_NAME: ${env:APP_NAME}
+    STRIPE_KEY: ${env:STRIPE_KEY}
+    STRIPE_SECRET: ${env:STRIPE_SECRET}
+    STRIPE_WEBHOOK_SECRET: ${env:STRIPE_WEBHOOK_SECRET}
 
 package:
   # Files and directories to exclude from deployment
