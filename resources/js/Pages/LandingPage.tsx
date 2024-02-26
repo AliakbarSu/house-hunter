@@ -1,3 +1,4 @@
+import Pricing from '@/Components/Pricing';
 import Navbar from '@/Components/Navbar';
 import Hero from '@/Components/Hero';
 import { PageProps, Plan } from '@/types';
@@ -17,7 +18,7 @@ export default function LandingPage({
       </header>
 
       <Hero />
-      {/*<Pricing isAuthenticated={isAuthenticated} plans={plans} />*/}
+      <Pricing isAuthenticated={isAuthenticated} plans={plans} />
     </div>
   );
 }
