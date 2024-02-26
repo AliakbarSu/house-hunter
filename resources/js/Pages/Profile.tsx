@@ -8,8 +8,7 @@ export default function Profile({
   profile,
 }: PageProps & { profile: never }) {
   const { data, setData, post, processing, errors, reset } = useForm({
-    first_name: '',
-    last_name: '',
+    name: '',
     email: '',
     phone: '',
     mobile: '',
@@ -80,12 +79,12 @@ export default function Profile({
                     Applicant’s details
                   </label>
                 </div>
-                <div>
+                <div className="sm:col-span-2">
                   <label
                     htmlFor="name"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    First Name
+                    Full Name
                   </label>
                   <input
                     type="text"
@@ -93,25 +92,8 @@ export default function Profile({
                     id="first_name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type your full name"
-                    value={data.first_name}
-                    onChange={e => setData('first_name', e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Last Name
-                  </label>
-                  <input
-                    type="text"
-                    name="last_name"
-                    id="last_name"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type your full name"
-                    value={data.last_name}
-                    onChange={e => setData('last_name', e.target.value)}
+                    value={data.name}
+                    onChange={e => setData('name', e.target.value)}
                   />
                 </div>
                 <div className="sm:col-span-2">

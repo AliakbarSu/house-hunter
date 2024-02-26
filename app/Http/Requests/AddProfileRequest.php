@@ -16,8 +16,7 @@ class AddProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['string', 'max:255'],
-            'last_name' => ['string', 'max:255'],
+            'name' => ['string', 'max:255'],
             'phone' => ['string', 'max:255'],
             'mobile' => ['string', 'max:255'],
             'email' => ['string', 'email', 'max:255'],
