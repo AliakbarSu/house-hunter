@@ -28,7 +28,7 @@ class WelcomeUser extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Welcome ' . strtoupper($this->user->name) . '!',
+            subject: 'Welcome ' . ucfirst($this->user->name) . '!',
         );
     }
 
