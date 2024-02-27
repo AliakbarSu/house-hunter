@@ -10,7 +10,8 @@
         "lint:fix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
         "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,md}\" --config ./.prettierrc.json",
         "migrate": "./vendor/bin/sail php artisan migrate:fresh",
-        "seed": "./vendor/bin/sail php artisan db:seed"
+        "seed": "./vendor/bin/sail php artisan db:seed",
+        "forward-stripe-webhook": "stripe listen --forward-to http://localhost/stripe/webhook"
     },
     "devDependencies": {
         "@headlessui/react": "^1.4.2",

@@ -14,10 +14,11 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('profile_id');
             $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
-            $table->string('name');
-            $table->string('relationship');
+            $table->string('name')->nullable();
+            $table->string('relationship')->nullable();
             $table->string('phone')->nullable();
-            $table->string('mobile');
+            $table->string('mobile')->nullable();
+            $table->string('email')->nullable();
             $table->timestamps();
         });
     }

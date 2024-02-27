@@ -91,6 +91,25 @@ export interface Plan {
   updated_at: string;
 }
 
+export interface Profile {
+  name: string;
+  email: string;
+  phone: string;
+  mobile: string;
+  addresses: {
+    address_type: string;
+    address: string;
+    move_in_at: string;
+    move_out_at: string;
+  }[];
+  references: {
+    name: string;
+    relationship: string;
+    phone: string;
+    mobile: string;
+  }[];
+}
+
 export type PageProps<
   T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {

@@ -21,6 +21,7 @@ class ReferenceFactory extends Factory
             'relationship' => $this->faker->word,
             'phone' => $this->faker->phoneNumber,
             'mobile' => $this->faker->phoneNumber,
+            'email' => $this->faker->email,
         ];
     }
 }

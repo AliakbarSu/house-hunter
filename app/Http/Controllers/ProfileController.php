@@ -21,11 +21,7 @@ class ProfileController extends Controller
     public function getProfile(Request $request, Profile $profile)
     {
         $fetchedProfile = $profile->find($request->user()->id);
-        if ($fetchedProfile) {
-            return $fetchedProfile->load('addresses', 'references');
-        } else {
-            return null;
-        }
+        return $fetchedProfile?->load('addresses', 'references');
     }
 
     /**
@@ -42,6 +38,9 @@ class ProfileController extends Controller
     public function addProfile(AddProfileRequest $request): Profile
     {
         $validated = $request->validated();
+        if ($request->user()->mainProfile()) {
+            return $this->updateProfile($request);
+        }
         $validated['main_applicant'] = true;
         $newProfile = new Profile($validated);
         $newProfile->user()->associate($request->user()->id);
@@ -51,28 +50,31 @@ class ProfileController extends Controller
             $reference->profile()->associate($newProfile->id);
             $reference->save();
         }
-        $currentAddress = new Address([
-            'address' => $validated['current_address'],
-            'move_in_at' => $validated['move_in_at'],
-            'move_out_at' => $validated['move_out_at'],
-            'address_type' => 'current_address',
-        ]);
-        $previousAddress = new Address([
-            'address' => $validated['previous_address'],
-            'address_type' => 'previous_address',
-            'landlord_name' => $validated['landlord_name'],
-            'landlord_phone' => $validated['landlord_phone'],
-            'landlord_mobile' => $validated['landlord_mobile'],
-            'landlord_email' => $validated['landlord_email'],
-            'landlord_type' => $validated['landlord_type'],
-            'move_in_at' => $validated['previous_address_move_in_at'],
-            'move_out_at' => $validated['previous_address_move_out_at'],
-        ]);
+        $currentAddress = new Address([...$validated['current_address'], 'address_type' => 'current_address']);
+        $previousAddress = new Address([...$validated['previous_address'], 'address_type' => 'previous_address']);
         $previousAddress->profile()->associate($newProfile->id);
         $currentAddress->profile()->associate($newProfile->id);
         $currentAddress->save();
         $previousAddress->save();
         return $newProfile->load('addresses', 'references');
+    }
+
+    public function updateProfile(AddProfileRequest $request): Profile
+    {
+        $validated = $request->validated();
+        $profile = $request->user()->mainProfile();
+        $profile->fill($validated);
+        foreach ($validated['references'] as $reference) {
+            $foundReference = $profile->references->find($reference['id']);
+            $foundReference?->fill($reference);
+            $foundReference?->save();
+        }
+        foreach ($profile->addresses as $address) {
+            $address->fill($validated[$address->address_type]);
+            $address->save();
+        }
+        $profile->save();
+        return $profile->load('addresses', 'references');
     }
 
     /**

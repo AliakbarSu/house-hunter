@@ -70,7 +70,7 @@ Route::get('/dashboard', function () {
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/profile', function (AddProfileRequest $request, ProfileController $profileController) {
+    Route::post('/rental-profile', function (AddProfileRequest $request, ProfileController $profileController) {
         $createdProfile = $profileController->addProfile($request);
         return Inertia::render('Profile', [
             'profile' => $createdProfile,

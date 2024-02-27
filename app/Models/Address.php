@@ -27,6 +27,8 @@ class Address extends Authenticatable
         'landlord_name',
         'landlord_phone',
         'landlord_mobile',
+        'landlord_email',
+        'landlord_type',
         'address_type',
     ];
 

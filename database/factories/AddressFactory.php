@@ -25,6 +25,7 @@ class AddressFactory extends Factory
             'landlord_name' => $this->faker->name,
             'landlord_phone' => $this->faker->phoneNumber,
             'landlord_mobile' => $this->faker->phoneNumber,
+            'landlord_email' => $this->faker->email,
             'address_type' => $this->faker->randomElement(['current', 'previous']),
             'landlord_type' => $this->faker->randomElement(['agent', 'landlord', 'property_manager']),
         ];
