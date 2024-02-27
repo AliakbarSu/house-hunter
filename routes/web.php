@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BoardController;
+use App\Http\Controllers\CoverLetterController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StripeController;
@@ -130,6 +131,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/rental-profile', function (Request $request, ProfileController $profileController, Profile $profile) {
         $fetchedProfile = $profileController->getProfile($request, $profile);
         return Inertia::render('Profile', ['profile' => $fetchedProfile]);
+    });
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/cover-letter', function (Request $request, CoverLetterController $coverLetterController) {
+        $coverLetter = $coverLetterController->generateCoverLetter($request);
+        return Inertia::render('CoverLetter/view', ['cover_letter' => $coverLetter]);
     });
 });
 
