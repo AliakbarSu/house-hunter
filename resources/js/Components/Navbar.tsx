@@ -1,20 +1,12 @@
-import { User } from '@/types';
 import { useState } from 'react';
 import { Link } from '@inertiajs/react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import NavLink from '@/Components/NavLink';
 import Dropdown from '@/Components/Dropdown';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-
-const navigation = [
-  { name: 'Product', href: '#' },
-  { name: 'Features', href: '#' },
-  { name: 'Marketplace', href: '#' },
-  { name: 'Company', href: '#' },
-];
+import { User } from '@/types';
 
 export default function Navbar({
-  isAuthenticated,
   user,
 }: {
   isAuthenticated: boolean;
