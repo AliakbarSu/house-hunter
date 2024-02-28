@@ -1,6 +1,6 @@
-import Pricing from '@/Components/Pricing';
-import Navbar from '@/Components/Navbar';
-import Hero from '@/Components/Hero';
+import Pricing from '@/Components/LandingPage/Pricing';
+import Navbar from '@/Components/LandingPage/Navbar';
+import Hero from '@/Components/LandingPage/Hero';
 
 export default function LandingPage() {
   return (
