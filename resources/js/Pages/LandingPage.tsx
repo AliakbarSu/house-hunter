@@ -18,9 +18,13 @@ export default function LandingPage({
         <Navbar isAuthenticated={isAuthenticated} />
       </header>
 
-      <Hero />
+      <Hero isAuthenticated={isAuthenticated} />
       {!hasSubscription && (
-        <Pricing isAuthenticated={isAuthenticated} plans={plans} />
+        <Pricing
+          isAuthenticated={isAuthenticated}
+          plans={plans}
+          hasSubscription={hasSubscription}
+        />
       )}
     </div>
   );

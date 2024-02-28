@@ -1,4 +1,8 @@
-export default function Hero() {
+export default function Hero({
+  isAuthenticated,
+}: {
+  isAuthenticated: boolean;
+}) {
   return (
     <>
       <div className="relative isolate pt-14">
@@ -18,22 +22,30 @@ export default function Hero() {
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
               <h1 className="text-4xl font-extrabold tracking-tight text-gray-800 sm:text-7xl">
-                Coming soon...
+                Property Hunters
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-600">
-                Say goodbye to scattered notes and Excel sheets. HouseHunter
-                keeps all your home application data organized and easily
-                accessible, ensuring you have all you need. From property
-                details to the status of your applications, HouseHunter helps
-                you stay in control.
+                Say goodbye to scattered notes and Excel sheets with Property
+                Hunters, which centralizes all listings and key information,
+                increasing your chances of finding a place faster and minimizing
+                the hassle of house hunting.
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
-                <a
-                  href="#"
-                  className="rounded-md bg-indigo-600 px-6 py-2.5 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Sign Up
-                </a>
+                {!isAuthenticated ? (
+                  <a
+                    href={route('register')}
+                    className="rounded-md bg-indigo-600 px-6 py-2.5 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Sign Up
+                  </a>
+                ) : (
+                  <a
+                    href={route('dashboard')}
+                    className="rounded-md bg-indigo-600 px-6 py-2.5 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    View Dashboard
+                  </a>
+                )}
               </div>
             </div>
             <div className="mt-16 flow-root sm:mt-24">

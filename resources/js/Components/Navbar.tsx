@@ -16,7 +16,7 @@ export default function Navbar({ user }: { user: User }) {
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="shrink-0 flex items-center">
-              <Link href="/public">
+              <Link href={route('home')}>
                 <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
               </Link>
             </div>
