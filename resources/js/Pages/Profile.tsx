@@ -10,7 +10,6 @@ export default function Profile({
   hasSubscription,
 }: PageProps & {
   profile: ProfileType;
-  hasSubscription: boolean;
 }) {
   const initialData = {
     name: '',

@@ -35,7 +35,10 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            'ziggy' => fn () => [
+            'listings' => $request->user()->listings->load('notes', 'board', 'images'),
+            'hasSubscription' => $request->user()?->subscribed('default'),
+            'isAuthenticated' => auth()->check(),
+            'ziggy' => fn() => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],

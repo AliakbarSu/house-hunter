@@ -8,8 +8,6 @@ export default function LandingPage({
   isAuthenticated,
   hasSubscription,
 }: PageProps<{
-  hasSubscription: boolean;
-  isAuthenticated: boolean;
   plans: Plan[];
 }>) {
   return (

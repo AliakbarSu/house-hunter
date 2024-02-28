@@ -32,10 +32,8 @@ Route::get('/', function (StripeController $stripeController) {
     return Inertia::render('LandingPage', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'isAuthenticated' => auth()->check(),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'hasSubscription' => auth()->user()?->subscribed('default'),
         'plans' => $stripeController->getPlans()
     ]);
 })->name('home');
@@ -66,8 +64,7 @@ Route::get('/dashboard', function () {
 })->name('free.plan.limit.reached');
 
 Route::middleware('auth:sanctum')->get('/dashboard', function (Request $request) {
-    return Inertia::render('Dashboard', ['listings' => $request->user()->listings->load('notes', 'board', 'images'),
-        'hasSubscription' => $request->user()?->subscribed('default')]);
+    return Inertia::render('Dashboard');
 })->middleware(['auth:sanctum', 'verified'])->name('dashboard');
 
 Route::get('/dashboard2', function () {
@@ -135,7 +132,7 @@ Route::middleware('auth:sanctum')->prefix('board')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/rental-profile', function (Request $request, ProfileController $profileController, Profile $profile) {
         $fetchedProfile = $profileController->getProfile($request, $profile);
-        return Inertia::render('Profile', ['profile' => $fetchedProfile, 'hasSubscription' => $request->user()?->subscribed('default')]);
+        return Inertia::render('Profile', ['profile' => $fetchedProfile]);
     })->name('profile.rental');
 });
 

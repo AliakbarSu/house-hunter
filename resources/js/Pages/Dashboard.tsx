@@ -1,13 +1,13 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 import Board from '@/Components/Dashboard/Board';
-import { Listing, PageProps } from '@/types';
+import { PageProps } from '@/types';
 
 export default function Dashboard({
   auth,
   listings,
   hasSubscription,
-}: PageProps<{ listings: Listing[]; hasSubscription: boolean }>) {
+}: PageProps) {
   return (
     <AuthenticatedLayout user={auth.user} hasSubscription={hasSubscription}>
       <div className="h-full bg-white">
