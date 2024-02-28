@@ -135,8 +135,8 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/cover-letter', function (Request $request, CoverLetterController $coverLetterController) {
-        $coverLetter = $coverLetterController->generateCoverLetter($request);
+    Route::get('/cover-letter/{listing}', function (Request $request, CoverLetterController $coverLetterController, Listing $listing) {
+        $coverLetter = $coverLetterController->generateCoverLetter($request, $listing);
         return Inertia::render('CoverLetter/view', ['cover_letter' => $coverLetter]);
     });
 });

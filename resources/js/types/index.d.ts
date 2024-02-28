@@ -110,6 +110,16 @@ export interface Profile {
   }[];
 }
 
+export interface CoverLetter {
+  id: string;
+  filename: string;
+  url: string;
+  content: string;
+  listing_id: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export type PageProps<
   T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
