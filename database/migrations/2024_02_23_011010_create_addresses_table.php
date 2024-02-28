@@ -27,6 +27,7 @@ return new class extends Migration {
             $table->string('landlord_email')->nullable();
             $table->string('address_type')->default('current')->nullable();
             $table->string('landlord_type')->default('agent')->nullable();
+            $table->boolean('deleted')->default(false)->nullable();
             $table->date('move_in_at')->nullable();
             $table->date('move_out_at')->nullable();
             $table->timestamps();

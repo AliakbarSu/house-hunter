@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->foreign('listing_id')->references('id')->on('listings')->onDelete('cascade');
             $table->string('filename');
             $table->string('url');
+            $table->boolean('deleted')->default(false)->nullable();
             $table->timestamps();
         });
     }
