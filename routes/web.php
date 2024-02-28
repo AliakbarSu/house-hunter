@@ -64,9 +64,6 @@ Route::get('/dashboard', function () {
     return Inertia::render('Checkout/Success');
 })->name('free.plan.limit.reached');
 
-Route::get('/cover-letter', function () {
-    return Inertia::render('CoverLetter');
-})->name('cover-letter.view');
 
 Route::middleware('auth:sanctum')->get('/dashboard', function (Request $request) {
     return Inertia::render('Dashboard');
@@ -143,10 +140,17 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/cover-letter', function () {
+        return Inertia::render('CoverLetter');
+    })->name('cover-letter.view');
+
     Route::get('/cover-letter/{listing}', function (Request $request, CoverLetterController $coverLetterController, Listing $listing) {
         return Inertia::render('CoverLetter/view');
     });
     Route::post('/cover-letter/{listing}', function (Request $request, CoverLetterController $coverLetterController, Listing $listing) {
+        if (!$listing->canGenerateCoverLetter()) {
+            return Inertia::render('CoverLetter')->with('error', 'You have reached the limit of cover letters for this address');
+        }
         $coverLetterController->generateCoverLetter($request, $listing);
         return redirect()->route('cover-letter.view');
     })->name('cover-letter.generate');

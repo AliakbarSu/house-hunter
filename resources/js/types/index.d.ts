@@ -127,6 +127,7 @@ export type PageProps<
   auth: {
     user: User;
   };
+  error: string;
   isAuthenticated: boolean;
   listings: Listing[];
   hasSubscription: boolean;

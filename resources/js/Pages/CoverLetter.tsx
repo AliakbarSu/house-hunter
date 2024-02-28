@@ -9,6 +9,7 @@ export default function CoverLetters({
   auth,
   hasSubscription,
   listings,
+  error,
 }: PageProps) {
   const { processing, post, hasErrors, setData } = useForm({});
   const [selectedListingId, setSelectedAddress] = useState('');
@@ -85,8 +86,11 @@ export default function CoverLetters({
           {hasErrors && (
             <InputError
               className="mt-2"
-              message="Failed to generate a cover letter"
+              message="Something went wrong while generating a cover letter"
             />
+          )}
+          {error && !hasErrors && (
+            <InputError className="mt-2" message={error} />
           )}
         </div>
         <div className="mt-10">

@@ -37,6 +37,11 @@ class Listing extends Model
         return $this->hasMany(Image::class);
     }
 
+    public function canGenerateCoverLetter(): bool
+    {
+        return $this->coverLetter()->count() < 5;
+    }
+
     public function coverLetter(): HasMany
     {
         return $this->hasMany(CoverLetter::class);
