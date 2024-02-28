@@ -10,6 +10,7 @@ use App\Http\Requests\AddListingRequest;
 use App\Http\Requests\AddProfileRequest;
 use App\Http\Requests\UpdateListingRequest;
 use App\Models\Board;
+use App\Models\CoverLetter;
 use App\Models\Listing;
 use App\Models\Profile;
 use Illuminate\Foundation\Application;
@@ -62,6 +63,10 @@ Route::get('/billing-portal', function (Request $request) {
 Route::get('/dashboard', function () {
     return Inertia::render('Checkout/Success');
 })->name('free.plan.limit.reached');
+
+Route::get('/cover-letter', function () {
+    return Inertia::render('CoverLetter');
+})->name('cover-letter.view');
 
 Route::middleware('auth:sanctum')->get('/dashboard', function (Request $request) {
     return Inertia::render('Dashboard');
@@ -139,9 +144,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cover-letter/{listing}', function (Request $request, CoverLetterController $coverLetterController, Listing $listing) {
-        $coverLetter = $coverLetterController->generateCoverLetter($request, $listing);
-        return Inertia::render('CoverLetter/view', ['cover_letter' => $coverLetter]);
+        return Inertia::render('CoverLetter/view');
     });
+    Route::post('/cover-letter/{listing}', function (Request $request, CoverLetterController $coverLetterController, Listing $listing) {
+        $coverLetterController->generateCoverLetter($request, $listing);
+        return redirect()->route('cover-letter.view');
+    })->name('cover-letter.generate');
+    Route::get('/cover-letter/{coverLetter}/download', function (Request $request, CoverLetterController $coverLetterController, CoverLetter $coverLetter) {
+        return $coverLetterController->downloadCoverLetter($request, $coverLetter);
+    })->name('cover-letter.download');
 });
 
 require __DIR__ . '/auth.php';
