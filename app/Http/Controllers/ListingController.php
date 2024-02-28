@@ -55,8 +55,8 @@ class ListingController extends Controller
 
         foreach ($request->file('images') as $imagefile) {
             $image = new Image;
-            $path = Storage::disk('s3')->put('listing_images' . $newListing->id, $imagefile);
-            Storage::setVisibility($path, 'public');
+            $path = Storage::disk('s3')->put('listing_images', $imagefile);
+            Storage::disk('s3')->setVisibility($path, 'public');
             $image->url = Storage::disk('s3')->url($path);
             $image->filename = basename($path);
             $image->listing_id = $newListing->id;

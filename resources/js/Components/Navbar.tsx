@@ -6,12 +6,7 @@ import Dropdown from '@/Components/Dropdown';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { User } from '@/types';
 
-export default function Navbar({
-  user,
-}: {
-  isAuthenticated: boolean;
-  user: User;
-}) {
+export default function Navbar({ user }: { user: User }) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
     useState(false);
 

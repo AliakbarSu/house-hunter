@@ -38,7 +38,7 @@ Route::get('/', function (StripeController $stripeController) {
         'hasSubscription' => auth()->user()?->subscribed('default'),
         'plans' => $stripeController->getPlans()
     ]);
-})->middleware(['listing.limit'])->name('home');
+})->name('home');
 
 Route::get('/checkout/item/{priceId}', function (Request $request) {
     $priceId = $request->priceId;
@@ -65,8 +65,9 @@ Route::get('/dashboard', function () {
     return Inertia::render('Checkout/Success');
 })->name('free.plan.limit.reached');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+Route::middleware('auth:sanctum')->get('/dashboard', function (Request $request) {
+    return Inertia::render('Dashboard', ['listings' => $request->user()->listings->load('notes', 'board', 'images'),
+        'hasSubscription' => $request->user()?->subscribed('default')]);
 })->middleware(['auth:sanctum', 'verified'])->name('dashboard');
 
 Route::get('/dashboard2', function () {
@@ -135,7 +136,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/rental-profile', function (Request $request, ProfileController $profileController, Profile $profile) {
         $fetchedProfile = $profileController->getProfile($request, $profile);
         return Inertia::render('Profile', ['profile' => $fetchedProfile]);
-    });
+    })->name('profile.rental');
 });
 
 Route::middleware('auth:sanctum')->group(function () {

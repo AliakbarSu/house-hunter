@@ -1,13 +1,17 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 import Board from '@/Components/Dashboard/Board';
-import { PageProps } from '@/types';
+import { Listing, PageProps } from '@/types';
 
-export default function Dashboard({ auth }: PageProps) {
+export default function Dashboard({
+  auth,
+  listings,
+  hasSubscription,
+}: PageProps<{ listings: Listing[]; hasSubscription: boolean }>) {
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <AuthenticatedLayout user={auth.user} hasSubscription={hasSubscription}>
       <div className="h-full bg-white">
-        <Board />
+        <Board listings={listings} />
       </div>
     </AuthenticatedLayout>
   );

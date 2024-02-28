@@ -1,9 +1,5 @@
 import {
-  BellIcon,
-  CalendarIcon,
-  ChartPieIcon,
   CreditCardIcon,
-  DocumentDuplicateIcon,
   HomeIcon,
   UsersIcon,
 } from '@heroicons/react/24/outline';
@@ -17,20 +13,38 @@ import {
 // ];
 
 const secondaryNavigation = [
-  { name: 'House Hunt', href: '#', icon: HomeIcon, current: true },
-  { name: 'Contacts', href: '#', icon: UsersIcon, current: false },
-  { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
-  { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
-  { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
-  { name: 'Notifications', href: '#', icon: BellIcon, current: false },
-  { name: 'Billing', href: '#', icon: CreditCardIcon, current: false },
+  {
+    id: 'dashboard',
+    name: 'Dashboard',
+    href: route('dashboard'),
+    icon: HomeIcon,
+    current: route().current('dashboard'),
+  },
+  {
+    id: 'listing',
+    name: 'Rental Profile',
+    href: route('profile.rental'),
+    icon: UsersIcon,
+    current: route().current('profile.rental'),
+  },
+  {
+    id: 'billing-portal',
+    name: 'Billing',
+    href: route('stripe.billing-portal'),
+    icon: CreditCardIcon,
+    current: route().current('stripe.billing-portal'),
+  },
 ];
 
 function classNames(...classes: any[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Sidebar() {
+export default function Sidebar({
+  hasSubscription,
+}: {
+  hasSubscription: boolean;
+}) {
   // const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -224,30 +238,32 @@ export default function Sidebar() {
           role="list"
           className="flex gap-x-3 gap-y-1 whitespace-nowrap lg:flex-col"
         >
-          {secondaryNavigation.map(item => (
-            <li key={item.name}>
-              <a
-                href={item.href}
-                className={classNames(
-                  item.current
-                    ? 'bg-gray-50 text-indigo-600'
-                    : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
-                  'group flex gap-x-3 rounded-md py-2 pl-2 pr-3 text-sm leading-6 font-semibold'
-                )}
-              >
-                <item.icon
+          {secondaryNavigation
+            .filter(item => item.id != 'billing-portal' && !hasSubscription)
+            .map(item => (
+              <li key={item.name}>
+                <a
+                  href={item.href}
                   className={classNames(
                     item.current
-                      ? 'text-indigo-600'
-                      : 'text-gray-400 group-hover:text-indigo-600',
-                    'h-6 w-6 shrink-0'
+                      ? 'bg-gray-50 text-indigo-600'
+                      : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
+                    'group flex gap-x-3 rounded-md py-2 pl-2 pr-3 text-sm leading-6 font-semibold'
                   )}
-                  aria-hidden="true"
-                />
-                {item.name}
-              </a>
-            </li>
-          ))}
+                >
+                  <item.icon
+                    className={classNames(
+                      item.current
+                        ? 'text-indigo-600'
+                        : 'text-gray-400 group-hover:text-indigo-600',
+                      'h-6 w-6 shrink-0'
+                    )}
+                    aria-hidden="true"
+                  />
+                  {item.name}
+                </a>
+              </li>
+            ))}
         </ul>
       </nav>
     </aside>
