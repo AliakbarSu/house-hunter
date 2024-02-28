@@ -28,7 +28,7 @@ class CoverLetterController extends Controller
             ]);
             $content = $response->json('choices.0.message.content');
             $coverLetter = new CoverLetter();
-            $filePath = 'cover_letters' . uniqid() . '.txt';
+            $filePath = 'cover_letter_' . uniqid() . '.txt';
             Storage::disk('s3')->put($filePath, $content);
             $coverLetter->url = Storage::disk('s3')->url($filePath);
             $coverLetter->filename = basename($filePath);
