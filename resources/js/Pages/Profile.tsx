@@ -105,10 +105,10 @@ export default function Profile({
 
   return (
     <Authenticated hasSubscription={hasSubscription} user={user}>
-      <section className="bg-white dark:bg-gray-900">
+      <section className="bg-white">
         <Head title="Rental Profile" />
         <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
-          <h1 className="mb-8 text-xl font-bold text-gray-900 dark:text-white">
+          <h1 className="mb-8 text-xl font-bold text-gray-900">
             Add or update your rental profile
           </h1>
           <form onSubmit={submit}>
@@ -117,7 +117,7 @@ export default function Profile({
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="name"
-                    className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-md font-medium text-gray-900"
                   >
                     Applicant’s details
                   </label>
@@ -125,7 +125,7 @@ export default function Profile({
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900"
                   >
                     Full Name
                   </label>
@@ -133,7 +133,7 @@ export default function Profile({
                     type="text"
                     name="first_name"
                     id="first_name"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                     placeholder="Type your full name"
                     value={data.name}
                     onChange={e => setData('name', e.target.value)}
@@ -143,7 +143,7 @@ export default function Profile({
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="email"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900"
                   >
                     Email
                   </label>
@@ -151,7 +151,7 @@ export default function Profile({
                     type="email"
                     name="email"
                     id="email"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                     placeholder="someone@example.com"
                     value={data.email}
                     onChange={e => setData('email', e.target.value)}
@@ -161,7 +161,7 @@ export default function Profile({
                 <div className="w-full">
                   <label
                     htmlFor="phone"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900"
                   >
                     Phone
                   </label>
@@ -169,7 +169,7 @@ export default function Profile({
                     type="tel"
                     name="phone"
                     id="phone"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                     placeholder="+64"
                     value={data.phone}
                     onChange={e => setData('phone', e.target.value)}
@@ -179,7 +179,7 @@ export default function Profile({
                 <div className="w-full">
                   <label
                     htmlFor="mobile"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900"
                   >
                     Mobile
                   </label>
@@ -187,7 +187,7 @@ export default function Profile({
                     type="tel"
                     name="mobile"
                     id="mobile"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                     placeholder="+64"
                     value={data.mobile}
                     onChange={e => setData('mobile', e.target.value)}
@@ -197,7 +197,7 @@ export default function Profile({
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="current-address"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900"
                   >
                     Current address
                   </label>
@@ -205,7 +205,7 @@ export default function Profile({
                     type="text"
                     name="current-address"
                     id="current-address"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                     placeholder="Type your current address"
                     value={data.current_address.address}
                     onChange={e => setCurrentAddress('address', e.target.value)}
@@ -218,7 +218,7 @@ export default function Profile({
                 <div>
                   <label
                     htmlFor="current-address-start-date"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900"
                   >
                     Start date
                   </label>
@@ -226,7 +226,7 @@ export default function Profile({
                     type="date"
                     name="current-address-start-date"
                     id="current-address-start-date"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                     value={data.current_address.move_in_at}
                     onChange={e =>
                       setCurrentAddress('move_in_at', e.target.value)
@@ -240,7 +240,7 @@ export default function Profile({
                 <div>
                   <label
                     htmlFor="current-address-end-date"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900"
                   >
                     End date
                   </label>
@@ -248,7 +248,7 @@ export default function Profile({
                     type="date"
                     name="current-address-end-date"
                     id="current-address-end-date"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                     value={data.current_address.move_out_at}
                     onChange={e =>
                       setCurrentAddress('move_out_at', e.target.value)
@@ -264,7 +264,7 @@ export default function Profile({
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="name"
-                    className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-md font-medium text-gray-900"
                   >
                     Previous rental details
                   </label>
@@ -272,7 +272,7 @@ export default function Profile({
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="previous-address"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900"
                   >
                     Property address
                   </label>
@@ -280,7 +280,7 @@ export default function Profile({
                     type="text"
                     name="previous-address"
                     id="previous-address"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                     placeholder="Type your previous address"
                     value={data.previous_address.address}
                     onChange={e =>
@@ -295,14 +295,14 @@ export default function Profile({
                 <div className="flex gap-2 flex-wrap items-center pt-2">
                   <label
                     htmlFor="from"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white w-full"
+                    className="block mb-2 text-sm font-medium text-gray-900  w-full"
                   >
                     Name of
                   </label>
                   <div className="flex gap-2">
                     <label
                       htmlFor="landlord-type"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      className="block mb-2 text-sm font-medium text-gray-900 "
                     >
                       Property manager
                     </label>
@@ -314,7 +314,7 @@ export default function Profile({
                       }
                       name="landlordType"
                       id="landlord-type"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 "
                       value="property_manager"
                       onChange={e =>
                         setPreviousAddress('landlord_type', e.target.value)
@@ -324,7 +324,7 @@ export default function Profile({
                   <div className="flex gap-2">
                     <label
                       htmlFor="landlord-type"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      className="block mb-2 text-sm font-medium text-gray-900 "
                     >
                       Agent
                     </label>
@@ -333,7 +333,7 @@ export default function Profile({
                       checked={data.previous_address.landlord_type === 'agent'}
                       name="landlordType"
                       id="landlord-type"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 "
                       value="agent"
                       onChange={e =>
                         setPreviousAddress('landlord_type', e.target.value)
@@ -343,7 +343,7 @@ export default function Profile({
                   <div className="flex gap-2">
                     <label
                       htmlFor="landlord-type"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      className="block mb-2 text-sm font-medium text-gray-900 "
                     >
                       Landlord
                     </label>
@@ -354,7 +354,7 @@ export default function Profile({
                       }
                       name="landlordType"
                       id="landlord-type"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
                       value="landlord"
                       onChange={e =>
                         setPreviousAddress('landlord_type', e.target.value)
@@ -368,7 +368,7 @@ export default function Profile({
                     name="landlord-name"
                     id="landlord-name"
                     placeholder="Name of the person"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     value={data.previous_address.landlord_name}
                     onChange={e =>
                       setPreviousAddress('landlord_name', e.target.value)
@@ -385,7 +385,7 @@ export default function Profile({
                 <div>
                   <label
                     htmlFor="landlord-phone"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Phone
                   </label>
@@ -393,7 +393,7 @@ export default function Profile({
                     type="number"
                     name="landlord-phone"
                     id="landlord-phone"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     value={data.previous_address.landlord_phone}
                     onChange={e =>
                       setPreviousAddress('landlord_phone', e.target.value)
@@ -409,7 +409,7 @@ export default function Profile({
                 <div>
                   <label
                     htmlFor="landlord-mobile"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Mobile
                   </label>
@@ -417,7 +417,7 @@ export default function Profile({
                     type="number"
                     name="landlord-mobile"
                     id="landlord-mobile"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     value={data.previous_address.landlord_mobile}
                     onChange={e =>
                       setPreviousAddress('landlord_mobile', e.target.value)
@@ -434,7 +434,7 @@ export default function Profile({
                 <div className="col-span-2">
                   <label
                     htmlFor="landlord-email"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Email
                   </label>
@@ -442,7 +442,7 @@ export default function Profile({
                     type="email"
                     name="landlord-email"
                     id="landlord-email"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     value={data.previous_address.landlord_email}
                     onChange={e =>
                       setPreviousAddress('landlord_email', e.target.value)
@@ -459,7 +459,7 @@ export default function Profile({
                 <div>
                   <label
                     htmlFor="previous-address-start-date"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Start date
                   </label>
@@ -467,7 +467,7 @@ export default function Profile({
                     type="date"
                     name="previous-address-start-date"
                     id="previous-address-start-date"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     value={data.previous_address.move_in_at}
                     onChange={e =>
                       setPreviousAddress('move_in_at', e.target.value)
@@ -481,7 +481,7 @@ export default function Profile({
                 <div>
                   <label
                     htmlFor="previous-address-end-date"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     End date
                   </label>
@@ -489,7 +489,7 @@ export default function Profile({
                     type="date"
                     name="previous-address-end-date"
                     id="previous-address-end-date"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     value={data.previous_address.move_out_at}
                     onChange={e =>
                       setPreviousAddress('move_out_at', e.target.value)
@@ -503,7 +503,7 @@ export default function Profile({
                 <div>
                   <label
                     htmlFor="rent"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Rent
                   </label>
@@ -511,7 +511,7 @@ export default function Profile({
                     type="number"
                     name="rent"
                     id="rent"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     value={data.previous_address.rent}
                     onChange={e => setPreviousAddress('rent', e.target.value)}
                   />
@@ -523,14 +523,14 @@ export default function Profile({
                 <div>
                   <label
                     htmlFor="rent-frequency"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Rent frequency
                   </label>
                   <select
                     name="rent-frequency"
                     id="rent-frequency"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     value={data.previous_address.rent_frequency}
                     onChange={e =>
                       setPreviousAddress('rent_frequency', e.target.value)
@@ -546,7 +546,7 @@ export default function Profile({
                 <div className="col-span-2">
                   <label
                     htmlFor="reference_name"
-                    className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-md font-medium text-gray-900 "
                   >
                     References
                   </label>
@@ -554,7 +554,7 @@ export default function Profile({
                 <div className="col-span-2">
                   <label
                     htmlFor="reference_name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Reference #1
                   </label>
@@ -562,7 +562,7 @@ export default function Profile({
                 <div>
                   <label
                     htmlFor="reference_name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Name
                   </label>
@@ -570,7 +570,7 @@ export default function Profile({
                     type="text"
                     name="reference_name[]"
                     id="reference_name"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     placeholder="Name of the person"
                     value={data.references[0]?.name}
                     onChange={e => setReference(0, 'name', e.target.value)}
@@ -583,7 +583,7 @@ export default function Profile({
                 <div>
                   <label
                     htmlFor="reference_relationship_1"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Relationship
                   </label>
@@ -591,7 +591,7 @@ export default function Profile({
                     type="text"
                     name="reference_relationship[]"
                     id="reference_relationship_1"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     placeholder="Name of the person"
                     value={data.references[0]?.relationship}
                     onChange={e =>
@@ -606,7 +606,7 @@ export default function Profile({
                 <div>
                   <label
                     htmlFor="reference-1-phone"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Phone
                   </label>
@@ -615,7 +615,7 @@ export default function Profile({
                     name="reference_phone[]"
                     id="reference-1-phone"
                     placeholder="+64"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     value={data.references[0]?.phone}
                     onChange={e => setReference(0, 'phone', e.target.value)}
                   />
@@ -627,7 +627,7 @@ export default function Profile({
                 <div>
                   <label
                     htmlFor="reference-1-mobile"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Mobile
                   </label>
@@ -636,7 +636,7 @@ export default function Profile({
                     name="reference_mobile[]"
                     id="reference-1-mobile"
                     placeholder="+64"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     value={data.references[0]?.mobile}
                     onChange={e => setReference(0, 'mobile', e.target.value)}
                   />
@@ -648,7 +648,7 @@ export default function Profile({
                 <div className="col-span-2 mt-2">
                   <label
                     htmlFor="reference-2-name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Reference #2
                   </label>
@@ -656,7 +656,7 @@ export default function Profile({
                 <div>
                   <label
                     htmlFor="reference-2-name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Name
                   </label>
@@ -664,7 +664,7 @@ export default function Profile({
                     type="text"
                     name="reference_name[]"
                     id="reference-2-name"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     placeholder="Name of the person"
                     value={data.references[1]?.name}
                     onChange={e => setReference(1, 'name', e.target.value)}
@@ -677,7 +677,7 @@ export default function Profile({
                 <div>
                   <label
                     htmlFor="reference-2-relationship"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Relationship
                   </label>
@@ -685,7 +685,7 @@ export default function Profile({
                     type="text"
                     name="reference_relationship[]"
                     id="reference-2-relationship"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     placeholder="Name of the person"
                     value={data.references[1]?.relationship}
                     onChange={e =>
@@ -700,7 +700,7 @@ export default function Profile({
                 <div>
                   <label
                     htmlFor="reference-2-phone"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Phone
                   </label>
@@ -709,7 +709,7 @@ export default function Profile({
                     name="reference_phone[]"
                     id="reference-2-phone"
                     placeholder="+64"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     value={data.references[1]?.phone}
                     onChange={e => setReference(1, 'phone', e.target.value)}
                   />
@@ -721,7 +721,7 @@ export default function Profile({
                 <div>
                   <label
                     htmlFor="reference-2-mobile"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Mobile
                   </label>
@@ -730,7 +730,7 @@ export default function Profile({
                     name="reference_mobile[]"
                     id="reference-2-mobile"
                     placeholder="+64"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     value={data.references[1]?.mobile}
                     onChange={e => setReference(1, 'mobile', e.target.value)}
                   />
@@ -744,7 +744,7 @@ export default function Profile({
             <button
               disabled={processing}
               type="submit"
-              className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
+              className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
             >
               Save changes
             </button>
