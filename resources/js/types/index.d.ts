@@ -86,7 +86,36 @@ export interface Plan {
   currency: string;
   images: string[];
   features: { name: string }[];
-  metadata: string[];
+  metadata: { [key: string]: string };
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Profile {
+  name: string;
+  email: string;
+  phone: string;
+  mobile: string;
+  addresses: {
+    address_type: string;
+    address: string;
+    move_in_at: string;
+    move_out_at: string;
+  }[];
+  references: {
+    name: string;
+    relationship: string;
+    phone: string;
+    mobile: string;
+  }[];
+}
+
+export interface CoverLetter {
+  id: string;
+  filename: string;
+  url: string;
+  content: string;
+  listing_id: string;
   created_at: string;
   updated_at: string;
 }

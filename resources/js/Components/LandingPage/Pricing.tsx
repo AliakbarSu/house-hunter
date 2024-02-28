@@ -1,6 +1,10 @@
 import { CheckIcon } from '@heroicons/react/20/solid';
 import { Plan } from '@/types';
 
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(' ');
+}
+
 export default function Plans({
   plans,
   isAuthenticated,
@@ -8,78 +12,122 @@ export default function Plans({
   plans: Plan[];
   isAuthenticated: boolean;
 }) {
-  const plan = plans[0];
+  const tiers = plans.map(plan => {
+    return {
+      ...plan,
+      href: isAuthenticated
+        ? route('stripe.checkout', plan.price_id)
+        : route('login'),
+      priceMonthly: `$${plan.price}`,
+      features: plan.features.map(f => f.name),
+      disabled: plan.metadata?.disabled || false,
+      btnText: !isAuthenticated
+        ? 'Get started today'
+        : plan.metadata.disabled
+          ? 'Active'
+          : 'Get started today',
+      featured: plan.metadata?.featured || false,
+    };
+  });
+
   return (
     <div className="bg-white py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl sm:text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Simple pricing
-          </h2>
-          {/*<p className="mt-6 text-lg leading-8 text-gray-600">*/}
-          {/*  Distinctio et nulla eum soluta et neque labore quibusdam. Saepe et*/}
-          {/*  quasi iusto modi velit ut non voluptas in. Explicabo id ut laborum.*/}
-          {/*</p>*/}
-        </div>
-        <div className="mx-auto mt-16 max-w-2xl rounded-3xl ring-1 ring-gray-200 sm:mt-20 lg:mx-0 lg:flex lg:max-w-none">
-          <div className="p-8 sm:p-10 lg:flex-auto">
-            <h3 className="text-2xl font-bold tracking-tight text-gray-900">
-              {plan.name}
+      <div className="mx-auto max-w-2xl text-center lg:max-w-4xl">
+        <h2 className="text-base font-semibold leading-7 text-indigo-600">
+          Pricing
+        </h2>
+        <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+          The right price for you, whoever you are
+        </p>
+      </div>
+      <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:mt-20 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2">
+        {tiers.map((tier, tierIdx) => (
+          <div
+            key={tier.id}
+            className={classNames(
+              tier.featured
+                ? 'relative bg-gray-900 shadow-2xl'
+                : 'bg-white/60 sm:mx-8 lg:mx-0',
+              tier.featured
+                ? ''
+                : tierIdx === 0
+                  ? 'rounded-t-3xl sm:rounded-b-none lg:rounded-tr-none lg:rounded-bl-3xl'
+                  : 'sm:rounded-t-none lg:rounded-tr-3xl lg:rounded-bl-none',
+              'rounded-3xl p-8 ring-1 ring-gray-900/10 sm:p-10'
+            )}
+          >
+            <h3
+              id={tier.id}
+              className={classNames(
+                tier.featured ? 'text-indigo-400' : 'text-indigo-600',
+                'text-base font-semibold leading-7'
+              )}
+            >
+              {tier.name}
             </h3>
-            <p className="mt-6 text-base leading-7 text-gray-600">
-              {plan.description}
+            <p className="mt-4 flex items-baseline gap-x-2">
+              <span
+                className={classNames(
+                  tier.featured ? 'text-white' : 'text-gray-900',
+                  'text-5xl font-bold tracking-tight'
+                )}
+              >
+                {tier.priceMonthly}
+              </span>
+              <span
+                className={classNames(
+                  tier.featured ? 'text-gray-400' : 'text-gray-500',
+                  'text-base'
+                )}
+              >
+                /month
+              </span>
             </p>
-            <div className="mt-10 flex items-center gap-x-4">
-              <h4 className="flex-none text-sm font-semibold leading-6 text-indigo-600">
-                What’s included
-              </h4>
-              <div className="h-px flex-auto bg-gray-100" />
-            </div>
+            <p
+              className={classNames(
+                tier.featured ? 'text-gray-300' : 'text-gray-600',
+                'mt-6 text-base leading-7'
+              )}
+            >
+              {tier.description}
+            </p>
             <ul
               role="list"
-              className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-6"
+              className={classNames(
+                tier.featured ? 'text-gray-300' : 'text-gray-600',
+                'mt-8 space-y-3 text-sm leading-6 sm:mt-10'
+              )}
             >
-              {plan.features.map((feature: { name: string }) => (
-                <li key={feature.name} className="flex gap-x-3">
+              {tier.features.map(feature => (
+                <li key={feature} className="flex gap-x-3">
                   <CheckIcon
-                    className="h-6 w-5 flex-none text-indigo-600"
+                    className={classNames(
+                      tier.featured ? 'text-indigo-400' : 'text-indigo-600',
+                      'h-6 w-5 flex-none'
+                    )}
                     aria-hidden="true"
                   />
-                  {feature.name}
+                  {feature}
                 </li>
               ))}
             </ul>
+
+            <a
+              href={tier.href}
+              aria-disabled={!tier.featured}
+              aria-describedby={tier.id}
+              className={classNames(
+                tier.featured
+                  ? 'bg-indigo-500 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline-indigo-500'
+                  : 'text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline-indigo-600',
+                tier.disabled ? 'pointer-events-none' : '',
+                'mt-8 block rounded-md py-2.5 px-3.5 text-center text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sm:mt-10'
+              )}
+            >
+              {tier.btnText}
+            </a>
           </div>
-          <div className="-mt-2 p-2 lg:mt-0 lg:w-full lg:max-w-md lg:flex-shrink-0">
-            <div className="rounded-2xl bg-gray-50 py-10 text-center ring-1 ring-inset ring-gray-900/5 lg:flex lg:flex-col lg:justify-center lg:py-16">
-              <div className="mx-auto max-w-xs px-8">
-                <p className="text-base font-semibold text-gray-600">
-                  Subscribe and start using!
-                </p>
-                <p className="mt-6 flex items-baseline justify-center gap-x-2">
-                  <span className="text-5xl font-bold tracking-tight text-gray-900">
-                    ${plan.price}
-                  </span>
-                  <span className="text-sm font-semibold leading-6 tracking-wide text-gray-600">
-                    {plan.currency.toUpperCase()}
-                  </span>
-                </p>
-                <a
-                  href={route(
-                    isAuthenticated ? 'stripe.checkout' : 'login',
-                    plan.price_id
-                  )}
-                  className="mt-10 block w-full rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Get access
-                </a>
-                <p className="mt-6 text-xs leading-5 text-gray-600">
-                  Invoices and receipts available for easy company reimbursement
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

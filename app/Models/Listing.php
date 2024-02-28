@@ -35,4 +35,9 @@ class Listing extends Model
     {
         return $this->hasMany(Image::class);
     }
+
+    public function coverLetter(): HasMany
+    {
+        return $this->hasMany(CoverLetter::class);
+    }
 }

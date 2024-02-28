@@ -1,30 +1,37 @@
 import { FormEventHandler, useEffect } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
-import { PageProps } from '@/types';
+import { PageProps, Profile as ProfileType } from '@/types';
+import InputError from '@/Components/InputError';
 
 export default function Profile({
   auth: { user },
   profile,
-}: PageProps & { profile: never }) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+}: PageProps & {
+  profile: ProfileType;
+}) {
+  const initialData = {
     name: '',
     email: '',
     phone: '',
     mobile: '',
-    current_address: '',
-    move_in_at: '',
-    move_out_at: '',
-    previous_address: '',
-    previous_address_move_in_at: '',
-    previous_address_move_out_at: '',
-    landlord_name: '',
-    landlord_phone: '',
-    landlord_mobile: '',
-    landlord_email: '',
-    landlord_type: '',
-    rent: '',
-    rent_frequency: '',
+    current_address: {
+      address: '',
+      move_in_at: '',
+      move_out_at: '',
+    },
+    previous_address: {
+      address: '',
+      move_in_at: '',
+      move_out_at: '',
+      landlord_name: '',
+      landlord_phone: '',
+      landlord_mobile: '',
+      landlord_email: '',
+      landlord_type: '',
+      rent: '',
+      rent_frequency: '',
+    },
     references: [
       {
         name: '',
@@ -39,11 +46,29 @@ export default function Profile({
         mobile: '',
       },
     ],
-  });
+  };
+  const { data, setData, post, processing, errors, reset } =
+    useForm(initialData);
 
   useEffect(() => {
     if (profile) {
-      setData(profile);
+      const previousAddress =
+        profile.addresses.find(
+          ({ address_type }) => address_type === 'previous_address'
+        ) || initialData.previous_address;
+      const currentAddress =
+        profile.addresses.find(
+          ({ address_type }) => address_type === 'current_address'
+        ) || initialData.current_address;
+      setData({
+        name: profile.name,
+        email: profile.email,
+        phone: profile.phone,
+        mobile: profile.mobile,
+        current_address: currentAddress,
+        previous_address: previousAddress,
+        references: profile.references,
+      } as never);
     }
   }, [profile]);
 
@@ -60,14 +85,30 @@ export default function Profile({
     setData('references', newReferences);
   };
 
+  const setCurrentAddress = (key: string, value: string) => {
+    const newCurrentAddress = { ...data.current_address };
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    newCurrentAddress[key] = value;
+    setData('current_address', newCurrentAddress);
+  };
+
+  const setPreviousAddress = (key: string, value: string) => {
+    const newPreviousAddress = { ...data.previous_address };
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    newPreviousAddress[key] = value;
+    setData('previous_address', newPreviousAddress);
+  };
+
   return (
     <Authenticated user={user}>
       <section className="bg-white dark:bg-gray-900">
         <Head title="Rental Profile" />
         <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
-          <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
-            Applicant’s details
-          </h2>
+          <h1 className="mb-8 text-xl font-bold text-gray-900 dark:text-white">
+            Add or update your rental profile
+          </h1>
           <form onSubmit={submit}>
             <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
               <div className="rounded-lg bg-white shadow w-full col-span-2 p-5 gap-2 grid grid-cols-2">
@@ -95,6 +136,7 @@ export default function Profile({
                     value={data.name}
                     onChange={e => setData('name', e.target.value)}
                   />
+                  <InputError message={errors.name} className="mt-2" />
                 </div>
                 <div className="sm:col-span-2">
                   <label
@@ -112,6 +154,7 @@ export default function Profile({
                     value={data.email}
                     onChange={e => setData('email', e.target.value)}
                   />
+                  <InputError message={errors.email} className="mt-2" />
                 </div>
                 <div className="w-full">
                   <label
@@ -129,6 +172,7 @@ export default function Profile({
                     value={data.phone}
                     onChange={e => setData('phone', e.target.value)}
                   />
+                  <InputError message={errors.phone} className="mt-2" />
                 </div>
                 <div className="w-full">
                   <label
@@ -146,6 +190,7 @@ export default function Profile({
                     value={data.mobile}
                     onChange={e => setData('mobile', e.target.value)}
                   />
+                  <InputError message={errors.mobile} className="mt-2" />
                 </div>
                 <div className="sm:col-span-2">
                   <label
@@ -160,8 +205,12 @@ export default function Profile({
                     id="current-address"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type your current address"
-                    value={data.current_address}
-                    onChange={e => setData('current_address', e.target.value)}
+                    value={data.current_address.address}
+                    onChange={e => setCurrentAddress('address', e.target.value)}
+                  />
+                  <InputError
+                    message={(errors as never)['current_address.address']}
+                    className="mt-2"
                   />
                 </div>
                 <div>
@@ -176,8 +225,14 @@ export default function Profile({
                     name="current-address-start-date"
                     id="current-address-start-date"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={data.move_in_at}
-                    onChange={e => setData('move_in_at', e.target.value)}
+                    value={data.current_address.move_in_at}
+                    onChange={e =>
+                      setCurrentAddress('move_in_at', e.target.value)
+                    }
+                  />
+                  <InputError
+                    message={(errors as never)['current_address.move_in_at']}
+                    className="mt-2"
                   />
                 </div>
                 <div>
@@ -192,8 +247,14 @@ export default function Profile({
                     name="current-address-end-date"
                     id="current-address-end-date"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={data.move_out_at}
-                    onChange={e => setData('move_out_at', e.target.value)}
+                    value={data.current_address.move_out_at}
+                    onChange={e =>
+                      setCurrentAddress('move_out_at', e.target.value)
+                    }
+                  />
+                  <InputError
+                    message={(errors as never)['current_address.move_out_at']}
+                    className="mt-2"
                   />
                 </div>
               </div>
@@ -219,8 +280,14 @@ export default function Profile({
                     id="previous-address"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type your previous address"
-                    value={data.previous_address}
-                    onChange={e => setData('previous_address', e.target.value)}
+                    value={data.previous_address.address}
+                    onChange={e =>
+                      setPreviousAddress('address', e.target.value)
+                    }
+                  />
+                  <InputError
+                    message={(errors as never)['previous_address.address']}
+                    className="mt-2"
                   />
                 </div>
                 <div className="flex gap-2 flex-wrap items-center pt-2">
@@ -239,11 +306,17 @@ export default function Profile({
                     </label>
                     <input
                       type="radio"
+                      checked={
+                        data.previous_address.landlord_type ===
+                        'property_manager'
+                      }
                       name="landlordType"
                       id="landlord-type"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       value="property_manager"
-                      onChange={e => setData('landlord_type', e.target.value)}
+                      onChange={e =>
+                        setPreviousAddress('landlord_type', e.target.value)
+                      }
                     />
                   </div>
                   <div className="flex gap-2">
@@ -255,11 +328,14 @@ export default function Profile({
                     </label>
                     <input
                       type="radio"
+                      checked={data.previous_address.landlord_type === 'agent'}
                       name="landlordType"
                       id="landlord-type"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       value="agent"
-                      onChange={e => setData('landlord_type', e.target.value)}
+                      onChange={e =>
+                        setPreviousAddress('landlord_type', e.target.value)
+                      }
                     />
                   </div>
                   <div className="flex gap-2">
@@ -271,23 +347,36 @@ export default function Profile({
                     </label>
                     <input
                       type="radio"
+                      checked={
+                        data.previous_address.landlord_type === 'landlord'
+                      }
                       name="landlordType"
                       id="landlord-type"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       value="landlord"
-                      onChange={e => setData('landlord_type', e.target.value)}
+                      onChange={e =>
+                        setPreviousAddress('landlord_type', e.target.value)
+                      }
                     />
                   </div>
                 </div>
-                <div className="flex items-center pb-2">
+                <div className="items-center pb-2">
                   <input
                     type="text"
                     name="landlord-name"
                     id="landlord-name"
                     placeholder="Name of the person"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={data.landlord_name}
-                    onChange={e => setData('landlord_name', e.target.value)}
+                    value={data.previous_address.landlord_name}
+                    onChange={e =>
+                      setPreviousAddress('landlord_name', e.target.value)
+                    }
+                  />
+                  <InputError
+                    message={
+                      (errors as never)['previous_address.landlord_name']
+                    }
+                    className="mt-2"
                   />
                 </div>
 
@@ -303,8 +392,16 @@ export default function Profile({
                     name="landlord-phone"
                     id="landlord-phone"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={data.landlord_phone}
-                    onChange={e => setData('landlord_phone', e.target.value)}
+                    value={data.previous_address.landlord_phone}
+                    onChange={e =>
+                      setPreviousAddress('landlord_phone', e.target.value)
+                    }
+                  />
+                  <InputError
+                    message={
+                      (errors as never)['previous_address.landlord_phone']
+                    }
+                    className="mt-2"
                   />
                 </div>
                 <div>
@@ -319,8 +416,16 @@ export default function Profile({
                     name="landlord-mobile"
                     id="landlord-mobile"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={data.landlord_mobile}
-                    onChange={e => setData('landlord_mobile', e.target.value)}
+                    value={data.previous_address.landlord_mobile}
+                    onChange={e =>
+                      setPreviousAddress('landlord_mobile', e.target.value)
+                    }
+                  />
+                  <InputError
+                    message={
+                      (errors as never)['previous_address.landlord_mobile']
+                    }
+                    className="mt-2"
                   />
                 </div>
 
@@ -336,8 +441,16 @@ export default function Profile({
                     name="landlord-email"
                     id="landlord-email"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={data.landlord_email}
-                    onChange={e => setData('landlord_email', e.target.value)}
+                    value={data.previous_address.landlord_email}
+                    onChange={e =>
+                      setPreviousAddress('landlord_email', e.target.value)
+                    }
+                  />
+                  <InputError
+                    message={
+                      (errors as never)['previous_address.landlord_email']
+                    }
+                    className="mt-2"
                   />
                 </div>
 
@@ -353,10 +466,14 @@ export default function Profile({
                     name="previous-address-start-date"
                     id="previous-address-start-date"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={data.previous_address_move_in_at}
+                    value={data.previous_address.move_in_at}
                     onChange={e =>
-                      setData('previous_address_move_in_at', e.target.value)
+                      setPreviousAddress('move_in_at', e.target.value)
                     }
+                  />
+                  <InputError
+                    message={(errors as never)['previous_address.move_in_at']}
+                    className="mt-2"
                   />
                 </div>
                 <div>
@@ -371,10 +488,14 @@ export default function Profile({
                     name="previous-address-end-date"
                     id="previous-address-end-date"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={data.previous_address_move_out_at}
+                    value={data.previous_address.move_out_at}
                     onChange={e =>
-                      setData('previous_address_move_out_at', e.target.value)
+                      setPreviousAddress('move_out_at', e.target.value)
                     }
+                  />
+                  <InputError
+                    message={(errors as never)['previous_address.move_out_at']}
+                    className="mt-2"
                   />
                 </div>
                 <div>
@@ -389,8 +510,12 @@ export default function Profile({
                     name="rent"
                     id="rent"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={data.rent}
-                    onChange={e => setData('rent', e.target.value)}
+                    value={data.previous_address.rent}
+                    onChange={e => setPreviousAddress('rent', e.target.value)}
+                  />
+                  <InputError
+                    message={(errors as never)['previous_address.rent']}
+                    className="mt-2"
                   />
                 </div>
                 <div>
@@ -404,8 +529,10 @@ export default function Profile({
                     name="rent-frequency"
                     id="rent-frequency"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={data.rent_frequency}
-                    onChange={e => setData('rent_frequency', e.target?.value)}
+                    value={data.previous_address.rent_frequency}
+                    onChange={e =>
+                      setPreviousAddress('rent_frequency', e.target.value)
+                    }
                   >
                     <option value="weekly">Weekly</option>
                     <option value="fortnightly">Fortnightly</option>
@@ -446,6 +573,10 @@ export default function Profile({
                     value={data.references[0]?.name}
                     onChange={e => setReference(0, 'name', e.target.value)}
                   />
+                  <InputError
+                    message={(errors as never)['references.0.name']}
+                    className="mt-2"
+                  />
                 </div>
                 <div>
                   <label
@@ -465,6 +596,10 @@ export default function Profile({
                       setReference(0, 'relationship', e.target.value)
                     }
                   />
+                  <InputError
+                    message={(errors as never)['references.0.relationship']}
+                    className="mt-2"
+                  />
                 </div>
                 <div>
                   <label
@@ -482,6 +617,10 @@ export default function Profile({
                     value={data.references[0]?.phone}
                     onChange={e => setReference(0, 'phone', e.target.value)}
                   />
+                  <InputError
+                    message={(errors as never)['references.0.phone']}
+                    className="mt-2"
+                  />
                 </div>
                 <div>
                   <label
@@ -498,6 +637,10 @@ export default function Profile({
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     value={data.references[0]?.mobile}
                     onChange={e => setReference(0, 'mobile', e.target.value)}
+                  />
+                  <InputError
+                    message={(errors as never)['references.0.mobile']}
+                    className="mt-2"
                   />
                 </div>
                 <div className="col-span-2 mt-2">
@@ -524,6 +667,10 @@ export default function Profile({
                     value={data.references[1]?.name}
                     onChange={e => setReference(1, 'name', e.target.value)}
                   />
+                  <InputError
+                    message={(errors as never)['references.1.name']}
+                    className="mt-2"
+                  />
                 </div>
                 <div>
                   <label
@@ -543,6 +690,10 @@ export default function Profile({
                       setReference(1, 'relationship', e.target.value)
                     }
                   />
+                  <InputError
+                    message={(errors as never)['references.1.relationship']}
+                    className="mt-2"
+                  />
                 </div>
                 <div>
                   <label
@@ -560,6 +711,10 @@ export default function Profile({
                     value={data.references[1]?.phone}
                     onChange={e => setReference(1, 'phone', e.target.value)}
                   />
+                  <InputError
+                    message={(errors as never)['references.1.phone']}
+                    className="mt-2"
+                  />
                 </div>
                 <div>
                   <label
@@ -576,6 +731,10 @@ export default function Profile({
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     value={data.references[1]?.mobile}
                     onChange={e => setReference(1, 'mobile', e.target.value)}
+                  />
+                  <InputError
+                    message={(errors as never)['references.1.mobile']}
+                    className="mt-2"
                   />
                 </div>
               </div>

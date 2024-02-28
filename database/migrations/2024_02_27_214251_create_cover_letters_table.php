@@ -10,15 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('references', function (Blueprint $table) {
+        Schema::create('cover_letters', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('profile_id');
-            $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
+            $table->unsignedBigInteger('listing_id');
+            $table->foreign('listing_id')->references('id')->on('listings')->onDelete('cascade');
             $table->string('name')->nullable();
-            $table->string('relationship')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('mobile')->nullable();
-            $table->string('email')->nullable();
+            $table->string('filename');
+            $table->string('url');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('references');
+        Schema::dropIfExists('cover_letters');
     }
 };

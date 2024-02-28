@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BoardController;
+use App\Http\Controllers\CoverLetterController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StripeController;
@@ -35,7 +36,7 @@ Route::get('/', function (StripeController $stripeController) {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
         'hasSubscription' => auth()->user()?->subscribed('default'),
-        'plans' => $stripeController->getPlans(),
+        'plans' => $stripeController->getPlans()
     ]);
 })->middleware(['listing.limit'])->name('home');
 
@@ -74,7 +75,7 @@ Route::get('/dashboard2', function () {
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/profile', function (AddProfileRequest $request, ProfileController $profileController) {
+    Route::post('/rental-profile', function (AddProfileRequest $request, ProfileController $profileController) {
         $createdProfile = $profileController->addProfile($request);
         return Inertia::render('Profile', [
             'profile' => $createdProfile,
@@ -134,6 +135,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/rental-profile', function (Request $request, ProfileController $profileController, Profile $profile) {
         $fetchedProfile = $profileController->getProfile($request, $profile);
         return Inertia::render('Profile', ['profile' => $fetchedProfile]);
+    });
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/cover-letter/{listing}', function (Request $request, CoverLetterController $coverLetterController, Listing $listing) {
+        $coverLetter = $coverLetterController->generateCoverLetter($request, $listing);
+        return Inertia::render('CoverLetter/view', ['cover_letter' => $coverLetter]);
     });
 });
 

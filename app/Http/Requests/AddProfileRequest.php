@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class AddProfileRequest extends FormRequest
 {
@@ -16,30 +14,37 @@ class AddProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string', 'max:255'],
-            'phone' => ['string', 'max:255'],
-            'mobile' => ['string', 'max:255'],
-            'email' => ['string', 'email', 'max:255'],
-            'current_address' => ['string', 'max:255'],
-            'move_in_at' => ['string'],
-            'move_out_at' => ['string'],
-            'previous_address' => ['string', 'max:255'],
-            'previous_address_move_in_at' => ['string'],
-            'previous_address_move_out_at' => ['string'],
-            'landlord_name' => ['string', 'max:255'],
-            'landlord_phone' => ['string', 'max:255'],
-            'landlord_mobile' => ['string', 'max:255'],
-            'landlord_email' => ['string', 'email', 'max:255'],
-            'landlord_type' => ["in:landlord,agent,property_manager", 'string', 'max:255'],
+            'name' => ['nullable', 'string', 'max:15'],
+            'phone' => ['nullable', 'string', 'max:255'],
+            'mobile' => ['nullable', 'string', 'max:255'],
+            'email' => ['nullable', 'string', 'email', 'max:255'],
+            'current_address.address' => ['nullable', 'string', 'max:10'],
+            'current_address.move_in_at' => ['nullable', 'string'],
+            'current_address.move_out_at' => ['nullable', 'string'],
+            'previous_address.address' => ['nullable', 'string', 'max:255'],
+            'previous_address.move_in_at' => ['nullable', 'string'],
+            'previous_address.move_out_at' => ['nullable', 'string'],
+            'previous_address.landlord_name' => ['nullable', 'string', 'max:255'],
+            'previous_address.landlord_phone' => ['nullable', 'string', 'max:255'],
+            'previous_address.landlord_mobile' => ['nullable', 'string', 'max:255'],
+            'previous_address.landlord_email' => ['nullable', 'string', 'email', 'max:255'],
+            'previous_address.landlord_type' => ['nullable', "in:landlord,agent,property_manager", 'string', 'max:255'],
+            'previous_address.rent' => ['nullable', 'numeric'],
+            'previous_address.rent_frequency' => ['nullable', "in:weekly,fortnightly,monthly", 'string', 'max:255'],
             'references' => ['array'],
+            'references.*.id' => ['nullable', 'numeric'],
+            'references.*.name' => ['nullable', 'string', 'max:15'],
+            'references.*.relationship' => ['nullable', 'string', 'max:255'],
+            'references.*.phone' => ['nullable', 'string', 'max:255'],
+            'references.*.mobile' => ['nullable', 'string', 'max:255'],
         ];
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'errors' => $validator->errors(),
-            'status' => true
-        ], 422));
-    }
+//    protected function failedValidation(Validator $validator)
+//    {
+//        throw new HttpResponseException(response()->json([
+//            'errors' => $validator->errors(),
+//            'status' => true
+//        ], 422));
+//    }
 }

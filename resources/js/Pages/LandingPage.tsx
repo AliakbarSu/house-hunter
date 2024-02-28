@@ -6,6 +6,7 @@ import { PageProps, Plan } from '@/types';
 export default function LandingPage({
   plans,
   isAuthenticated,
+  hasSubscription,
 }: PageProps<{
   hasSubscription: boolean;
   isAuthenticated: boolean;
@@ -18,7 +19,9 @@ export default function LandingPage({
       </header>
 
       <Hero />
-      <Pricing isAuthenticated={isAuthenticated} plans={plans} />
+      {!hasSubscription && (
+        <Pricing isAuthenticated={isAuthenticated} plans={plans} />
+      )}
     </div>
   );
 }

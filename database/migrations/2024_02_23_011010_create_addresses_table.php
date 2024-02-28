@@ -18,16 +18,17 @@ return new class extends Migration {
                 ->references('id')
                 ->on('profiles')
                 ->onDelete('cascade');
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->float('rent')->nullable();
-            $table->string('rent_frequency')->default('weekly');
+            $table->string('rent_frequency')->default('weekly')->nullable();
             $table->string('landlord_name')->nullable();
             $table->string('landlord_phone')->nullable();
             $table->string('landlord_mobile')->nullable();
-            $table->string('address_type')->default('current');
-            $table->string('landlord_type')->default('agent');
-            $table->date('move_in_at');
-            $table->date('move_out_at');
+            $table->string('landlord_email')->nullable();
+            $table->string('address_type')->default('current')->nullable();
+            $table->string('landlord_type')->default('agent')->nullable();
+            $table->date('move_in_at')->nullable();
+            $table->date('move_out_at')->nullable();
             $table->timestamps();
         });
     }

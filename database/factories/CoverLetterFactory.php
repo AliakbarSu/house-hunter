@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Reference>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CoverLetter>
  */
-class ReferenceFactory extends Factory
+class CoverLetterFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,10 +18,8 @@ class ReferenceFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'relationship' => $this->faker->word,
-            'phone' => $this->faker->phoneNumber,
-            'mobile' => $this->faker->phoneNumber,
-            'email' => $this->faker->email,
+            'filename' => $this->faker->word,
+            'url' => $this->faker->url,
         ];
     }
 }
