@@ -135,7 +135,7 @@ Route::middleware('auth:sanctum')->prefix('board')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/rental-profile', function (Request $request, ProfileController $profileController, Profile $profile) {
         $fetchedProfile = $profileController->getProfile($request, $profile);
-        return Inertia::render('Profile', ['profile' => $fetchedProfile]);
+        return Inertia::render('Profile', ['profile' => $fetchedProfile, 'hasSubscription' => $request->user()?->subscribed('default')]);
     })->name('profile.rental');
 });
 

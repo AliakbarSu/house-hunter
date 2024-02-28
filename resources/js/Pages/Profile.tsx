@@ -7,8 +7,10 @@ import InputError from '@/Components/InputError';
 export default function Profile({
   auth: { user },
   profile,
+  hasSubscription,
 }: PageProps & {
   profile: ProfileType;
+  hasSubscription: boolean;
 }) {
   const initialData = {
     name: '',
@@ -102,7 +104,7 @@ export default function Profile({
   };
 
   return (
-    <Authenticated user={user}>
+    <Authenticated hasSubscription={hasSubscription} user={user}>
       <section className="bg-white dark:bg-gray-900">
         <Head title="Rental Profile" />
         <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">

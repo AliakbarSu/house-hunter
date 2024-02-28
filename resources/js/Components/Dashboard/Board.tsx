@@ -4,7 +4,7 @@ import { Listing } from '@/types';
 import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
