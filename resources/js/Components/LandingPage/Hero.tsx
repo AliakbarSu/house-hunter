@@ -26,9 +26,9 @@ export default function Hero({
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-600">
                 Say goodbye to scattered notes and Excel sheets with Property
-                Hunters, which centralizes all listings and key information,
-                increasing your chances of finding a place faster and minimizing
-                the hassle of house hunting.
+                Hunters, the platform that centralizes all listings and key
+                information, thus enhancing your chances of finding a place
+                faster while minimizing the hassle of house hunting.
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 {!isAuthenticated ? (
