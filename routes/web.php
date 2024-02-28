@@ -96,9 +96,10 @@ Route::middleware('auth:sanctum')->prefix('listing')->group(function () {
     Route::post('/', function (AddListingRequest $request, ListingController $listingController) {
         return $listingController->addListing($request);
     })->middleware('listing.limit');
-    Route::put('/{id}', function (UpdateListingRequest $request, ListingController $listingController, Listing $listing) {
-        return $listingController->updateListing($request, $listing);
-    });
+    Route::put('/{listing}', function (UpdateListingRequest $request, ListingController $listingController, Listing $listing) {
+        $listingController->updateListing($request, $listing);
+        return redirect()->route('dashboard');
+    })->name('listing.update');
     Route::delete('/{id}', function (Request $request, ListingController $listingController, Listing $listing) {
         return $listingController->deleteListing($request, $listing);
     });

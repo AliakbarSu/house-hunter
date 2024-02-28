@@ -16,6 +16,7 @@ class Listing extends Model
         'title',
         'description',
         'rent',
+        'status',
         'bedrooms',
         'bathrooms',
         'property_type'

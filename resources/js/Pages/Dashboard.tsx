@@ -10,7 +10,7 @@ export default function Dashboard({
 }: PageProps) {
   return (
     <AuthenticatedLayout user={auth.user} hasSubscription={hasSubscription}>
-      <div className="h-full bg-white">
+      <div className="h-full bg-white relative">
         <Board listings={listings} />
       </div>
     </AuthenticatedLayout>

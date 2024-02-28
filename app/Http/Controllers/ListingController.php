@@ -69,11 +69,9 @@ class ListingController extends Controller
     public function updateListing(UpdateListingRequest $request, Listing $listing)
     {
         $validated = $request->validated();
-        $listingId = $request->id;
-        $updatedListing = $listing->find($listingId);
-        $updatedListing->update($validated);
-        $updatedListing->save();
-        return $updatedListing;
+        $listing->update($validated);
+        $listing->save();
+        return $listing;
     }
 
     /**
