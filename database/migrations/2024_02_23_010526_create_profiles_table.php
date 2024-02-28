@@ -18,8 +18,11 @@ return new class extends Migration {
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('name');
+            $table->string('phone');
+            $table->string('mobile');
+            $table->string('email');
+            $table->boolean('main_applicant')->default(true);
             $table->timestamps();
         });
     }

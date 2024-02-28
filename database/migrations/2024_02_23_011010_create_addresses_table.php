@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('previous_addresses', function (Blueprint $table) {
+        Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('profile_id');
             $table
@@ -19,8 +19,15 @@ return new class extends Migration {
                 ->on('profiles')
                 ->onDelete('cascade');
             $table->string('address');
-            $table->timestamp('move_in_at');
-            $table->timestamp('move_out_at');
+            $table->float('rent')->nullable();
+            $table->string('rent_frequency')->default('weekly');
+            $table->string('landlord_name')->nullable();
+            $table->string('landlord_phone')->nullable();
+            $table->string('landlord_mobile')->nullable();
+            $table->string('address_type')->default('current');
+            $table->string('landlord_type')->default('agent');
+            $table->date('move_in_at');
+            $table->date('move_out_at');
             $table->timestamps();
         });
     }
@@ -30,6 +37,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('previous_addresses');
+        Schema::dropIfExists('addresses');
     }
 };

@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddProfileRequest;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Address;
 use App\Models\Profile;
-use App\Models\User;
+use App\Models\Reference;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,9 +18,14 @@ use Inertia\Response;
 class ProfileController extends Controller
 {
 
-    public function getProfile(Request $request, User $profile)
+    public function getProfile(Request $request, Profile $profile)
     {
-        return $profile->findUser($request->id);
+        $fetchedProfile = $profile->find($request->user()->id);
+        if ($fetchedProfile) {
+            return $fetchedProfile->load('addresses', 'references');
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -33,12 +39,40 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function addProfile(AddProfileRequest $request)
+    public function addProfile(AddProfileRequest $request): Profile
     {
-        $newProfile = new Profile($request->validated());
+        $validated = $request->validated();
+        $validated['main_applicant'] = true;
+        $newProfile = new Profile($validated);
         $newProfile->user()->associate($request->user()->id);
         $newProfile->save();
-        return $newProfile;
+        for ($i = 0; $i < count($validated['references']); $i++) {
+            $reference = new Reference($validated['references'][$i]);
+            $reference->profile()->associate($newProfile->id);
+            $reference->save();
+        }
+        $currentAddress = new Address([
+            'address' => $validated['current_address'],
+            'move_in_at' => $validated['move_in_at'],
+            'move_out_at' => $validated['move_out_at'],
+            'address_type' => 'current_address',
+        ]);
+        $previousAddress = new Address([
+            'address' => $validated['previous_address'],
+            'address_type' => 'previous_address',
+            'landlord_name' => $validated['landlord_name'],
+            'landlord_phone' => $validated['landlord_phone'],
+            'landlord_mobile' => $validated['landlord_mobile'],
+            'landlord_email' => $validated['landlord_email'],
+            'landlord_type' => $validated['landlord_type'],
+            'move_in_at' => $validated['previous_address_move_in_at'],
+            'move_out_at' => $validated['previous_address_move_out_at'],
+        ]);
+        $previousAddress->profile()->associate($newProfile->id);
+        $currentAddress->profile()->associate($newProfile->id);
+        $currentAddress->save();
+        $previousAddress->save();
+        return $newProfile->load('addresses', 'references');
     }
 
     /**

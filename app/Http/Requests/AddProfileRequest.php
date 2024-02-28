@@ -16,8 +16,22 @@ class AddProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255']
+            'name' => ['string', 'max:255'],
+            'phone' => ['string', 'max:255'],
+            'mobile' => ['string', 'max:255'],
+            'email' => ['string', 'email', 'max:255'],
+            'current_address' => ['string', 'max:255'],
+            'move_in_at' => ['string'],
+            'move_out_at' => ['string'],
+            'previous_address' => ['string', 'max:255'],
+            'previous_address_move_in_at' => ['string'],
+            'previous_address_move_out_at' => ['string'],
+            'landlord_name' => ['string', 'max:255'],
+            'landlord_phone' => ['string', 'max:255'],
+            'landlord_mobile' => ['string', 'max:255'],
+            'landlord_email' => ['string', 'email', 'max:255'],
+            'landlord_type' => ["in:landlord,agent,property_manager", 'string', 'max:255'],
+            'references' => ['array'],
         ];
     }
 

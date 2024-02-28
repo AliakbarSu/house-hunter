@@ -6,9 +6,23 @@ import NavLink from '@/Components/NavLink';
 import Dropdown from '@/Components/Dropdown';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 
-export default function Navbar({ user }: { user: User }) {
+const navigation = [
+  { name: 'Product', href: '#' },
+  { name: 'Features', href: '#' },
+  { name: 'Marketplace', href: '#' },
+  { name: 'Company', href: '#' },
+];
+
+export default function Navbar({
+  isAuthenticated,
+  user,
+}: {
+  isAuthenticated: boolean;
+  user: User;
+}) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
     useState(false);
+
   return (
     <nav className="bg-white border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
