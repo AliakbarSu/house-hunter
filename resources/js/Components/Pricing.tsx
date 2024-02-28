@@ -12,36 +12,23 @@ export default function Plans({
   plans: Plan[];
   isAuthenticated: boolean;
 }) {
-  const plan = plans[0];
-  const tiers = [
-    {
-      name: 'Freemium',
-      id: 'tier-free',
-      href: route('login'),
-      priceMonthly: '$0',
-      description: 'Completely free, forever. Perfect for small house hunting.',
-      features: [
-        ...plan.features.map(f => f.name),
-        'Limited to 5 saved houses',
-      ],
-      btnText: isAuthenticated ? 'Active' : 'Get started today',
-      disabled: isAuthenticated,
-      featured: false,
-    },
-    {
-      name: plan.name,
-      id: 'tier-' + plan.name,
+  const tiers = plans.map(plan => {
+    return {
+      ...plan,
       href: isAuthenticated
         ? route('stripe.checkout', plan.price_id)
         : route('login'),
       priceMonthly: `$${plan.price}`,
-      description: plan.description,
       features: plan.features.map(f => f.name),
-      disabled: false,
-      btnText: 'Get started today',
-      featured: true,
-    },
-  ];
+      disabled: plan.metadata?.disabled || false,
+      btnText: !isAuthenticated
+        ? 'Get started today'
+        : plan.metadata.disabled
+          ? 'Active'
+          : 'Get started today',
+      featured: plan.metadata?.featured || false,
+    };
+  });
 
   return (
     <div className="bg-white py-24 sm:py-32">

@@ -86,7 +86,7 @@ export interface Plan {
   currency: string;
   images: string[];
   features: { name: string }[];
-  metadata: string[];
+  metadata: { [key: string]: string };
   created_at: string;
   updated_at: string;
 }
