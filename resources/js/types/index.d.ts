@@ -129,5 +129,8 @@ export type PageProps<
   isAuthenticated: boolean;
   listings: Listing[];
   hasSubscription: boolean;
+  can: {
+    addListing: boolean;
+  };
   ziggy: Config & { location: string };
 };
