@@ -1,7 +1,19 @@
 <?php
 
+use App\Http\Controllers\BoardController;
+use App\Http\Controllers\CoverLetterController;
+use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StripeController;
+use App\Http\Requests\AddListingNoteRequest;
+use App\Http\Requests\AddListingRequest;
+use App\Http\Requests\AddProfileRequest;
+use App\Http\Requests\UpdateListingRequest;
+use App\Models\Board;
+use App\Models\Listing;
+use App\Models\Profile;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,23 +28,122 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
+Route::get('/', function (StripeController $stripeController) {
+    return Inertia::render('LandingPage', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
+        'isAuthenticated' => auth()->check(),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'hasSubscription' => auth()->user()?->subscribed('default'),
+        'plans' => $stripeController->getPlans()
     ]);
-});
+})->name('home');
+
+Route::get('/checkout/item/{priceId}', function (Request $request) {
+    $priceId = $request->priceId;
+    return $request->user()
+        ->newSubscription('default', $priceId)
+        ->allowPromotionCodes()
+        ->checkout([
+            'success_url' => route('stripe.checkout-success'),
+            'cancel_url' => route('home'),
+        ]);
+})->middleware(["auth:sanctum"])->name('stripe.checkout');
+
+
+Route::get('/checkout/success', function () {
+    return Inertia::render('Checkout/Success');
+})->name('stripe.checkout-success');
+
+Route::get('/billing-portal', function (Request $request) {
+    return $request->user()->redirectToBillingPortal();
+})->middleware(["auth:sanctum"])->name('stripe.billing-portal');
+
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    return Inertia::render('Checkout/Success');
+})->name('free.plan.limit.reached');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth:sanctum')->get('/dashboard', function (Request $request) {
+    return Inertia::render('Dashboard', ['listings' => $request->user()->listings->load('notes', 'board', 'images'),
+        'hasSubscription' => $request->user()?->subscribed('default')]);
+})->middleware(['auth:sanctum', 'verified'])->name('dashboard');
+
+Route::get('/dashboard2', function () {
+    return Inertia::render('Dashboard2');
+})->name('dashboard2');
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/rental-profile', function (AddProfileRequest $request, ProfileController $profileController) {
+        $createdProfile = $profileController->addProfile($request);
+        return Inertia::render('Profile', [
+            'profile' => $createdProfile,
+        ]);
+    })->name('profile.add');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+
+Route::middleware('auth:sanctum')->prefix('listing')->group(function () {
+
+    Route::get('/', function (Request $request, ListingController $listingController, Listing $listing) {
+        return $listingController->getAllListings($request, $listing);
+    });
+    Route::get('/{id}', function (Request $request, ListingController $listingController, Listing $listing) {
+        return $listingController->getListing($request, $listing);
+    });
+    Route::post('/', function (AddListingRequest $request, ListingController $listingController) {
+        return $listingController->addListing($request);
+    })->middleware('listing.limit');
+    Route::put('/{id}', function (UpdateListingRequest $request, ListingController $listingController, Listing $listing) {
+        return $listingController->updateListing($request, $listing);
+    });
+    Route::delete('/{id}', function (Request $request, ListingController $listingController, Listing $listing) {
+        return $listingController->deleteListing($request, $listing);
+    });
+
+    Route::post('/{listing_id}/note', function (AddListingNoteRequest $request, ListingController $listingController, Listing $listing) {
+        return $listingController->addNote($request, $listing);
+    });
+    Route::delete('/{listing_id}/note/{note_id}', function (Request $request, ListingController $listingController, Listing $listing) {
+        return $listingController->deleteNote($request, $listing);
+    });
+});
+
+Route::middleware('auth:sanctum')->prefix('board')->group(function () {
+    Route::post('/', function (Request $request, BoardController $boardController) {
+        return $boardController->addBoard($request);
+    });
+    Route::get('/', function (Request $request, BoardController $boardController, Board $board) {
+        return $boardController->getAllboards($request, $board);
+    });
+    Route::get('/{id}', function (Request $request, BoardController $boardController, Board $board) {
+        return $boardController->getBoard($request, $board);
+    });
+    Route::put('/{id}', function (Request $request, BoardController $boardController, Board $board) {
+        return $boardController->updateBoard($request, $board);
+    });
+    Route::delete('/{id}', function (Request $request, BoardController $boardController, Board $board) {
+        return $boardController->deleteBoard($request, $board);
+    });
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/rental-profile', function (Request $request, ProfileController $profileController, Profile $profile) {
+        $fetchedProfile = $profileController->getProfile($request, $profile);
+        return Inertia::render('Profile', ['profile' => $fetchedProfile, 'hasSubscription' => $request->user()?->subscribed('default')]);
+    })->name('profile.rental');
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/cover-letter/{listing}', function (Request $request, CoverLetterController $coverLetterController, Listing $listing) {
+        $coverLetter = $coverLetterController->generateCoverLetter($request, $listing);
+        return Inertia::render('CoverLetter/view', ['cover_letter' => $coverLetter]);
+    });
+});
+
+require __DIR__ . '/auth.php';
