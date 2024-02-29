@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class AddListingRequest extends FormRequest
 {
@@ -17,20 +15,20 @@ class AddListingRequest extends FormRequest
     {
         return [
             'address' => ['required', 'string', 'max:255'],
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string', 'max:255'],
-            'rent' => ['required', 'numeric'],
-            'bedrooms' => ['required', 'numeric'],
-            'bathrooms' => ['required', 'numeric'],
+            'title' => ['nullable', 'string', 'max:30'],
+            'description' => ['nullable', 'string', 'max:255'],
+            'rent' => ['nullable', 'numeric'],
+            'bedrooms' => ['required', 'numeric', 'max:15'],
+            'bathrooms' => ['required', 'numeric', 'max:15'],
             'board_id' => ['required', 'numeric', "exists:boards,id"],
         ];
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'errors' => $validator->errors(),
-            'status' => true
-        ], 422));
-    }
+//    protected function failedValidation(Validator $validator)
+//    {
+//        throw new HttpResponseException(response()->json([
+//            'errors' => $validator->errors(),
+//            'status' => true
+//        ], 422));
+//    }
 }

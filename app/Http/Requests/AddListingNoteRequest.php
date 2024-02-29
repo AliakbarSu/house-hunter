@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class AddListingNoteRequest extends FormRequest
 {
@@ -16,15 +14,15 @@ class AddListingNoteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'note' => ['required', 'string', 'max:255']
+            'note' => ['required', 'string', 'max:255', 'min:2']
         ];
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'errors' => $validator->errors(),
-            'status' => true
-        ], 422));
-    }
+//    protected function failedValidation(Validator $validator)
+//    {
+//        throw new HttpResponseException(response()->json([
+//            'errors' => $validator->errors(),
+//            'status' => true
+//        ], 422));
+//    }
 }
