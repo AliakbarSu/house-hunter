@@ -46,7 +46,7 @@ Route::get('/checkout/item/{priceId}', function (Request $request) {
         ->allowPromotionCodes()
         ->checkout([
             'success_url' => route('stripe.checkout-success'),
-            'cancel_url' => route('home'),
+            'cancel_url' => route('stripe.checkout-fail'),
         ]);
 })->middleware(["auth:sanctum"])->name('stripe.checkout');
 
@@ -54,6 +54,10 @@ Route::get('/checkout/item/{priceId}', function (Request $request) {
 Route::get('/checkout/success', function () {
     return Inertia::render('Checkout/Success');
 })->name('stripe.checkout-success');
+
+Route::get('/checkout/fail', function () {
+    return Inertia::render('Checkout/Fail');
+})->name('stripe.checkout-fail');
 
 Route::get('/billing-portal', function (Request $request) {
     return $request->user()->redirectToBillingPortal();
