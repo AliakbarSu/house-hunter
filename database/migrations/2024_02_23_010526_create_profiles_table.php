@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->string('mobile')->nullable();
             $table->string('email')->nullable();
             $table->boolean('main_applicant')->default(true)->nullable();
+            $table->boolean('deleted')->default(false)->nullable();
             $table->timestamps();
         });
     }

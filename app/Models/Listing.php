@@ -16,6 +16,7 @@ class Listing extends Model
         'title',
         'description',
         'rent',
+        'status',
         'bedrooms',
         'bathrooms',
         'property_type'
@@ -34,6 +35,11 @@ class Listing extends Model
     public function images(): HasMany
     {
         return $this->hasMany(Image::class);
+    }
+
+    public function canGenerateCoverLetter(): bool
+    {
+        return $this->coverLetter()->count() < 3;
     }
 
     public function coverLetter(): HasMany

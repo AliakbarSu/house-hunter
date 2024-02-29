@@ -28,9 +28,8 @@ class CoverLetterController extends Controller
             ]);
             $content = $response->json('choices.0.message.content');
             $coverLetter = new CoverLetter();
-            $filePath = 'cover_letters' . uniqid() . '.txt';
+            $filePath = 'cover_letter_' . uniqid() . '.txt';
             Storage::disk('s3')->put($filePath, $content);
-            Storage::disk('s3')->setVisibility($filePath, 'public');
             $coverLetter->url = Storage::disk('s3')->url($filePath);
             $coverLetter->filename = basename($filePath);
             $coverLetter->listing_id = $listing->id;
@@ -40,6 +39,11 @@ class CoverLetterController extends Controller
             return $e->getMessage();
         }
 
+    }
+
+    public function downloadCoverLetter(Request $request, CoverLetter $coverLetter)
+    {
+        return Storage::disk('s3')->download($coverLetter->filename);
     }
 
 }

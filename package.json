@@ -52,6 +52,7 @@
         ]
     },
     "dependencies": {
-        "@heroicons/react": "^2.1.1"
+        "@heroicons/react": "^2.1.1",
+        "date-fns": "^3.3.1"
     }
 }

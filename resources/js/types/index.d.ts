@@ -62,6 +62,7 @@ export interface Listing {
   notes: Note[];
   board: Board;
   images: Image[];
+  cover_letter: CoverLetter[];
   created_at: string;
   updated_at: string;
 }
@@ -126,6 +127,7 @@ export type PageProps<
   auth: {
     user: User;
   };
+  error: string;
   isAuthenticated: boolean;
   listings: Listing[];
   hasSubscription: boolean;
