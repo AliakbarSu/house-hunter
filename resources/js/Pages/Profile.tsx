@@ -3,6 +3,7 @@ import { Head, useForm } from '@inertiajs/react';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { PageProps, Profile as ProfileType } from '@/types';
 import InputError from '@/Components/InputError';
+import { format } from 'date-fns';
 
 export default function Profile({
   auth: { user },
@@ -66,13 +67,32 @@ export default function Profile({
         email: profile.email,
         phone: profile.phone,
         mobile: profile.mobile,
-        current_address: currentAddress,
-        previous_address: previousAddress,
+        current_address: {
+          ...currentAddress,
+          move_in_at: format(
+            currentAddress.move_in_at || new Date(),
+            'yyyy-MM-dd'
+          ),
+          move_out_at: format(
+            currentAddress.move_out_at || new Date(),
+            'yyyy-MM-dd'
+          ),
+        },
+        previous_address: {
+          ...previousAddress,
+          move_in_at: format(
+            currentAddress.move_in_at || new Date(),
+            'yyyy-MM-dd'
+          ),
+          move_out_at: format(
+            currentAddress.move_out_at || new Date(),
+            'yyyy-MM-dd'
+          ),
+        },
         references: profile.references,
       } as never);
     }
   }, [profile]);
-
   const submit: FormEventHandler = e => {
     e.preventDefault();
     post(route('profile.add'));
