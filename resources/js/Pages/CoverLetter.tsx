@@ -37,7 +37,7 @@ export default function CoverLetters({
 
   return (
     <AuthenticatedLayout user={auth.user} hasSubscription={hasSubscription}>
-      <div className="mx-auto max-w-lg pt-8">
+      <div className="mx-auto max-w-lg p-8">
         <div>
           <div className="text-center">
             <div className="w-full flex justify-center">

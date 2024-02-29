@@ -60,7 +60,7 @@ export default function Navbar({ user }: { user: User }) {
 
                 <Dropdown.Content>
                   <Dropdown.Link href={route('profile.edit')}>
-                    Profile
+                    Account
                   </Dropdown.Link>
                   <Dropdown.Link
                     href={route('logout')}
@@ -138,7 +138,7 @@ export default function Navbar({ user }: { user: User }) {
           <div className="mt-3 space-y-1">
             {/* eslint-disable-next-line no-undef */}
             <ResponsiveNavLink href={route('profile.edit')}>
-              Profile
+              Account
             </ResponsiveNavLink>
             <ResponsiveNavLink method="post" href={route('logout')} as="button">
               Log Out
