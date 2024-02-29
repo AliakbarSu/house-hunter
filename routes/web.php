@@ -46,7 +46,7 @@ Route::get('/checkout/item/{priceId}', function (Request $request) {
         ->allowPromotionCodes()
         ->checkout([
             'success_url' => route('stripe.checkout-success'),
-            'cancel_url' => route('stripe.checkout-fail'),
+            'cancel_url' => route('home'),
         ]);
 })->middleware(["auth:sanctum"])->name('stripe.checkout');
 
