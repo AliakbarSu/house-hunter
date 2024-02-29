@@ -52,7 +52,7 @@ export default function CoverLetters({
               Cover letters
             </h2>
             <p className="mt-1 text-sm text-gray-500">
-              You can create up to 5 cover letters per address.
+              You can create up to 3 cover letters per address.
             </p>
           </div>
           <form onSubmit={onCreate} className="mt-6 flex">

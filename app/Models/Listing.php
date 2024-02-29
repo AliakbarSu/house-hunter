@@ -39,7 +39,7 @@ class Listing extends Model
 
     public function canGenerateCoverLetter(): bool
     {
-        return $this->coverLetter()->count() < 5;
+        return $this->coverLetter()->count() < 3;
     }
 
     public function coverLetter(): HasMany
