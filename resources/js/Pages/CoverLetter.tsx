@@ -2,7 +2,7 @@ import { CoverLetter, PageProps } from '@/types';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { DocumentIcon } from '@heroicons/react/20/solid';
 import { useState } from 'react';
-import { useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import InputError from '@/Components/InputError';
 
 export default function CoverLetters({
@@ -38,6 +38,7 @@ export default function CoverLetters({
   return (
     <AuthenticatedLayout user={auth.user} hasSubscription={hasSubscription}>
       <div className="mx-auto max-w-lg p-8">
+        <Head title="Cover Letter" />
         <div>
           <div className="text-center">
             <div className="w-full flex justify-center">
