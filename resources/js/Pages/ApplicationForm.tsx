@@ -76,7 +76,7 @@ export default function ApplicationForms({
           </div>
           <form onSubmit={onCreate} className="mt-6 flex items-start">
             <div className="flex flex-wrap gap-2">
-              <div>
+              <div className="w-full">
                 <label htmlFor="listing_id" className="sr-only">
                   Address
                 </label>
