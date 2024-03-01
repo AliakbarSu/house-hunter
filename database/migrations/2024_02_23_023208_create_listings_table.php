@@ -27,6 +27,7 @@ return new class extends Migration {
             $table->boolean('deleted')->default(false)->nullable();
             $table->unsignedBigInteger('board_id');
             $table->foreign('board_id')->references('id')->on('boards')->onDelete('cascade');
+            $table->dateTime('viewing_at')->default(now())->nullable();
             $table->timestamps();
         });
     }

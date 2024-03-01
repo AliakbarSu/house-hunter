@@ -19,7 +19,8 @@ class Listing extends Model
         'status',
         'bedrooms',
         'bathrooms',
-        'property_type'
+        'property_type',
+        'viewing_at'
     ];
 
     public function notes(): HasMany

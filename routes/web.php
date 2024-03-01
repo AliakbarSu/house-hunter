@@ -163,4 +163,11 @@ Route::middleware('auth:sanctum')->group(function () {
     })->name('cover-letter.download');
 });
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/calendar', function () {
+        return Inertia::render('Calendar');
+    })->name('calendar');
+});
+
+
 require __DIR__ . '/auth.php';

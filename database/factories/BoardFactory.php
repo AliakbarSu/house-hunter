@@ -18,6 +18,7 @@ class BoardFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'user_id' => 2
         ];
     }
 }

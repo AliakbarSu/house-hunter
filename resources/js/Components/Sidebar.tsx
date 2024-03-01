@@ -1,9 +1,10 @@
 import {
+  CalendarIcon,
   CreditCardIcon,
   DocumentIcon,
   HomeIcon,
   UsersIcon,
-} from '@heroicons/react/24/outline';
+} from '@heroicons/react/24/outline'; // const navigation = [
 
 // const navigation = [
 //   { name: 'House Hunt', href: '#', icon: HomeIcon, current: true },
@@ -37,6 +38,14 @@ export default function Sidebar({
       href: route('profile.rental'),
       icon: UsersIcon,
       current: route().current('profile.rental'),
+      active: true,
+    },
+    {
+      id: 'calendar',
+      name: 'Calendar',
+      href: route('calendar'),
+      icon: CalendarIcon,
+      current: route().current('calendar'),
       active: true,
     },
     {

@@ -63,6 +63,7 @@ export interface Listing {
   board: Board;
   images: Image[];
   cover_letter: CoverLetter[];
+  viewing_at: string;
   created_at: string;
   updated_at: string;
 }
