@@ -268,7 +268,7 @@ export default function Calendar({
                           {({ active }) => (
                             <p
                               onClick={() =>
-                                onUpdateStatus(viewing.id, 'viewed')
+                                onUpdateStatus(+viewing.id, 'viewed')
                               }
                               className={classNames(
                                 active
