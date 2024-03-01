@@ -169,6 +169,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/calendar', function () {
         return Inertia::render('Calendar');
     })->name('calendar');
+    Route::post('/calendar/listing/{listing}', function (UpdateListingRequest $request, ListingController $listingController, Listing $listing) {
+        $listingController->updateListing($request, $listing);
+        return redirect()->route('calendar')->withInput();
+    })->name('calendar.update.listing');
 });
 
 

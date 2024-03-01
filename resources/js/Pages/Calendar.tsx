@@ -10,6 +10,7 @@ import {
 } from '@heroicons/react/20/solid';
 import { Menu, Transition } from '@headlessui/react';
 import { format, isSameDay } from 'date-fns';
+import axios from 'axios';
 
 const getDaysInMonth = (
   month: number,
@@ -109,8 +110,10 @@ export default function Calendar({
     );
   };
 
-  const onUpdateStatus = (id: number, status: string) => {
-    console.log(id, status);
+  const onUpdateStatus = async (id: number, status: string) => {
+    await axios.post(route('calendar.update.listing', id), {
+      status: status,
+    });
   };
 
   return (
