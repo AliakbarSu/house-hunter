@@ -2,6 +2,7 @@ import {
   CalendarIcon,
   CreditCardIcon,
   DocumentIcon,
+  FolderIcon,
   HomeIcon,
   UsersIcon,
 } from '@heroicons/react/24/outline'; // const navigation = [
@@ -46,6 +47,14 @@ export default function Sidebar({
       href: route('calendar'),
       icon: CalendarIcon,
       current: route().current('calendar'),
+      active: true,
+    },
+    {
+      id: 'applications',
+      name: 'Application Forms',
+      href: route('forms.view'),
+      icon: FolderIcon,
+      current: route().current('forms.view'),
       active: true,
     },
     {

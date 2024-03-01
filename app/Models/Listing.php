@@ -47,4 +47,9 @@ class Listing extends Model
     {
         return $this->hasMany(CoverLetter::class);
     }
+
+    public function applicationForms(): HasMany
+    {
+        return $this->hasMany(ApplicationForm::class);
+    }
 }

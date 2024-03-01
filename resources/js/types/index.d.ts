@@ -63,6 +63,7 @@ export interface Listing {
   board: Board;
   images: Image[];
   cover_letter: CoverLetter[];
+  application_forms: ApplicationForm[];
   viewing_at: string;
   created_at: string;
   updated_at: string;
@@ -121,6 +122,12 @@ export interface CoverLetter {
   created_at: string;
   updated_at: string;
 }
+
+export type ApplicationForm = {
+  filename: string;
+  id: string;
+  created_at: string;
+};
 
 export type PageProps<
   T extends Record<string, unknown> = Record<string, unknown>,

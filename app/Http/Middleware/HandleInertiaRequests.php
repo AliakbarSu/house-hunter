@@ -37,7 +37,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            'listings' => $request->user()?->listings->load('notes', 'board', 'images', 'coverLetter'),
+            'listings' => $request->user()?->listings->load('notes', 'board', 'images', 'coverLetter', 'applicationForms'),
             'hasSubscription' => $request->user()?->subscribed('default'),
             'isAuthenticated' => auth()->check(),
             'can' => [

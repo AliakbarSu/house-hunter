@@ -6,12 +6,14 @@ use App\Models\CoverLetter;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class CoverLetterController extends Controller
 {
     public function generateCoverLetter(Request $request, Listing $listing)
     {
+        $name = $listing->profile?->name ? $listing->profile?->name : '[Placeholder]';
         try {
             $response = Http::withToken(config('services.openai.secret'))->post('https://api.openai.com/v1/chat/completions', [
                 'model' => 'gpt-3.5-turbo',
@@ -22,7 +24,8 @@ class CoverLetterController extends Controller
                     ],
                     [
                         'role' => 'user',
-                        'content' => 'Generate me a cover letter for a rental property listing. My name is Ali and the house is a townhouse. Address is 33 Symonds street, I am interested in this house because it is super close to school'
+                        'content' => "Generate me a cover letter for a rental property listing. My name is $name.
+                        the address address for property is $listing->address. I am interested in this house because it is super close to school"
                     ]
                 ]
             ]);
@@ -36,6 +39,7 @@ class CoverLetterController extends Controller
             $coverLetter->save();
             return $coverLetter;
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return $e->getMessage();
         }
 

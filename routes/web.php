@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationFormController;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\CoverLetterController;
 use App\Http\Controllers\ListingController;
@@ -9,6 +10,7 @@ use App\Http\Requests\AddListingNoteRequest;
 use App\Http\Requests\AddListingRequest;
 use App\Http\Requests\AddProfileRequest;
 use App\Http\Requests\UpdateListingRequest;
+use App\Models\ApplicationForm;
 use App\Models\Board;
 use App\Models\CoverLetter;
 use App\Models\Listing;
@@ -167,6 +169,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/calendar', function () {
         return Inertia::render('Calendar');
     })->name('calendar');
+});
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/forms/generate/{listing}', function (ApplicationFormController $applicationFormController, Listing $listing) {
+        $applicationFormController->getApplicationForm($listing);
+        return redirect()->route('forms.view');
+    })->name('forms.generate');
+    Route::get('/forms/view', function () {
+        return Inertia::render('ApplicationForm');
+    })->name('forms.view');
+    Route::get('/forms/download/{form}', function (ApplicationForm $form) {
+        return Storage::disk('s3')->download($form->filename);
+    })->name('forms.download');
 });
 
 
