@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ApplicationFormController extends Controller
 {
-    public function getApplicationForm(Listing $listing)
+    public function getApplicationForm(Listing $listing, $id)
     {
         $token = $this->getAuthToken();
         try {
@@ -19,7 +19,7 @@ class ApplicationFormController extends Controller
             ['url' => $tempUploadUrl,] = Storage::disk('s3')->temporaryUploadUrl("$filled_application_form_name", now()->addMinutes(60));
             $response = Http::withToken($token)->withHeaders(['x-api-key' => config('services.adobe.key')])->post(config('services.adobe.pdf_url'), [
                 "input" => [
-                    "uri" => Storage::disk('s3')->temporaryUrl('input-application-forms/application_filled_word.docx', now()->addMinutes(60)),
+                    "uri" => Storage::disk('s3')->temporaryUrl($this->getInputApplicationForm($id), now()->addMinutes(60)),
                     "storage" => "S3"
                 ],
                 "output" => [
@@ -70,5 +70,14 @@ class ApplicationFormController extends Controller
             Log::error($e->getMessage());
             return $e->getMessage();
         }
+    }
+
+    private function getInputApplicationForm($id)
+    {
+        return match ($id) {
+            1 => 'input-application-forms/application_form_barfoot.docx',
+            2 => 'input-application-forms/application_form_raywhite.docx',
+            default => 'input-application-forms/application_form_barfoot.docx',
+        };
     }
 }

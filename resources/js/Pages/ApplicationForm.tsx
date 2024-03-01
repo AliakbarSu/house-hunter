@@ -5,6 +5,17 @@ import { useState } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import InputError from '@/Components/InputError';
 
+const formTypes = [
+  {
+    id: 0,
+    name: 'Barfoot&Thompson',
+  },
+  {
+    id: 1,
+    name: 'Ray White',
+  },
+];
+
 export default function ApplicationForms({
   auth,
   hasSubscription,
@@ -13,6 +24,7 @@ export default function ApplicationForms({
 }: PageProps) {
   const { processing, get, hasErrors, setData } = useForm({});
   const [selectedListingId, setSelectedAddress] = useState('');
+  const [selectedFormType, setSelectedFormType] = useState(0);
   const [applicationForms, setApplicationForms] = useState<ApplicationForm[]>(
     []
   );
@@ -33,7 +45,12 @@ export default function ApplicationForms({
   const onCreate = (e: React.FormEvent) => {
     e.preventDefault();
     if (selectedListingId) {
-      get(route('forms.generate', selectedListingId));
+      get(
+        route('forms.generate', {
+          listing: selectedListingId,
+          id: selectedFormType,
+        })
+      );
     }
   };
 
@@ -57,24 +74,47 @@ export default function ApplicationForms({
               You can only create 1 application per address.
             </p>
           </div>
-          <form onSubmit={onCreate} className="mt-6 flex">
-            <label htmlFor="listing_id" className="sr-only">
-              Address
-            </label>
-            <select
-              onChange={onAddressSelect}
-              name="listing_id"
-              id="listing_id"
-              value={selectedListingId}
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            >
-              <option value="">Select an address</option>
-              {listings.map(listing => (
-                <option key={listing.id} value={listing.id}>
-                  {listing.address}
-                </option>
-              ))}
-            </select>
+          <form onSubmit={onCreate} className="mt-6 flex items-start">
+            <div className="flex flex-wrap gap-2">
+              <div>
+                <label htmlFor="listing_id" className="sr-only">
+                  Address
+                </label>
+                <select
+                  onChange={onAddressSelect}
+                  name="listing_id"
+                  id="listing_id"
+                  value={selectedListingId}
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                >
+                  <option value="">Select an address</option>
+                  {listings.map(listing => (
+                    <option key={listing.id} value={listing.id}>
+                      {listing.address}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="w-full">
+                <label htmlFor="form_type" className="sr-only">
+                  Form Type
+                </label>
+                <select
+                  onChange={e => setSelectedFormType(+e.target.value)}
+                  name="form_type"
+                  id="form_type"
+                  value={selectedFormType}
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                >
+                  <option value="">Select a form</option>
+                  {formTypes.map(form => (
+                    <option key={form.id} value={form.id}>
+                      {form.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
             <button
               type="submit"
               disabled={processing}

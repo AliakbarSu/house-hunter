@@ -173,8 +173,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/forms/generate/{listing}', function (ApplicationFormController $applicationFormController, Listing $listing) {
-        $applicationFormController->getApplicationForm($listing);
+    Route::get('/forms/generate/{listing}/{id}', function (ApplicationFormController $applicationFormController, Listing $listing, $id) {
+        $applicationFormController->getApplicationForm($listing, $id);
         return redirect()->route('forms.view');
     })->name('forms.generate');
     Route::get('/forms/view', function () {
