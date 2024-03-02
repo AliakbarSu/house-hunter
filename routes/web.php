@@ -65,7 +65,10 @@ Route::get('/billing-portal', function (Request $request) {
     return $request->user()->redirectToBillingPortal();
 })->middleware(["auth:sanctum"])->name('stripe.billing-portal');
 
-Route::get('/dashboard', function () {
+Route::get('/dashboard', function (Request $request) {
+    if ($request->user()->boards->isEmpty()) {
+        return Inertia::render('AddBoard');
+    }
     return Inertia::render('Dashboard');
 })->middleware('auth:sanctum')->name('dashboard');
 
@@ -112,10 +115,11 @@ Route::middleware('auth:sanctum')->prefix('listing')->group(function () {
 
 Route::middleware('auth:sanctum')->prefix('board')->group(function () {
     Route::post('/', function (Request $request, BoardController $boardController) {
-        return $boardController->addBoard($request);
-    });
-    Route::get('/', function (Request $request, BoardController $boardController, Board $board) {
-        return $boardController->getAllboards($request, $board);
+        $boardController->addBoard($request);
+        return redirect()->route('dashboard');
+    })->name('board.add');
+    Route::get('/', function () {
+        return Inertia::render('AddBoard');
     });
     Route::get('/{id}', function (Request $request, BoardController $boardController, Board $board) {
         return $boardController->getBoard($request, $board);

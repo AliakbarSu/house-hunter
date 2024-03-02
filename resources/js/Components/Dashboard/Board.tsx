@@ -1,5 +1,5 @@
 import { EllipsisHorizontalIcon, PlusIcon } from '@heroicons/react/20/solid';
-import { Listing } from '@/types';
+import { Listing, User } from '@/types';
 import { Fragment, useEffect, useState } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import Modal from '@/Components/Modal';
@@ -171,8 +171,10 @@ const columns = [
 
 export default function Board({
   listings,
+  user,
 }: {
   listings: Listing[];
+  user: User;
   hasSubscription?: boolean;
 }) {
   const [isModal, setIsModal] = useState(false);
@@ -206,7 +208,7 @@ export default function Board({
   return (
     <div className="flex h-full w-full absolute">
       <Modal show={isModal} maxWidth={'xl'} onClose={() => modalHandler(false)}>
-        <Form />
+        <Form user={user} />
       </Modal>
       {columns.map((column, index) => (
         <div className="border-r min-w-72 max-w-72" key={column.type}>

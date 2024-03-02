@@ -9,11 +9,12 @@ export default function Dashboard({
   listings,
   hasSubscription,
 }: PageProps) {
+  console.log(auth.user.boards);
   return (
     <AuthenticatedLayout user={auth.user} hasSubscription={hasSubscription}>
       <div className="h-full bg-white relative">
         <Head title="Dashboard" />
-        <Board listings={listings} />
+        <Board listings={listings} user={auth.user} />
       </div>
     </AuthenticatedLayout>
   );

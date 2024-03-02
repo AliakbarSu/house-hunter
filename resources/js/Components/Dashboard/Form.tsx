@@ -4,6 +4,7 @@ import { PhotoIcon } from '@heroicons/react/24/solid';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
+import { User } from '@/types';
 
 const schema = z.object({
   title: z.string(),
@@ -19,7 +20,7 @@ const schema = z.object({
 
 type FormFields = z.infer<typeof schema>;
 
-export default function Form() {
+export default function Form({ user }: { user: User }) {
   const {
     register,
     handleSubmit,
@@ -90,7 +91,7 @@ export default function Form() {
           <input
             className="sr-only"
             type="text"
-            value={1}
+            value={user.boards[0].id}
             {...register('board_id', {
               setValueAs: value => parseFloat(value) || 1,
             })}

@@ -23,16 +23,10 @@ class BoardController extends Controller
 
     public function addBoard(Request $request)
     {
-        try {
-            $validated = $request->validate([
-                'name' => ['required', 'string', 'max:255']
-            ]);
-        } catch (ValidationException $e) {
-            return response()->json([
-                'errors' => $e->errors(),
-                'status' => true
-            ], 422);
-        }
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:20']
+        ]);
         $user = $request->user();
         $newBoard = new Board($validated);
         $newBoard->user()->associate($user);
