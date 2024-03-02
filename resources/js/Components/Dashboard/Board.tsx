@@ -1,10 +1,12 @@
 //------------------------------------------------------
 import { EllipsisHorizontalIcon, PlusIcon } from '@heroicons/react/20/solid';
 import { Listing } from '@/types';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { Menu, Transition } from '@headlessui/react';
+import Modal from '@/Components/Modal';
+import Form from '@/Components/Dashboard/Form';
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
@@ -14,29 +16,16 @@ const statuses = {
   Overdue: 'text-red-700 bg-red-50 ring-red-600/10',
 };
 
-export function TopBar() {
-  return (
-    <div className="bg-white  shadow">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-12 justify-between">
-          <p className="self-center font-bold">House Hunt 2024</p>
-          <div className="flex items-center">
-            <button
-              type="button"
-              className="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
-              Create
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// -----------------------------------------
-export function AddItem({ title }: { title?: string }) {
+export function AddItem({
+  title,
+  onOpen,
+}: {
+  title?: string;
+  onOpen: CallableFunction;
+}) {
+  const open = () => {
+    onOpen();
+  };
   return (
     <div className="text-center py-4">
       <svg
@@ -55,7 +44,10 @@ export function AddItem({ title }: { title?: string }) {
         />
       </svg>
       <h3 className="mt-2 text-sm font-semibold text-gray-900">{title}</h3>
-      <div className="m-2 p-1 grid hover:bg-gray-50 shadow-sm rounded-md place-items-center border">
+      <div
+        onClick={open}
+        className="m-2 p-1 grid hover:bg-gray-50 shadow-sm rounded-md place-items-center border"
+      >
         <button type="button" className="rounded-full p-1 text-gray-500">
           <PlusIcon className="h-5 w-5" aria-hidden="true" />
         </button>
@@ -166,14 +158,24 @@ export default function Board({
   listings: Listing[];
   hasSubscription?: boolean;
 }) {
+  const [isModal, setIsModal] = useState(true);
+
+  const modalHandler = (state: boolean): void => {
+    setIsModal(state);
+  };
+
   return (
     <>
-      {/*<TopBar />*/}
-
       <div className="grid grid-cols-1 sm:grid-cols-5 h-full">
+        <Modal
+          show={isModal}
+          maxWidth={'xl'}
+          children={<Form />}
+          onClose={() => modalHandler(false)}
+        />
         {columns.map(column => (
           <div className="border-r" key={column.type}>
-            <AddItem title={column.name} />
+            <AddItem title={column.name} onOpen={() => modalHandler(true)} />
 
             <ul className=" space-y-4 py-4 px-2">
               {listings
