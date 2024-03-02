@@ -208,7 +208,7 @@ export default function Board({
   return (
     <div className="flex h-full w-full absolute">
       <Modal show={isModal} maxWidth={'xl'} onClose={() => modalHandler(false)}>
-        <Form user={user} />
+        <Form user={user} closeModal={() => modalHandler(false)} />
       </Modal>
       {columns.map((column, index) => (
         <div className="border-r min-w-72 max-w-72" key={column.type}>

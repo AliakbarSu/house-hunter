@@ -1,15 +1,14 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useForm as useFormInertia } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import { PhotoIcon } from '@heroicons/react/24/solid';
 import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect } from 'react';
 import { User } from '@/types';
+import { FormEvent, useEffect, useState } from 'react';
+import InputError from '@/Components/InputError';
 
 const schema = z.object({
   title: z.string(),
   description: z.string(),
-  address: z.string().min(1, { message: 'Required' }),
+  address: z.string().min(1, { message: 'Address is required' }),
   rent: z.number().min(1, { message: 'Required' }),
   bedrooms: z.number().min(1, { message: 'Required' }),
   bathrooms: z.number().min(1, { message: 'Required' }),
@@ -18,29 +17,49 @@ const schema = z.object({
   // images: z.any(),
 });
 
-type FormFields = z.infer<typeof schema>;
-
-export default function Form({ user }: { user: User }) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormFields>({
-    resolver: zodResolver(schema),
+export default function Form({
+  user,
+  closeModal,
+}: {
+  user: User;
+  closeModal: () => void;
+}) {
+  const { post, errors, data, processing, setData } = useForm({
+    title: '',
+    description: '',
+    address: '',
+    rent: 0,
+    bedrooms: 0,
+    bathrooms: 0,
+    board_id: user.boards[0].id,
+    status: '',
+    images: [] as unknown as FileList | null,
   });
+  const [previews, setPreviews] = useState<string[]>([]);
 
-  const { post, data, setData } = useFormInertia();
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    post(route('listing.add'), { onSuccess: () => closeModal() });
+  };
 
-  const onSubmit: SubmitHandler<FormFields> = async formData => {
-    setData(formData);
+  const onFileChange = (e: FormEvent<HTMLInputElement>) => {
+    const files = (e.target as unknown as { files: FileList }).files;
+    if (files) {
+      setData('images', files);
+    }
   };
 
   useEffect(() => {
-    post(route('listing.add'));
-  }, [data]);
+    if (data.images) {
+      const urls = Array.from(data.images).map(file =>
+        URL.createObjectURL(file)
+      );
+      setPreviews(urls);
+    }
+  }, [data.images]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="px-10 py-10">
+    <form onSubmit={onSubmit} className="px-10 py-10">
       <div className="flex flex-col gap-8 mx-auto max-w-lg lg:max-w-none">
         <section aria-labelledby="contact-info-heading">
           <h2
@@ -50,6 +69,108 @@ export default function Form({ user }: { user: User }) {
             Listing information
           </h2>
 
+          <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-3">
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="address"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Address*
+              </label>
+              <div className="mt-1">
+                <input
+                  onChange={e => setData('address', e.target.value)}
+                  type="text"
+                  id="address"
+                  name="address"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+              <InputError message={errors.address} />
+            </div>
+
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="rent"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Rent*
+              </label>
+              <div className="mt-1">
+                <input
+                  onChange={e => setData('rent', +e.target.value)}
+                  type="number"
+                  id="rent"
+                  name="rent"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+              <InputError message={errors.rent} />
+            </div>
+
+            <div>
+              <label
+                htmlFor="bedrooms"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Bedrooms*
+              </label>
+              <div className="mt-1">
+                <input
+                  onChange={e => setData('bedrooms', +e.target.value)}
+                  type="number"
+                  id="bedrooms"
+                  name="bedrooms"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+              <InputError message={errors.bedrooms} />
+            </div>
+
+            <div>
+              <label
+                htmlFor="bathrooms"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Bathrooms*
+              </label>
+              <div className="mt-1">
+                <input
+                  onChange={e => setData('bathrooms', +e.target.value)}
+                  type="number"
+                  id="bathrooms"
+                  name="bathrooms"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+              <InputError message={errors.bathrooms} />
+            </div>
+
+            <div>
+              <label
+                htmlFor="status"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Status*
+              </label>
+              <div className="mt-1">
+                <select
+                  onChange={e => setData('status', e.target.value)}
+                  id="status"
+                  name="status"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                >
+                  <option>wishlist</option>
+                  <option>viewed</option>
+                  <option>viewing</option>
+                  <option>applied</option>
+                  <option>offer_accepted</option>
+                  <option>offer_declined</option>
+                </select>
+              </div>
+              <InputError message={errors.status} />
+            </div>
+          </div>
           <div className="mt-6">
             <label
               htmlFor="title"
@@ -59,7 +180,7 @@ export default function Form({ user }: { user: User }) {
             </label>
             <div className="mt-1">
               <input
-                {...register('title')}
+                onChange={e => setData('title', e.target.value)}
                 type="text"
                 id="title"
                 name="title"
@@ -78,8 +199,8 @@ export default function Form({ user }: { user: User }) {
             </label>
             <div className="mt-1">
               <input
-                {...register('description')}
-                type="tel"
+                onChange={e => setData('description', e.target.value)}
+                type="text"
                 id="description"
                 name="description"
                 autoComplete="description"
@@ -92,145 +213,8 @@ export default function Form({ user }: { user: User }) {
             className="sr-only"
             type="text"
             value={user.boards[0].id}
-            {...register('board_id', {
-              setValueAs: value => parseFloat(value) || 1,
-            })}
             name="board_id"
           />
-
-          <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-3">
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="address"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Address*
-              </label>
-              <div className="mt-1">
-                <input
-                  {...register('address', { required: 'Field is required' })}
-                  type="text"
-                  id="address"
-                  name="address"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                />
-              </div>
-              {errors.address?.message && (
-                <p className="mt-2 text-sm text-red-600" id="email-error">
-                  {errors.address.message}
-                </p>
-              )}
-            </div>
-
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="rent"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Rent*
-              </label>
-              <div className="mt-1">
-                <input
-                  {...register('rent', {
-                    required: 'Field is required',
-                    setValueAs: value => parseFloat(value) || 0,
-                  })}
-                  type="number"
-                  id="rent"
-                  name="rent"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                />
-              </div>
-              {errors.rent?.message && (
-                <p className="mt-2 text-sm text-red-600" id="email-error">
-                  {errors.rent.message}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label
-                htmlFor="bedrooms"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Bedrooms*
-              </label>
-              <div className="mt-1">
-                <input
-                  {...register('bedrooms', {
-                    required: 'Field is required',
-                    setValueAs: value => parseFloat(value) || 0,
-                  })}
-                  type="number"
-                  id="bedrooms"
-                  name="bedrooms"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                />
-              </div>
-              {errors.bedrooms?.message && (
-                <p className="mt-2 text-sm text-red-600" id="email-error">
-                  {errors.bedrooms.message}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label
-                htmlFor="bathrooms"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Bathrooms*
-              </label>
-              <div className="mt-1">
-                <input
-                  {...register('bathrooms', {
-                    required: 'Field is required',
-                    setValueAs: value => parseFloat(value) || 0,
-                  })}
-                  type="number"
-                  id="bathrooms"
-                  name="bathrooms"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                />
-              </div>
-              {errors.bathrooms?.message && (
-                <p className="mt-2 text-sm text-red-600" id="email-error">
-                  {errors.bathrooms.message}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label
-                htmlFor="status"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Status*
-              </label>
-              <div className="mt-1">
-                <select
-                  {...register('status', {
-                    required: 'Field is required',
-                  })}
-                  id="status"
-                  name="status"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                >
-                  <option>wishlist</option>
-                  <option>viewed</option>
-                  <option>viewing</option>
-                  <option>applied</option>
-                  <option>offer_accepted</option>
-                  <option>offer_declined</option>
-                </select>
-              </div>
-              {errors.status?.message && (
-                <p className="mt-2 text-sm text-red-600" id="email-error">
-                  {errors.status.message}
-                </p>
-              )}
-            </div>
-          </div>
         </section>
 
         <section aria-labelledby="file-upload-heading">
@@ -242,7 +226,7 @@ export default function Form({ user }: { user: User }) {
               >
                 Files & images
               </label>
-              <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+              <div className="mt-2 flex flex-wrap justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                 <div className="text-center">
                   <PhotoIcon
                     className="mx-auto h-12 w-12 text-gray-300"
@@ -254,20 +238,30 @@ export default function Form({ user }: { user: User }) {
                       className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                     >
                       <span>Upload a file</span>
-                      {/*<input*/}
-                      {/*    multiple*/}
-                      {/*    {...register('images')}*/}
-                      {/*    id="images"*/}
-                      {/*    name="images"*/}
-                      {/*    type="file"*/}
-                      {/*    className="sr-only"*/}
-                      {/*/>*/}
+                      <input
+                        onChange={onFileChange}
+                        multiple
+                        id="images"
+                        name="images"
+                        type="file"
+                        className="sr-only"
+                      />
                     </label>
                     <p className="pl-1">or drag and drop</p>
                   </div>
                   <p className="text-xs leading-5 text-gray-600">
                     PNG, JPG, GIF up to 10MB
                   </p>
+                </div>
+                <div className="mt-4 grid grid-cols-2 gap-4">
+                  {previews.map((preview, index) => (
+                    <img
+                      key={index}
+                      src={preview}
+                      alt="preview"
+                      className="w-full h-24 object-cover rounded-md"
+                    />
+                  ))}
                 </div>
               </div>
             </div>
@@ -281,10 +275,11 @@ export default function Form({ user }: { user: User }) {
 
         <div className="mt-10 border-t border-gray-200 pt-6 sm:flex sm:items-center sm:justify-between">
           <button
+            disabled={processing}
             type="submit"
             className="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:order-last sm:ml-6 sm:w-auto"
           >
-            Create
+            {processing ? 'Creating..' : 'Create'}
           </button>
           <p className="mt-4 text-center text-sm text-gray-500 sm:mt-0 sm:text-left">
             Please fill in required fields

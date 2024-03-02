@@ -9,7 +9,6 @@ export default function Dashboard({
   listings,
   hasSubscription,
 }: PageProps) {
-  console.log(auth.user.boards);
   return (
     <AuthenticatedLayout user={auth.user} hasSubscription={hasSubscription}>
       <div className="h-full bg-white relative">
