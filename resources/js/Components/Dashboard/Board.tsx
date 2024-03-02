@@ -1,8 +1,10 @@
 //------------------------------------------------------
 import { EllipsisHorizontalIcon, PlusIcon } from '@heroicons/react/20/solid';
 import { Listing } from '@/types';
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Menu, Transition } from '@headlessui/react';
+import Modal from '@/Components/Modal';
+import Form from '@/Components/Dashboard/Form';
 import { useForm } from '@inertiajs/react';
 
 function classNames(...classes: string[]) {
@@ -15,41 +17,22 @@ const statuses = {
   Overdue: 'text-red-700 bg-red-50 ring-red-600/10',
 };
 
-export function TopBar() {
-  return (
-    <div className="bg-white  shadow">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-12 justify-between">
-          <p className="self-center font-bold">House Hunt 2024</p>
-          <div className="flex items-center">
-            <button
-              type="button"
-              className="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
-              Create
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// -----------------------------------------
 export function AddItem({
   title,
-  className,
+  onOpen,
   color = 'none',
 }: {
   title?: string;
-  className?: string;
+  onOpen: CallableFunction;
   color?: string;
 }) {
+  const open = () => {
+    onOpen();
+  };
   return (
-    <div className={'text-center py-4 w-full ' + className}>
+    <div className="text-center py-4">
       <svg
-        className={'mx-auto h-12 w-12 text-gray-400'}
+        className="mx-auto h-12 w-12 text-gray-400"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -65,15 +48,14 @@ export function AddItem({
       </svg>
       <h3 className="mt-2 text-sm font-semibold text-gray-900">{title}</h3>
       <div
-        className={
-          'm-2 p-1 grid hover:bg-gray-50 shadow-sm rounded-md place-items-center border '
-        }
+        onClick={open}
+        className="m-2 p-1 grid hover:bg-gray-50 shadow-sm rounded-md place-items-center border"
       >
         <button
           type="button"
           className={'rounded-full p-1 text-gray-500 ' + color}
         >
-          <PlusIcon className={'h-5 w-5 '} aria-hidden="true" />
+          <PlusIcon className="h-5 w-5" aria-hidden="true" />
         </button>
       </div>
     </div>
@@ -200,6 +182,11 @@ export default function Board({
   listings: Listing[];
   hasSubscription?: boolean;
 }) {
+  const [isModal, setIsModal] = useState(true);
+
+  const modalHandler = (state: boolean): void => {
+    setIsModal(state);
+  };
   const { put, data, setData } = useForm({ status: '', listingId: '' });
   const moveLeft = (index: number, listingId: string) => {
     if (index > 0) {
@@ -225,9 +212,15 @@ export default function Board({
 
   return (
     <div className="flex h-full w-full absolute">
+      <Modal
+        show={isModal}
+        maxWidth={'xl'}
+        children={<Form />}
+        onClose={() => modalHandler(false)}
+      />
       {columns.map((column, index) => (
         <div className="border-r min-w-72 max-w-72" key={column.type}>
-          <AddItem title={column.name} color={column.color} />
+          <AddItem title={column.name} onOpen={() => modalHandler(true)} />
 
           <ul className="space-y-4 py-4 px-2 w-full">
             {listings

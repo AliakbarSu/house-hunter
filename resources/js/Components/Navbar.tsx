@@ -113,7 +113,8 @@ export default function Navbar({ user }: { user: User }) {
 
       <div
         className={
-          (showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'
+          (showingNavigationDropdown ? 'absolute' : 'hidden') +
+          ' sm:hidden bg-white w-full z-50 h-[calc(100vh-4.1rem)]'
         }
       >
         <div className="pt-2 pb-3 space-y-1">
@@ -125,7 +126,7 @@ export default function Navbar({ user }: { user: User }) {
           </ResponsiveNavLink>
         </div>
 
-        <div className="pt-4 pb-1 border-t border-gray-200">
+        <div className="pt-4 pb-1 border-t border-gray-200 ">
           <div className="px-4">
             <div className="font-medium text-base text-gray-800">
               {user.name}
