@@ -1,4 +1,3 @@
-//------------------------------------------------------
 import { EllipsisHorizontalIcon, PlusIcon } from '@heroicons/react/20/solid';
 import { Listing } from '@/types';
 import { Fragment, useEffect, useState } from 'react';
@@ -10,12 +9,6 @@ import { useForm } from '@inertiajs/react';
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
-
-const statuses = {
-  Paid: 'text-green-700 bg-green-50 ring-green-600/20',
-  Withdraw: 'text-gray-600 bg-gray-50 ring-gray-500/10',
-  Overdue: 'text-red-700 bg-red-50 ring-red-600/10',
-};
 
 export function AddItem({
   title,
@@ -182,7 +175,7 @@ export default function Board({
   listings: Listing[];
   hasSubscription?: boolean;
 }) {
-  const [isModal, setIsModal] = useState(true);
+  const [isModal, setIsModal] = useState(false);
 
   const modalHandler = (state: boolean): void => {
     setIsModal(state);
@@ -212,12 +205,9 @@ export default function Board({
 
   return (
     <div className="flex h-full w-full absolute">
-      <Modal
-        show={isModal}
-        maxWidth={'xl'}
-        children={<Form />}
-        onClose={() => modalHandler(false)}
-      />
+      <Modal show={isModal} maxWidth={'xl'} onClose={() => modalHandler(false)}>
+        <Form />
+      </Modal>
       {columns.map((column, index) => (
         <div className="border-r min-w-72 max-w-72" key={column.type}>
           <AddItem title={column.name} onOpen={() => modalHandler(true)} />
