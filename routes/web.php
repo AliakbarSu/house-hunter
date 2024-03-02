@@ -65,20 +65,9 @@ Route::get('/billing-portal', function (Request $request) {
     return $request->user()->redirectToBillingPortal();
 })->middleware(["auth:sanctum"])->name('stripe.billing-portal');
 
-
 Route::get('/dashboard', function () {
-    return Inertia::render('Checkout/Success');
-})->name('free.plan.limit.reached');
-
-
-Route::middleware('auth:sanctum')->get('/dashboard', function (Request $request) {
     return Inertia::render('Dashboard');
-})->middleware(['auth:sanctum', 'verified'])->name('dashboard');
-
-Route::get('/dashboard2', function () {
-    return Inertia::render('Dashboard2');
-})->name('dashboard2');
-
+})->middleware('auth:sanctum')->name('dashboard');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/rental-profile', function (AddProfileRequest $request, ProfileController $profileController) {
@@ -102,8 +91,9 @@ Route::middleware('auth:sanctum')->prefix('listing')->group(function () {
         return $listingController->getListing($request, $listing);
     });
     Route::post('/', function (AddListingRequest $request, ListingController $listingController) {
-        return $listingController->addListing($request);
-    })->middleware('listing.limit');
+        $listingController->addListing($request);
+        return redirect()->route('dashboard');
+    })->middleware('listing.limit')->name('listing.add');
     Route::put('/{listing}', function (UpdateListingRequest $request, ListingController $listingController, Listing $listing) {
         $listingController->updateListing($request, $listing);
         return redirect()->route('dashboard');

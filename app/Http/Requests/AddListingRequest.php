@@ -18,6 +18,7 @@ class AddListingRequest extends FormRequest
             'title' => ['nullable', 'string', 'max:30'],
             'description' => ['nullable', 'string', 'max:255'],
             'rent' => ['nullable', 'numeric'],
+            'status' => ['string', 'max:255'],
             'bedrooms' => ['required', 'numeric', 'max:15'],
             'bathrooms' => ['required', 'numeric', 'max:15'],
             'board_id' => ['required', 'numeric', "exists:boards,id"],

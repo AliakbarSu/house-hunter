@@ -70,6 +70,6 @@ class UserController extends Controller
 
     public function canAddListing(Request $request): bool
     {
-        return auth()->user()?->subscribed('default') && auth()->user()?->listings->count() < 15;
+        return (!auth()->user()?->subscribed('default') && auth()->user()?->listings->count() < 15) || auth()->user()?->subscribed('default');
     }
 }

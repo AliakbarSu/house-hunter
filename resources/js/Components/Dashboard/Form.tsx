@@ -1,8 +1,9 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm as useFormInertia } from '@inertiajs/react';
 import { PhotoIcon } from '@heroicons/react/24/solid';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
+import { useEffect } from 'react';
 
 const schema = z.object({
   title: z.string(),
@@ -27,16 +28,15 @@ export default function Form() {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<FormFields> = async data => {
-    console.log(data);
+  const { post, data, setData } = useFormInertia();
 
-    await axios.post('/listing', data, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    });
-    console.log('Submitting');
+  const onSubmit: SubmitHandler<FormFields> = async formData => {
+    setData(formData);
   };
+
+  useEffect(() => {
+    post(route('listing.add'));
+  }, [data]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="px-10 py-10">
