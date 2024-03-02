@@ -1,10 +1,11 @@
 //------------------------------------------------------
 import { EllipsisHorizontalIcon, PlusIcon } from '@heroicons/react/20/solid';
 import { Listing } from '@/types';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import Modal from '@/Components/Modal';
 import Form from '@/Components/Dashboard/Form';
+import { useForm } from '@inertiajs/react';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -19,9 +20,11 @@ const statuses = {
 export function AddItem({
   title,
   onOpen,
+  color = 'none',
 }: {
   title?: string;
   onOpen: CallableFunction;
+  color?: string;
 }) {
   const open = () => {
     onOpen();
@@ -48,7 +51,10 @@ export function AddItem({
         onClick={open}
         className="m-2 p-1 grid hover:bg-gray-50 shadow-sm rounded-md place-items-center border"
       >
-        <button type="button" className="rounded-full p-1 text-gray-500">
+        <button
+          type="button"
+          className={'rounded-full p-1 text-gray-500 ' + color}
+        >
           <PlusIcon className="h-5 w-5" aria-hidden="true" />
         </button>
       </div>
@@ -56,19 +62,35 @@ export function AddItem({
   );
 }
 
-const CardItem = ({ card }: { card: Listing }) => {
+const CardItem = ({
+  card,
+  onMoveLeft,
+  onMoveRight,
+  className,
+}: {
+  card: Listing;
+  onMoveRight: () => null;
+  onMoveLeft: () => null;
+  className?: string;
+}) => {
   return (
     <li
       key={card.id}
-      className="overflow-hidden rounded-xl border border-gray-200"
+      className={'overflow-hidden rounded-xl border border-gray-200 '}
     >
-      <div className="flex flex-wrap items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
-        <img
-          src={card.images ? card.images[0]?.url : '/img/placeholder.jpg'}
-          alt={card.title}
-          className="h-12 w-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10"
-        />
-
+      <div
+        className={
+          'flex items-start gap-x-4 border-b border-gray-900/5 p-4 ' + className
+        }
+      >
+        {/*<img*/}
+        {/*  src={card.images ? card.images[0]?.url : '/img/placeholder.jpg'}*/}
+        {/*  alt={card.address}*/}
+        {/*  className="h-12 w-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10"*/}
+        {/*/>*/}
+        <div className="text-sm mt-2 font-medium leading-6 text-gray-900">
+          {card.address}
+        </div>
         <Menu as="div" className="relative ml-auto">
           <Menu.Button className="-m-2.5 block p-2.5 text-gray-400 hover:text-gray-500">
             <span className="sr-only">Open options</span>
@@ -86,56 +108,58 @@ const CardItem = ({ card }: { card: Listing }) => {
             <Menu.Items className="absolute right-0 z-10 mt-0.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
               <Menu.Item>
                 {({ active }) => (
-                  <a
-                    href="#"
+                  <span
+                    onClick={onMoveLeft}
                     className={classNames(
                       active ? 'bg-gray-50' : '',
-                      'block px-3 py-1 text-sm leading-6 text-gray-900'
+                      'block px-3 py-1 text-sm leading-6 text-gray-900 cursor-pointer'
                     )}
                   >
-                    View<span className="sr-only">, {card.title}</span>
-                  </a>
+                    Move Left<span className="sr-only">, {card.title}</span>
+                  </span>
                 )}
               </Menu.Item>
               <Menu.Item>
                 {({ active }) => (
-                  <a
-                    href="#"
+                  <span
+                    onClick={onMoveRight}
                     className={classNames(
                       active ? 'bg-gray-50' : '',
-                      'block px-3 py-1 text-sm leading-6 text-gray-900'
+                      'block px-3 py-1 text-sm leading-6 text-gray-900 cursor-pointer'
                     )}
                   >
-                    Edit<span className="sr-only">, {card.title}</span>
-                  </a>
+                    Move Right<span className="sr-only">, {card.title}</span>
+                  </span>
                 )}
               </Menu.Item>
             </Menu.Items>
           </Transition>
         </Menu>
-        <div className="text-sm mt-2 font-medium leading-6 text-gray-900">
-          {card.title}
-        </div>
       </div>
       <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
         <div className="flex justify-between gap-x-4 py-3">
-          <dt className="text-gray-500">Last invoice</dt>
+          <dt className="text-gray-500">Bedrooms</dt>
           <dd className="text-gray-700">
-            <time dateTime={card.created_at}>{card.created_at}</time>
+            <span>{card.bedrooms}</span>
+          </dd>
+          <dt className="text-gray-500">Bathrooms</dt>
+          <dd className="text-gray-700">
+            <span>{card.bathrooms}</span>
           </dd>
         </div>
         <div className="flex justify-between gap-x-4 py-3">
-          <dt className="text-gray-500">Amount</dt>
           <dd className="flex items-start gap-x-2">
-            <div className="font-medium text-gray-900">{card.rent}</div>
-            <div
-              className={classNames(
-                statuses['Paid'],
-                'rounded-md py-1 px-2 text-xs font-medium ring-1 ring-inset'
-              )}
-            >
-              {card.status}
+            <div className="font-medium text-gray-900">
+              ${`${card.rent} - ${card.rent_frequency}`}
             </div>
+            {/*<div*/}
+            {/*  className={classNames(*/}
+            {/*    statuses['Paid'],*/}
+            {/*    'rounded-md py-1 px-2 text-xs font-medium ring-1 ring-inset'*/}
+            {/*  )}*/}
+            {/*>*/}
+            {/*  {card.status}*/}
+            {/*</div>*/}
           </dd>
         </div>
       </dl>
@@ -145,11 +169,11 @@ const CardItem = ({ card }: { card: Listing }) => {
 
 // --------------------------------------------------
 const columns = [
-  { name: 'Wishlist', type: 'wishlist' },
-  { name: 'Viewing', type: 'viewing' },
-  { name: 'Viewed', type: 'viewed' },
-  { name: 'Offer Rejected', type: 'offer_declined' },
-  { name: 'Offer Accepted', type: 'offer_accepted' },
+  { name: 'Wishlist', type: 'wishlist', color: 'bg-indigo-50' },
+  { name: 'Viewing', type: 'viewing', color: 'bg-orange-50' },
+  { name: 'Viewed', type: 'viewed', color: 'bg-orange-50' },
+  { name: 'Offer Rejected', type: 'offer_declined', color: 'bg-red-50' },
+  { name: 'Offer Accepted', type: 'offer_accepted', color: 'bg-green-50' },
 ];
 
 export default function Board({
@@ -163,30 +187,56 @@ export default function Board({
   const modalHandler = (state: boolean): void => {
     setIsModal(state);
   };
+  const { put, data, setData } = useForm({ status: '', listingId: '' });
+  const moveLeft = (index: number, listingId: string) => {
+    if (index > 0) {
+      const column = columns[index - 1];
+      setData(() => ({ status: column.type, listingId: listingId }));
+    }
+    return null;
+  };
+
+  const moveRight = (index: number, listingId: string) => {
+    if (index < columns.length - 1) {
+      const column = columns[index + 1];
+      setData(() => ({ status: column.type, listingId: listingId }));
+    }
+    return null;
+  };
+
+  useEffect(() => {
+    if (data.status && data.listingId) {
+      put(route('listing.update', data.listingId));
+    }
+  }, [data.status, data.listingId]);
 
   return (
-    <>
-      <div className="grid grid-cols-1 sm:grid-cols-5 h-full">
-        <Modal
-          show={isModal}
-          maxWidth={'xl'}
-          children={<Form />}
-          onClose={() => modalHandler(false)}
-        />
-        {columns.map(column => (
-          <div className="border-r" key={column.type}>
-            <AddItem title={column.name} onOpen={() => modalHandler(true)} />
+    <div className="flex h-full w-full absolute">
+      <Modal
+        show={isModal}
+        maxWidth={'xl'}
+        children={<Form />}
+        onClose={() => modalHandler(false)}
+      />
+      {columns.map((column, index) => (
+        <div className="border-r min-w-72 max-w-72" key={column.type}>
+          <AddItem title={column.name} onOpen={() => modalHandler(true)} />
 
-            <ul className=" space-y-4 py-4 px-2">
-              {listings
-                .filter(({ status }) => status === column.type)
-                .map(listing => (
-                  <CardItem key={listing.id} card={listing} />
-                ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </>
+          <ul className="space-y-4 py-4 px-2 w-full">
+            {listings
+              .filter(({ status }) => status === column.type)
+              .map(listing => (
+                <CardItem
+                  className={column.color}
+                  onMoveLeft={() => moveLeft(index, listing.id)}
+                  onMoveRight={() => moveRight(index, listing.id)}
+                  key={listing.id}
+                  card={listing}
+                />
+              ))}
+          </ul>
+        </div>
+      ))}
+    </div>
   );
 }

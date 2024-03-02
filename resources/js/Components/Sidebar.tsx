@@ -1,8 +1,11 @@
 import {
+  CalendarIcon,
   CreditCardIcon,
+  DocumentIcon,
+  FolderIcon,
   HomeIcon,
   UsersIcon,
-} from '@heroicons/react/24/outline';
+} from '@heroicons/react/24/outline'; // const navigation = [
 
 // const navigation = [
 //   { name: 'House Hunt', href: '#', icon: HomeIcon, current: true },
@@ -12,31 +15,7 @@ import {
 //   { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
 // ];
 
-const secondaryNavigation = [
-  {
-    id: 'dashboard',
-    name: 'Dashboard',
-    href: route('dashboard'),
-    icon: HomeIcon,
-    current: route().current('dashboard'),
-  },
-  {
-    id: 'listing',
-    name: 'Rental Profile',
-    href: route('profile.rental'),
-    icon: UsersIcon,
-    current: route().current('profile.rental'),
-  },
-  {
-    id: 'billing-portal',
-    name: 'Billing',
-    href: route('stripe.billing-portal'),
-    icon: CreditCardIcon,
-    current: route().current('stripe.billing-portal'),
-  },
-];
-
-function classNames(...classes: any[]): string {
+function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
@@ -45,6 +24,57 @@ export default function Sidebar({
 }: {
   hasSubscription: boolean;
 }) {
+  const secondaryNavigation = [
+    {
+      id: 'dashboard',
+      name: 'Dashboard',
+      href: route('dashboard'),
+      icon: HomeIcon,
+      current: route().current('dashboard'),
+      active: true,
+    },
+    {
+      id: 'listing',
+      name: 'Rental Profile',
+      href: route('profile.rental'),
+      icon: UsersIcon,
+      current: route().current('profile.rental'),
+      active: true,
+    },
+    {
+      id: 'calendar',
+      name: 'Calendar',
+      href: route('calendar'),
+      icon: CalendarIcon,
+      current: route().current('calendar'),
+      active: true,
+    },
+    {
+      id: 'applications',
+      name: 'Application Forms',
+      href: route('forms.view'),
+      icon: FolderIcon,
+      current: route().current('forms.view'),
+      active: true,
+    },
+    {
+      id: 'cover-letter',
+      name: 'Cover Letters',
+      href: route('cover-letter.view'),
+      icon: DocumentIcon,
+      current: route().current('cover-letter.view'),
+      active: true,
+    },
+    {
+      id: 'billing-portal',
+      name: 'Billing',
+      href: route('stripe.billing-portal'),
+      icon: CreditCardIcon,
+      current: route().current('stripe.billing-portal'),
+      active: hasSubscription,
+    },
+  ];
+
   return (
     <aside className="flex overflow-x-auto border-b border-gray-900/5 py-4 lg:block lg:w-44 lg:flex-none lg:border-r lg:py-20">
       <nav className="flex-none px-4 sm:px-6 lg:px-0">
@@ -53,7 +83,7 @@ export default function Sidebar({
           className="flex gap-x-3 gap-y-1 whitespace-nowrap lg:flex-col"
         >
           {secondaryNavigation
-            .filter(item => item.id != 'billing-portal' && !hasSubscription)
+            .filter(item => item.active)
             .map(item => (
               <li key={item.name}>
                 <a

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -30,12 +31,19 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $userController = app(UserController::class);
         return [
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
             ],
-            'ziggy' => fn () => [
+            'listings' => $request->user()?->listings->load('notes', 'board', 'images', 'coverLetter', 'applicationForms'),
+            'hasSubscription' => $request->user()?->subscribed('default'),
+            'isAuthenticated' => auth()->check(),
+            'can' => [
+                'addListing' => $userController->canAddListing($request),
+            ],
+            'ziggy' => fn() => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],

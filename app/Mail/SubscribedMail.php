@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -13,14 +14,14 @@ class SubscribedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public Invoice $invoice)
+    public function __construct(public Invoice $invoice, public User $user)
     {
     }
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Subscribed',
+            subject: 'Your subscription is active!',
         );
     }
 
@@ -28,6 +29,7 @@ class SubscribedMail extends Mailable
     {
         return new Content(
             markdown: 'emails.subscribed',
+            with: ['invoice' => $this->invoice, 'url' => route('dashboard'), 'user' => $this->user],
         );
     }
 

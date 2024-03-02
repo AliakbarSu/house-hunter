@@ -67,4 +67,9 @@ class UserController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function canAddListing(Request $request): bool
+    {
+        return auth()->user()?->subscribed('default') && auth()->user()?->listings->count() < 15;
+    }
 }

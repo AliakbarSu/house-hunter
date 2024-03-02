@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdateListingRequest extends FormRequest
 {
@@ -26,7 +24,7 @@ class UpdateListingRequest extends FormRequest
             'toilets' => ['numeric'],
             'property_type' => ['string', 'in:house,apartment,condo'],
             'board_id' => ['numeric', "exists:boards,id"],
-            "status" => ["string", "in:'wishlist,viewing,viewed,applied,offer_accepted,offer_declined"]
+            "status" => ["string", "in:wishlist,viewing,viewed,applied,offer_accepted,offer_declined"]
         ];
     }
 
@@ -37,11 +35,11 @@ class UpdateListingRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'errors' => $validator->errors(),
-            'status' => true
-        ], 422));
-    }
+//    protected function failedValidation(Validator $validator)
+//    {
+//        throw new HttpResponseException(response()->json([
+//            'errors' => $validator->errors(),
+//            'status' => true
+//        ], 422));
+//    }
 }

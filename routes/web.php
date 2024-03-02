@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationFormController;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\CoverLetterController;
 use App\Http\Controllers\ListingController;
@@ -9,7 +10,9 @@ use App\Http\Requests\AddListingNoteRequest;
 use App\Http\Requests\AddListingRequest;
 use App\Http\Requests\AddProfileRequest;
 use App\Http\Requests\UpdateListingRequest;
+use App\Models\ApplicationForm;
 use App\Models\Board;
+use App\Models\CoverLetter;
 use App\Models\Listing;
 use App\Models\Profile;
 use Illuminate\Foundation\Application;
@@ -32,10 +35,8 @@ Route::get('/', function (StripeController $stripeController) {
     return Inertia::render('LandingPage', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'isAuthenticated' => auth()->check(),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'hasSubscription' => auth()->user()?->subscribed('default'),
         'plans' => $stripeController->getPlans()
     ]);
 })->name('home');
@@ -56,6 +57,10 @@ Route::get('/checkout/success', function () {
     return Inertia::render('Checkout/Success');
 })->name('stripe.checkout-success');
 
+Route::get('/checkout/fail', function () {
+    return Inertia::render('Checkout/Fail');
+})->name('stripe.checkout-fail');
+
 Route::get('/billing-portal', function (Request $request) {
     return $request->user()->redirectToBillingPortal();
 })->middleware(["auth:sanctum"])->name('stripe.billing-portal');
@@ -65,9 +70,9 @@ Route::get('/dashboard', function () {
     return Inertia::render('Checkout/Success');
 })->name('free.plan.limit.reached');
 
+
 Route::middleware('auth:sanctum')->get('/dashboard', function (Request $request) {
-    return Inertia::render('Dashboard', ['listings' => $request->user()->listings->load('notes', 'board', 'images'),
-        'hasSubscription' => $request->user()?->subscribed('default')]);
+    return Inertia::render('Dashboard');
 })->middleware(['auth:sanctum', 'verified'])->name('dashboard');
 
 Route::get('/dashboard2', function () {
@@ -99,9 +104,10 @@ Route::middleware('auth:sanctum')->prefix('listing')->group(function () {
     Route::post('/', function (AddListingRequest $request, ListingController $listingController) {
         return $listingController->addListing($request);
     })->middleware('listing.limit');
-    Route::put('/{id}', function (UpdateListingRequest $request, ListingController $listingController, Listing $listing) {
-        return $listingController->updateListing($request, $listing);
-    });
+    Route::put('/{listing}', function (UpdateListingRequest $request, ListingController $listingController, Listing $listing) {
+        $listingController->updateListing($request, $listing);
+        return redirect()->route('dashboard');
+    })->name('listing.update');
     Route::delete('/{id}', function (Request $request, ListingController $listingController, Listing $listing) {
         return $listingController->deleteListing($request, $listing);
     });
@@ -140,10 +146,48 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/cover-letter', function () {
+        return Inertia::render('CoverLetter');
+    })->name('cover-letter.view');
+
     Route::get('/cover-letter/{listing}', function (Request $request, CoverLetterController $coverLetterController, Listing $listing) {
-        $coverLetter = $coverLetterController->generateCoverLetter($request, $listing);
-        return Inertia::render('CoverLetter/view', ['cover_letter' => $coverLetter]);
+        return Inertia::render('CoverLetter/view');
     });
+    Route::post('/cover-letter/{listing}', function (Request $request, CoverLetterController $coverLetterController, Listing $listing) {
+        if (!$listing->canGenerateCoverLetter()) {
+            return Inertia::render('CoverLetter')->with('error', 'You have reached the limit of cover letters for this address');
+        }
+        $coverLetterController->generateCoverLetter($request, $listing);
+        return redirect()->route('cover-letter.view');
+    })->name('cover-letter.generate');
+    Route::get('/cover-letter/{coverLetter}/download', function (Request $request, CoverLetterController $coverLetterController, CoverLetter $coverLetter) {
+        return $coverLetterController->downloadCoverLetter($request, $coverLetter);
+    })->name('cover-letter.download');
 });
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/calendar', function () {
+        return Inertia::render('Calendar');
+    })->name('calendar');
+    Route::post('/calendar/listing/{listing}', function (UpdateListingRequest $request, ListingController $listingController, Listing $listing) {
+        $listingController->updateListing($request, $listing);
+        return redirect()->route('calendar')->withInput();
+    })->name('calendar.update.listing');
+});
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/forms/generate/{listing}/{id}', function (ApplicationFormController $applicationFormController, Listing $listing, $id) {
+        $applicationFormController->getApplicationForm($listing, $id);
+        return redirect()->route('forms.view');
+    })->name('forms.generate');
+    Route::get('/forms/view', function () {
+        return Inertia::render('ApplicationForm');
+    })->name('forms.view');
+    Route::get('/forms/download/{form}', function (ApplicationForm $form) {
+        return Storage::disk('s3')->download($form->filename);
+    })->name('forms.download');
+});
+
 
 require __DIR__ . '/auth.php';

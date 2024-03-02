@@ -1,12 +1,17 @@
 <x-mail::message>
-    # Introduction
+# Hi {{ $user->name }}
 
-    Thanks for subscribing to our newsletter. We'll keep you updated with the latest news and offers.
+Your subscription to {{ config('app.name') }} has been confirmed. You're all set to use all the premium features.
 
-    <x-mail::button :url="''">
-        Button Text
-    </x-mail::button>
+### Here's a summary of your invoice:
+- Invoice ID: {{ $invoice->id }}
+- Date: {{ $invoice->date()->toFormattedDateString() }}
+- Total: {{ $invoice->total() }}
 
-    Thanks,<br>
-    {{ config('app.name') }}
+<x-mail::button :url="$invoice->invoice_pdf">
+    Download PDF
+</x-mail::button>
+
+Thanks,<br>
+{{ config('app.name') }}
 </x-mail::message>

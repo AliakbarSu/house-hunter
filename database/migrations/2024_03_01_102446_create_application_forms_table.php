@@ -10,14 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('application_forms', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->unsignedBigInteger('listing_id');
+            $table->foreign('listing_id')->references('id')->on('listings')->onDelete('cascade');
+            $table->string('filename');
+            $table->string('url')->nullable();
             $table->boolean('deleted')->default(false)->nullable();
-            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('application_forms');
     }
 };

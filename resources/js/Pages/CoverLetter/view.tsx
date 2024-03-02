@@ -4,7 +4,6 @@ import { CoverLetter, PageProps } from '@/types';
 export default function ViewCoverLetter({
   cover_letter,
 }: PageProps<{ cover_letter: CoverLetter; phpVersion: string }>) {
-  console.log(cover_letter);
   return (
     <>
       <Head title="Welcome" />

@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('listing_id');
             $table->foreign('listing_id')->references('id')->on('listings')->onDelete('cascade');
             $table->text('note');
+            $table->boolean('deleted')->default(false)->nullable();
             $table->timestamps();
         });
     }

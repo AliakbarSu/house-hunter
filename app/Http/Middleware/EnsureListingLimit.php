@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\UserController;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,9 +14,9 @@ class EnsureListingLimit
      *
      * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, UserController $controller): Response
     {
-        if (!auth()->user()?->subscribed('default') && auth()->user()?->listings->count() >= 5) {
+        if (!$controller->canAddListing($request)) {
             return redirect('/checkout/success');
         }
         return $next($request);

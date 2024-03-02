@@ -63,6 +63,9 @@ provider:
     STRIPE_KEY: ${env:STRIPE_KEY}
     STRIPE_SECRET: ${env:STRIPE_SECRET}
     STRIPE_WEBHOOK_SECRET: ${env:STRIPE_WEBHOOK_SECRET}
+    OPENAI_API_KEY: ${env:OPENAI_API_KEY}
+    ADOBE_API_KEY: ${env:ADOBE_API_KEY}
+    ADOBE_API_SECRET: ${env:ADOBE_API_SECRET}
 
 package:
   # Files and directories to exclude from deployment

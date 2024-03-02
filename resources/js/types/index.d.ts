@@ -62,6 +62,9 @@ export interface Listing {
   notes: Note[];
   board: Board;
   images: Image[];
+  cover_letter: CoverLetter[];
+  application_forms: ApplicationForm[];
+  viewing_at: string;
   created_at: string;
   updated_at: string;
 }
@@ -120,11 +123,24 @@ export interface CoverLetter {
   updated_at: string;
 }
 
+export type ApplicationForm = {
+  filename: string;
+  id: string;
+  created_at: string;
+};
+
 export type PageProps<
   T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
   auth: {
     user: User;
+  };
+  error: string;
+  isAuthenticated: boolean;
+  listings: Listing[];
+  hasSubscription: boolean;
+  can: {
+    addListing: boolean;
   };
   ziggy: Config & { location: string };
 };

@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('phone')->nullable();
             $table->string('mobile')->nullable();
             $table->string('email')->nullable();
+            $table->boolean('deleted')->default(false)->nullable();
             $table->timestamps();
         });
     }

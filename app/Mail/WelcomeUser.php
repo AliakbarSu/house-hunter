@@ -39,6 +39,7 @@ class WelcomeUser extends Mailable
     {
         return new Content(
             markdown: 'mail.user.welcome',
+            with: ['user' => $this->user, 'url' => route('dashboard')],
         );
     }
 
