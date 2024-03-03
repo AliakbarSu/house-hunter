@@ -37,7 +37,7 @@ const CardItem = ({
         {/*/>*/}
         <div
           onClick={onClick}
-          className="text-sm mt-2 font-medium leading-6 text-gray-900 cursor-pointer"
+          className="text-sm mt-2 font-medium leading-6 text-white cursor-pointer"
         >
           {card.address}
         </div>
@@ -98,6 +98,12 @@ const CardItem = ({
           <dt className="text-gray-500">Bathrooms</dt>
           <dd className="text-gray-700">
             <span>{card.bathrooms}</span>
+          </dd>
+        </div>
+        <div className="flex justify-between gap-x-4 py-3">
+          <dt className="text-gray-500">Garages</dt>
+          <dd className="text-gray-700">
+            <span>{card.garages}</span>
           </dd>
         </div>
         <div className="flex justify-between gap-x-4 py-3">

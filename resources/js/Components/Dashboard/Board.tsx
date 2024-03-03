@@ -7,12 +7,12 @@ import CardItem from '@/Components/Dashboard/CardItem';
 import AddItem from '@/Components/Dashboard/AddItem';
 
 const columns = [
-  { name: 'Wishlist', type: 'wishlist', color: 'bg-indigo-50' },
-  { name: 'Viewing', type: 'viewing', color: 'bg-orange-50' },
-  { name: 'Viewed', type: 'viewed', color: 'bg-purple-50' },
-  { name: 'Applied', type: 'applied', color: 'bg-pink-50' },
-  { name: 'Offer Rejected', type: 'offer_declined', color: 'bg-red-50' },
-  { name: 'Offer Accepted', type: 'offer_accepted', color: 'bg-green-50' },
+  { name: 'Wishlist', type: 'wishlist', color: 'bg-indigo-400' },
+  { name: 'Viewing', type: 'viewing', color: 'bg-sky-600' },
+  { name: 'Viewed', type: 'viewed', color: 'bg-purple-600' },
+  { name: 'Applied', type: 'applied', color: 'bg-pink-600' },
+  { name: 'Offer Rejected', type: 'offer_rejected', color: 'bg-orange-600' },
+  { name: 'Offer Accepted', type: 'offer_accepted', color: 'bg-teal-600' },
 ];
 
 export default function Board({
