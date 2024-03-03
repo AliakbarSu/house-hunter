@@ -8,8 +8,8 @@ class StripeController extends Controller
 {
     public function getPlans()
     {
-        $products = Cashier::stripe()->products->all();
-        $prices = Cashier::stripe()->prices->all();
+        $products = Cashier::stripe()->products->all(['active' => true]);
+        $prices = Cashier::stripe()->prices->all(['active' => true]);
         return array_map(function ($product) use ($prices) {
             $priceArr = array_filter($prices->data, function ($price) use ($product) {
                 return $price->product == $product->id;
