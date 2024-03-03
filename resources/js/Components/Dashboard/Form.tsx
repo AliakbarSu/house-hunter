@@ -130,7 +130,7 @@ export default function Form({
               <div className="mt-1">
                 <input
                   onChange={e => setData('rent', +e.target.value)}
-                  type="number"
+                  type="text"
                   id="rent"
                   value={data.rent}
                   name="rent"
