@@ -1,7 +1,7 @@
 import { useForm } from '@inertiajs/react';
 import { PhotoIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import * as z from 'zod';
-import { User } from '@/types';
+import { Listing, User } from '@/types';
 import { FormEvent, useEffect, useState } from 'react';
 import InputError from '@/Components/InputError';
 
@@ -32,27 +32,36 @@ const bathrooms = [1, 2, 3, 4, 5, 6, 7, 8];
 export default function Form({
   user,
   closeModal,
+  listing,
 }: {
   user: User;
   closeModal: () => void;
+  listing?: Listing;
 }) {
-  const { post, errors, data, processing, setData } = useForm({
-    title: '',
-    description: '',
-    address: '',
-    rent: 0,
-    bedrooms: 0,
-    bathrooms: 0,
+  const { post, put, errors, data, processing, setData } = useForm({
+    title: listing?.title || '',
+    description: listing?.description || '',
+    address: listing?.address || '',
+    rent: listing?.rent || 0,
+    bedrooms: listing?.bedrooms || 0,
+    bathrooms: listing?.bathrooms || 0,
     board_id: user.boards[0].id,
-    status: '',
-    viewing_at: null,
+    status: listing?.status || '',
+    viewing_at: listing?.viewing_at || null,
     images: [] as unknown as FileList | null,
   });
   const [previews, setPreviews] = useState<string[]>([]);
+  const updateMode = !!listing;
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    post(route('listing.add'), { onSuccess: () => closeModal() });
+    if (updateMode) {
+      post(route('listing.update', listing.id), {
+        onSuccess: () => closeModal(),
+      });
+    } else {
+      post(route('listing.add'), { onSuccess: () => closeModal() });
+    }
   };
 
   const onFileChange = (e: FormEvent<HTMLInputElement>) => {
@@ -99,6 +108,7 @@ export default function Form({
                 <input
                   onChange={e => setData('address', e.target.value)}
                   type="text"
+                  value={data.address}
                   id="address"
                   name="address"
                   className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -119,6 +129,7 @@ export default function Form({
                   onChange={e => setData('rent', +e.target.value)}
                   type="number"
                   id="rent"
+                  value={data.rent}
                   name="rent"
                   className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />
@@ -132,6 +143,7 @@ export default function Form({
                   onChange={e => setData('bedrooms', +e.target.value)}
                   id="bedrooms"
                   name="bedrooms"
+                  value={data.bedrooms}
                   className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 >
                   <option value="">Bedrooms</option>
@@ -150,6 +162,7 @@ export default function Form({
                 <select
                   onChange={e => setData('bathrooms', +e.target.value)}
                   id="bathrooms"
+                  value={data.bathrooms}
                   name="bathrooms"
                   className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 >
@@ -170,6 +183,7 @@ export default function Form({
                   onChange={e => setData('status', e.target.value)}
                   id="status"
                   name="status"
+                  value={data.status}
                   className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 >
                   <option value="">Select status</option>
@@ -291,7 +305,7 @@ export default function Form({
                     PNG, JPG, GIF up to 10MB
                   </p>
                 </div>
-                <div className="mt-4 grid grid-cols-2 gap-4">
+                <div className="mt-4 grid grid-cols-2 gap-4 w-full">
                   {previews.map((preview, index) => (
                     <img
                       key={index}
@@ -312,13 +326,23 @@ export default function Form({
         </section>
 
         <div className="mt-10 border-t border-gray-200 pt-6 sm:flex sm:items-center sm:justify-between">
-          <button
-            disabled={processing}
-            type="submit"
-            className="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:order-last sm:ml-6 sm:w-auto"
-          >
-            {processing ? 'Creating..' : 'Create'}
-          </button>
+          {updateMode ? (
+            <button
+              disabled={processing}
+              type="submit"
+              className="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:order-last sm:ml-6 sm:w-auto"
+            >
+              {processing ? 'Updating...' : 'Update'}
+            </button>
+          ) : (
+            <button
+              disabled={processing}
+              type="submit"
+              className="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:order-last sm:ml-6 sm:w-auto"
+            >
+              {processing ? 'Creating..' : 'Create'}
+            </button>
+          )}
           <p className="mt-4 text-center text-sm text-gray-500 sm:mt-0 sm:text-left">
             Please fill in required fields
           </p>
