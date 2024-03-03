@@ -14,8 +14,9 @@ class EnsureListingLimit
      *
      * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
      */
-    public function handle(Request $request, Closure $next, UserController $controller): Response
+    public function handle(Request $request, Closure $next): Response
     {
+        $controller = new UserController();
         if (!$controller->canAddListing($request)) {
             return redirect('/checkout/success');
         }

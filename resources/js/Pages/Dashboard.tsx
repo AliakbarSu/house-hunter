@@ -13,7 +13,7 @@ export default function Dashboard({
     <AuthenticatedLayout user={auth.user} hasSubscription={hasSubscription}>
       <div className="h-full bg-white relative">
         <Head title="Dashboard" />
-        <Board listings={listings} />
+        <Board listings={listings} user={auth.user} />
       </div>
     </AuthenticatedLayout>
   );

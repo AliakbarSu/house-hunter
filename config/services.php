@@ -33,6 +33,15 @@ return [
 
     'openai' => [
         'secret' => env('OPENAI_API_KEY'),
+    ],
+
+    'adobe' => [
+        'token_url' => 'https://ims-na1.adobelogin.com/ims/token/v3',
+        'pdf_url' => 'https://pdf-services.adobe.io/operation/documentgeneration',
+        'key' => env('ADOBE_API_KEY'),
+        'secret' => env('ADOBE_API_SECRET'),
+        'grant_type' => 'client_credentials',
+        'scope' => 'openid, AdobeID, DCAPI',
     ]
 
 ];

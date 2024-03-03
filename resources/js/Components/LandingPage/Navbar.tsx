@@ -28,7 +28,7 @@ export default function Navbar({
             <span className="sr-only">Your Company</span>
             <img
               className="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+              src="https://res.cloudinary.com/dxuf2ssx6/image/upload/q_auto:eco/v1709355153/PropertyHunters/Group_12.webp"
               alt=""
             />
           </a>

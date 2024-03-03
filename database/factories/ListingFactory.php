@@ -25,7 +25,8 @@ class ListingFactory extends Factory
             'bathrooms' => $this->faker->numberBetween(1, 3),
             'garages' => $this->faker->numberBetween(0, 2),
             'toilets' => $this->faker->numberBetween(1, 3),
-            'status' => $this->faker->randomElement(['wishlist', 'viewing', 'viewed', 'applied', 'offer_accepted', 'offer_declined']),
+            'status' => $this->faker->randomElement(['wishlist', 'viewing', 'viewed', 'applied', 'offer_accepted', 'offer_rejected']),
+            'viewing_at' => $this->faker->dateTimeBetween('now', '+1 month'),
         ];
     }
 }

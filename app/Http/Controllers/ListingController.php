@@ -53,15 +53,18 @@ class ListingController extends Controller
         $newListing->board()->associate($board_id);
         $newListing->save();
 
-        foreach ($request->file('images') as $imagefile) {
-            $image = new Image;
-            $path = Storage::disk('s3')->put('listing_images', $imagefile);
-            Storage::disk('s3')->setVisibility($path, 'public');
-            $image->url = Storage::disk('s3')->url($path);
-            $image->filename = basename($path);
-            $image->listing_id = $newListing->id;
-            $image->save();
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $imagefile) {
+                $image = new Image;
+                $path = Storage::disk('s3')->put("listing_images/$newListing->id", $imagefile);
+                Storage::disk('s3')->setVisibility($path, 'public');
+                $image->url = Storage::disk('s3')->url($path);
+                $image->filename = basename($path);
+                $image->listing_id = $newListing->id;
+                $image->save();
+            }
         }
+
 
         return $newListing->load('notes', 'board', 'images');
     }
@@ -71,7 +74,20 @@ class ListingController extends Controller
         $validated = $request->validated();
         $listing->update($validated);
         $listing->save();
-        return $listing;
+
+        if ($request->hasFile('images')) {
+            Image::where('listing_id', $listing->id)->delete();
+            foreach ($request->file('images') as $imagefile) {
+                $image = new Image;
+                $path = Storage::disk('s3')->put('listing_images', $imagefile);
+                Storage::disk('s3')->setVisibility($path, 'public');
+                $image->url = Storage::disk('s3')->url($path);
+                $image->filename = basename($path);
+                $image->listing_id = $listing->id;
+                $image->save();
+            }
+        }
+        return $listing->load('notes', 'board', 'images');
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationFormController;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\CoverLetterController;
 use App\Http\Controllers\ListingController;
@@ -9,6 +10,7 @@ use App\Http\Requests\AddListingNoteRequest;
 use App\Http\Requests\AddListingRequest;
 use App\Http\Requests\AddProfileRequest;
 use App\Http\Requests\UpdateListingRequest;
+use App\Models\ApplicationForm;
 use App\Models\Board;
 use App\Models\CoverLetter;
 use App\Models\Listing;
@@ -63,20 +65,12 @@ Route::get('/billing-portal', function (Request $request) {
     return $request->user()->redirectToBillingPortal();
 })->middleware(["auth:sanctum"])->name('stripe.billing-portal');
 
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Checkout/Success');
-})->name('free.plan.limit.reached');
-
-
-Route::middleware('auth:sanctum')->get('/dashboard', function (Request $request) {
+Route::get('/dashboard', function (Request $request) {
+    if ($request->user()->boards->isEmpty()) {
+        return Inertia::render('AddBoard');
+    }
     return Inertia::render('Dashboard');
-})->middleware(['auth:sanctum', 'verified'])->name('dashboard');
-
-Route::get('/dashboard2', function () {
-    return Inertia::render('Dashboard2');
-})->name('dashboard2');
-
+})->middleware('auth:sanctum')->name('dashboard');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/rental-profile', function (AddProfileRequest $request, ProfileController $profileController) {
@@ -100,9 +94,10 @@ Route::middleware('auth:sanctum')->prefix('listing')->group(function () {
         return $listingController->getListing($request, $listing);
     });
     Route::post('/', function (AddListingRequest $request, ListingController $listingController) {
-        return $listingController->addListing($request);
-    })->middleware('listing.limit');
-    Route::put('/{listing}', function (UpdateListingRequest $request, ListingController $listingController, Listing $listing) {
+        $listingController->addListing($request);
+        return redirect()->route('dashboard');
+    })->middleware('listing.limit')->name('listing.add');
+    Route::post('update//{listing}', function (UpdateListingRequest $request, ListingController $listingController, Listing $listing) {
         $listingController->updateListing($request, $listing);
         return redirect()->route('dashboard');
     })->name('listing.update');
@@ -120,10 +115,11 @@ Route::middleware('auth:sanctum')->prefix('listing')->group(function () {
 
 Route::middleware('auth:sanctum')->prefix('board')->group(function () {
     Route::post('/', function (Request $request, BoardController $boardController) {
-        return $boardController->addBoard($request);
-    });
-    Route::get('/', function (Request $request, BoardController $boardController, Board $board) {
-        return $boardController->getAllboards($request, $board);
+        $boardController->addBoard($request);
+        return redirect()->route('dashboard');
+    })->name('board.add');
+    Route::get('/', function () {
+        return Inertia::render('AddBoard');
     });
     Route::get('/{id}', function (Request $request, BoardController $boardController, Board $board) {
         return $boardController->getBoard($request, $board);
@@ -144,8 +140,8 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/cover-letter', function () {
-        return Inertia::render('CoverLetter');
+    Route::get('/cover-letter', function (Request $request) {
+        return Inertia::render('CoverLetter', ['listing_id' => $request->listing_id]);
     })->name('cover-letter.view');
 
     Route::get('/cover-letter/{listing}', function (Request $request, CoverLetterController $coverLetterController, Listing $listing) {
@@ -156,11 +152,42 @@ Route::middleware('auth:sanctum')->group(function () {
             return Inertia::render('CoverLetter')->with('error', 'You have reached the limit of cover letters for this address');
         }
         $coverLetterController->generateCoverLetter($request, $listing);
-        return redirect()->route('cover-letter.view');
+        return redirect()->route('cover-letter.view', ['listing_id' => $listing->id]);
     })->name('cover-letter.generate');
     Route::get('/cover-letter/{coverLetter}/download', function (Request $request, CoverLetterController $coverLetterController, CoverLetter $coverLetter) {
         return $coverLetterController->downloadCoverLetter($request, $coverLetter);
     })->name('cover-letter.download');
 });
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/calendar', function () {
+        return Inertia::render('Calendar');
+    })->name('calendar');
+    Route::post('/calendar/listing/{listing}', function (UpdateListingRequest $request, ListingController $listingController, Listing $listing) {
+        $listingController->updateListing($request, $listing);
+        return redirect()->route('calendar')->withInput();
+    })->name('calendar.update.listing');
+});
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/forms/generate/{listing}/{id}', function (Request $request, ApplicationFormController $applicationFormController, Listing $listing, $id) {
+        $main_profile = $request->user()->profiles()->where('main_applicant', 1)->first();
+        $applicationFormController->getApplicationForm($main_profile, $listing, $id);
+        return redirect()->route('forms.view', ['listing_id' => $listing->id]);
+    })->name('forms.generate');
+    Route::get('/forms/view', function (Request $request) {
+        return Inertia::render('ApplicationForm', ['listing_id' => $request->listing_id]);
+    })->name('forms.view');
+    Route::get('/forms/download/{form}', function (ApplicationForm $form) {
+        try {
+            return Storage::disk('s3')->download($form->filename);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return back()->withErrors(['error' => 'Something went wrong while downloading the file. Please try again later.']);
+        }
+    })->name('forms.download');
+});
+
 
 require __DIR__ . '/auth.php';

@@ -13,8 +13,8 @@ return new class extends Migration {
         Schema::create('listings', function (Blueprint $table) {
             $table->id();
             $table->string('address');
-            $table->string('title');
-            $table->text('description');
+            $table->string('title')->nullable();
+            $table->text('description')->nullable();
             $table->string('type')->default('rent');
             $table->string('property_type')->default('house');
             $table->float('rent');
@@ -27,6 +27,7 @@ return new class extends Migration {
             $table->boolean('deleted')->default(false)->nullable();
             $table->unsignedBigInteger('board_id');
             $table->foreign('board_id')->references('id')->on('boards')->onDelete('cascade');
+            $table->dateTime('viewing_at')->default(now())->nullable();
             $table->timestamps();
         });
     }

@@ -18,8 +18,12 @@ class AddListingRequest extends FormRequest
             'title' => ['nullable', 'string', 'max:30'],
             'description' => ['nullable', 'string', 'max:255'],
             'rent' => ['nullable', 'numeric'],
-            'bedrooms' => ['required', 'numeric', 'max:15'],
-            'bathrooms' => ['required', 'numeric', 'max:15'],
+            'status' => ['required', 'string', 'in:wishlist,viewing,viewed,applied,offer_accepted,offer_rejected', 'max:255'],
+            'viewing_at' => ['nullable', 'date_format:Y-m-d'],
+            'bedrooms' => ['required', 'numeric', 'min:0', 'max:15'],
+            'bathrooms' => ['required', 'numeric', 'min:0', 'max:15'],
+            'images' => ['nullable', 'array', 'max:3'],
+            'images.*' => ['image', 'max:2048', 'mimes:jpeg,png,jpg,gif,svg'],
             'board_id' => ['required', 'numeric', "exists:boards,id"],
         ];
     }
