@@ -19,11 +19,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title inertia>{{ config('app.name', 'Laravel') }}</title>
+    <title inertia>{{ config('app.name', 'Property Hunters') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
+    <meta property="og:title" content="{{ config('app.name', 'Property Hunters') }}">
+    <meta property="og:description" content="Stay on top of you house hunting!">
+    <meta property="og:image"
+          content="https://res.cloudinary.com/dxuf2ssx6/image/upload/q_auto:eco/v1709190772/PropertyHunters/banner.png">
 
     <!-- Scripts -->
     @routes
