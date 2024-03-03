@@ -15,8 +15,8 @@ class UpdateListingRequest extends FormRequest
     {
         return [
             'address' => ['string', 'min:2', 'max:255'],
-            'title' => ['string', 'max:255'],
-            'description' => ['string', 'max:255'],
+            'title' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:255'],
             'rent' => ['numeric'],
             'bedrooms' => ['numeric'],
             'bathrooms' => ['numeric'],
@@ -24,6 +24,8 @@ class UpdateListingRequest extends FormRequest
             'toilets' => ['numeric'],
             'property_type' => ['string', 'in:house,apartment,condo'],
             'board_id' => ['numeric', "exists:boards,id"],
+            'images' => ['nullable', 'array', 'max:3'],
+            'images.*' => ['image', 'max:2048', 'mimes:jpeg,png,jpg,gif,svg'],
             "status" => ["string", 'in:wishlist,viewing,viewed,applied,offer_accepted,offer_rejected']
         ];
     }

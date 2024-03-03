@@ -31,7 +31,7 @@ export default function Board({
   const modalHandler = (state: boolean): void => {
     setIsModal(state);
   };
-  const { put, data, setData } = useForm({ status: '', listingId: '' });
+  const { post, data, setData } = useForm({ status: '', listingId: '' });
   const moveLeft = (index: number, listingId: string) => {
     if (index > 0) {
       const column = columns[index - 1];
@@ -60,7 +60,7 @@ export default function Board({
 
   useEffect(() => {
     if (data.status && data.listingId) {
-      put(route('listing.update', data.listingId));
+      post(route('listing.update', data.listingId));
     }
   }, [data.status, data.listingId]);
 
