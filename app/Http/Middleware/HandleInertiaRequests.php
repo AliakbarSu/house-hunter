@@ -35,11 +35,11 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => fn() => $request->user(),
             ],
-            'listings' => $request->user()?->listings->load('notes', 'board', 'images', 'coverLetter', 'applicationForms'),
-            'hasSubscription' => $request->user()?->subscribed('default'),
-            'isAuthenticated' => auth()->check(),
+            'listings' => fn() => $request->user()?->listings->load('notes', 'board', 'images', 'coverLetter', 'applicationForms'),
+            'hasSubscription' => fn() => $request->user()?->subscribed('default'),
+            'isAuthenticated' => fn() => auth()->check(),
             'can' => [
                 'addListing' => $userController->canAddListing($request),
             ],
