@@ -4,6 +4,7 @@ import * as z from 'zod';
 import { Listing, User } from '@/types';
 import { FormEvent, useEffect, useState } from 'react';
 import InputError from '@/Components/InputError';
+import { format } from 'date-fns';
 
 const schema = z.object({
   title: z.string(),
@@ -38,7 +39,7 @@ export default function Form({
   closeModal: () => void;
   listing?: Listing;
 }) {
-  const { post, put, errors, data, processing, setData } = useForm({
+  const { post, errors, data, processing, setData } = useForm({
     title: listing?.title || '',
     description: listing?.description || '',
     address: listing?.address || '',
@@ -47,7 +48,9 @@ export default function Form({
     bathrooms: listing?.bathrooms || 0,
     board_id: user.boards[0].id,
     status: listing?.status || '',
-    viewing_at: listing?.viewing_at || null,
+    viewing_at: listing?.viewing_at
+      ? format(new Date(listing?.viewing_at), 'yyyy-MM-dd')
+      : null,
     images: [] as unknown as FileList | null,
   });
   const [previews, setPreviews] = useState<string[]>([]);

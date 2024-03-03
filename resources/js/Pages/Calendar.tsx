@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/20/solid';
 import { Menu, Transition } from '@headlessui/react';
 import { format, isSameDay } from 'date-fns';
-import axios from 'axios';
+import { router } from '@inertiajs/react';
 
 const getDaysInMonth = (
   month: number,
@@ -104,14 +104,14 @@ export default function Calendar({
   const isViewingToday = (viewing: Listing) => {
     return (
       isSameDay(
-        new Date(viewing.viewing_at.split('T')[0]),
+        new Date(viewing.viewing_at?.split('T')[0]),
         new Date(selectedDate)
       ) && viewing.status == 'viewing'
     );
   };
 
   const onUpdateStatus = async (id: number, status: string) => {
-    await axios.post(route('calendar.update.listing', id), {
+    router.post(route('calendar.update.listing', id), {
       status: status,
     });
   };
