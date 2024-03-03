@@ -136,6 +136,7 @@ export type PageProps<
     user: User;
   };
   error: string;
+  errors: { [key: string]: string };
   isAuthenticated: boolean;
   listings: Listing[];
   hasSubscription: boolean;

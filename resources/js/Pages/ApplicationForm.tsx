@@ -1,17 +1,17 @@
 import { ApplicationForm, PageProps } from '@/types';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { DocumentIcon, FolderIcon } from '@heroicons/react/20/solid';
-import { useState } from 'react';
-import { Head, useForm } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
+import { Head, useForm, useRemember } from '@inertiajs/react';
 import InputError from '@/Components/InputError';
 
 const formTypes = [
   {
-    id: 0,
+    id: 1,
     name: 'Barfoot&Thompson',
   },
   {
-    id: 1,
+    id: 2,
     name: 'Ray White',
   },
 ];
@@ -20,23 +20,36 @@ export default function ApplicationForms({
   auth,
   hasSubscription,
   listings,
-  error,
-}: PageProps) {
+  listing_id,
+  errors,
+}: PageProps<{ listing_id: string }>) {
   const { processing, get, hasErrors, setData } = useForm({});
-  const [selectedListingId, setSelectedAddress] = useState('');
-  const [selectedFormType, setSelectedFormType] = useState(0);
+  const [selectedListingId, setSelectedListingId] = useRemember(
+    '',
+    'ApplicationForm/listing_id'
+  );
+  const [selectedFormType, setSelectedFormType] = useState(1);
   const [applicationForms, setApplicationForms] = useState<ApplicationForm[]>(
     []
   );
 
   const onAddressSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedAddress(e.target.value);
+    setSelectedListingId(e.target.value);
     setData(() => ({ listing_id: e.target.value }));
-    if (e.target.value) {
-      const listing = listings.find(listing => listing.id == e.target.value);
+  };
+
+  useEffect(() => {
+    if (selectedListingId) {
+      const listing = listings.find(listing => listing.id == selectedListingId);
       setApplicationForms(listing?.application_forms || []);
     }
-  };
+  }, [selectedListingId]);
+
+  useEffect(() => {
+    if (listing_id) {
+      setSelectedListingId(listing_id);
+    }
+  }, [listing_id]);
 
   const onDownload = (id: string) => {
     window.open(route('forms.download', id));
@@ -89,7 +102,11 @@ export default function ApplicationForms({
                 >
                   <option value="">Select an address</option>
                   {listings.map(listing => (
-                    <option key={listing.id} value={listing.id}>
+                    <option
+                      defaultChecked={selectedListingId == listing.id}
+                      key={listing.id}
+                      value={listing.id}
+                    >
                       {listing.address}
                     </option>
                   ))}
@@ -132,8 +149,8 @@ export default function ApplicationForms({
               message="Something went wrong while generating a cover letter"
             />
           )}
-          {error && !hasErrors && (
-            <InputError className="mt-2" message={error} />
+          {errors.error && !hasErrors && (
+            <InputError className="mt-2" message={errors.error} />
           )}
         </div>
         <div className="mt-10">
@@ -160,10 +177,8 @@ export default function ApplicationForms({
                   </div>
                 </div>
                 <div className="flex-shrink-0">
-                  <button
-                    type="button"
-                    disabled={processing}
-                    onClick={() => onDownload(form.id)}
+                  <a
+                    href={route('forms.download', form.id)}
                     className="inline-flex items-center gap-x-1.5 text-sm font-semibold leading-6 text-gray-900"
                   >
                     <DocumentIcon
@@ -171,7 +186,7 @@ export default function ApplicationForms({
                       aria-hidden="true"
                     />
                     Download <span className="sr-only">{form.id}</span>
-                  </button>
+                  </a>
                 </div>
               </li>
             ))}

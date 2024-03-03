@@ -171,15 +171,21 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/forms/generate/{listing}/{id}', function (ApplicationFormController $applicationFormController, Listing $listing, $id) {
-        $applicationFormController->getApplicationForm($listing, $id);
-        return redirect()->route('forms.view');
+    Route::get('/forms/generate/{listing}/{id}', function (Request $request, ApplicationFormController $applicationFormController, Listing $listing, $id) {
+        $main_profile = $request->user()->profiles()->where('main_applicant', 1)->first();
+        $applicationFormController->getApplicationForm($main_profile, $listing, $id);
+        return redirect()->route('forms.view', ['listing_id' => $listing->id]);
     })->name('forms.generate');
-    Route::get('/forms/view', function () {
-        return Inertia::render('ApplicationForm');
+    Route::get('/forms/view', function (Request $request) {
+        return Inertia::render('ApplicationForm', ['listing_id' => $request->listing_id]);
     })->name('forms.view');
     Route::get('/forms/download/{form}', function (ApplicationForm $form) {
-        return Storage::disk('s3')->download($form->filename);
+        try {
+            return Storage::disk('s3')->download($form->filename);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return back()->withErrors(['error' => 'Something went wrong while downloading the file. Please try again later.']);
+        }
     })->name('forms.download');
 });
 
