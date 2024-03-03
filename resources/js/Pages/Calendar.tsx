@@ -181,12 +181,24 @@ export default function Calendar({
                   <time
                     dateTime={day.date}
                     className={classNames(
-                      'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
+                      'relative mx-auto flex h-7 w-7 items-center justify-center rounded-full',
                       isActive(day.date) && day.isToday && 'bg-indigo-600',
                       isActive(day.date) && !day.isToday && 'bg-gray-900'
                     )}
                   >
                     {day.date?.split('-')?.pop()?.replace(/^0/, '')}
+                    {listings.find(viewing => {
+                      return (
+                        isSameDay(
+                          new Date(viewing.viewing_at?.split('T')[0]),
+                          new Date(day.date)
+                        ) && viewing.status == 'viewing'
+                      );
+                    }) && (
+                      <span className="top-[-10px] right-[-12px] absolute inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-white bg-blue-600 rounded-full">
+                        !
+                      </span>
+                    )}
                   </time>
                 </button>
               ))}
