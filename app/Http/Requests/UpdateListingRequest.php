@@ -24,7 +24,7 @@ class UpdateListingRequest extends FormRequest
             'toilets' => ['numeric'],
             'property_type' => ['string', 'in:house,apartment,condo'],
             'board_id' => ['numeric', "exists:boards,id"],
-            "status" => ["string", "in:wishlist,viewing,viewed,applied,offer_accepted,offer_declined"]
+            "status" => ["string", 'in:wishlist,viewing,viewed,applied,offer_accepted,offer_rejected']
         ];
     }
 

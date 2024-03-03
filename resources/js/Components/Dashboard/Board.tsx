@@ -25,7 +25,7 @@ export function AddItem({
   return (
     <div className="text-center py-4">
       <svg
-        className="mx-auto h-12 w-12 text-gray-400"
+        className="mx-auto h-8 w-8 text-gray-400"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -42,12 +42,9 @@ export function AddItem({
       <h3 className="mt-2 text-sm font-semibold text-gray-900">{title}</h3>
       <div
         onClick={open}
-        className="m-2 p-1 grid hover:bg-gray-50 shadow-sm rounded-md place-items-center border"
+        className="m-2 p-1 grid hover:bg-gray-50 cursor-pointer shadow-sm rounded-md place-items-center border"
       >
-        <button
-          type="button"
-          className={'rounded-full p-1 text-gray-500 ' + color}
-        >
+        <button type="button" className={'rounded-full text-gray-500 ' + color}>
           <PlusIcon className="h-5 w-5" aria-hidden="true" />
         </button>
       </div>
@@ -164,7 +161,8 @@ const CardItem = ({
 const columns = [
   { name: 'Wishlist', type: 'wishlist', color: 'bg-indigo-50' },
   { name: 'Viewing', type: 'viewing', color: 'bg-orange-50' },
-  { name: 'Viewed', type: 'viewed', color: 'bg-orange-50' },
+  { name: 'Viewed', type: 'viewed', color: 'bg-purple-50' },
+  { name: 'Applied', type: 'applied', color: 'bg-pink-50' },
   { name: 'Offer Rejected', type: 'offer_declined', color: 'bg-red-50' },
   { name: 'Offer Accepted', type: 'offer_accepted', color: 'bg-green-50' },
 ];

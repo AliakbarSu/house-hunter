@@ -5,7 +5,7 @@ import {
   FolderIcon,
   HomeIcon,
   UsersIcon,
-} from '@heroicons/react/24/outline'; // const navigation = [
+} from '@heroicons/react/24/solid'; // const navigation = [
 
 // const navigation = [
 //   { name: 'House Hunt', href: '#', icon: HomeIcon, current: true },

@@ -1,5 +1,5 @@
 import { useForm } from '@inertiajs/react';
-import { PhotoIcon } from '@heroicons/react/24/solid';
+import { PhotoIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import * as z from 'zod';
 import { User } from '@/types';
 import { FormEvent, useEffect, useState } from 'react';
@@ -17,6 +17,18 @@ const schema = z.object({
   // images: z.any(),
 });
 
+const statuses = [
+  { value: 'wishlist', label: 'Wishlist' },
+  { value: 'viewed', label: 'Viewed' },
+  { value: 'viewing', label: 'Viewing' },
+  { value: 'applied', label: 'Applied' },
+  { value: 'offer_accepted', label: 'Offer Accepted' },
+  { value: 'offer_rejected', label: 'Offer Rejected' },
+];
+
+const bedrooms = [1, 2, 3, 4, 5, 6, 7, 8];
+const bathrooms = [1, 2, 3, 4, 5, 6, 7, 8];
+
 export default function Form({
   user,
   closeModal,
@@ -33,6 +45,7 @@ export default function Form({
     bathrooms: 0,
     board_id: user.boards[0].id,
     status: '',
+    viewing_at: null,
     images: [] as unknown as FileList | null,
   });
   const [previews, setPreviews] = useState<string[]>([]);
@@ -62,12 +75,17 @@ export default function Form({
     <form onSubmit={onSubmit} className="px-10 py-10">
       <div className="flex flex-col gap-8 mx-auto max-w-lg lg:max-w-none">
         <section aria-labelledby="contact-info-heading">
-          <h2
-            id="contact-info-heading"
-            className="text-lg font-medium text-gray-900"
-          >
-            Listing information
-          </h2>
+          <div className="flex justify-between items-center">
+            <h2
+              id="contact-info-heading"
+              className="text-lg font-medium text-gray-900"
+            >
+              Listing information
+            </h2>
+            <div onClick={() => closeModal()}>
+              <XCircleIcon className="h-5 w-5 cursor-pointer" color="#64679a" />
+            </div>
+          </div>
 
           <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-3">
             <div className="sm:col-span-3">
@@ -86,7 +104,7 @@ export default function Form({
                   className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />
               </div>
-              <InputError message={errors.address} />
+              <InputError className="mt-1" message={errors.address} />
             </div>
 
             <div className="sm:col-span-3">
@@ -105,54 +123,48 @@ export default function Form({
                   className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />
               </div>
-              <InputError message={errors.rent} />
+              <InputError className="mt-1" message={errors.rent} />
             </div>
 
             <div>
-              <label
-                htmlFor="bedrooms"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Bedrooms*
-              </label>
               <div className="mt-1">
-                <input
+                <select
                   onChange={e => setData('bedrooms', +e.target.value)}
-                  type="number"
                   id="bedrooms"
                   name="bedrooms"
                   className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                />
+                >
+                  <option value="">Bedrooms</option>
+                  {bedrooms.map(bedroom => (
+                    <option key={bedroom} value={bedroom}>
+                      {bedroom}
+                    </option>
+                  ))}
+                </select>
               </div>
-              <InputError message={errors.bedrooms} />
+              <InputError className="mt-1" message={errors.bedrooms} />
             </div>
 
             <div>
-              <label
-                htmlFor="bathrooms"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Bathrooms*
-              </label>
               <div className="mt-1">
-                <input
+                <select
                   onChange={e => setData('bathrooms', +e.target.value)}
-                  type="number"
                   id="bathrooms"
                   name="bathrooms"
                   className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                />
+                >
+                  <option value="">Bathrooms</option>
+                  {bathrooms.map(bathroom => (
+                    <option key={bathroom} value={bathroom}>
+                      {bathroom}
+                    </option>
+                  ))}
+                </select>
               </div>
-              <InputError message={errors.bathrooms} />
+              <InputError className="mt-1" message={errors.bathrooms} />
             </div>
 
             <div>
-              <label
-                htmlFor="status"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Status*
-              </label>
               <div className="mt-1">
                 <select
                   onChange={e => setData('status', e.target.value)}
@@ -160,17 +172,41 @@ export default function Form({
                   name="status"
                   className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 >
-                  <option>wishlist</option>
-                  <option>viewed</option>
-                  <option>viewing</option>
-                  <option>applied</option>
-                  <option>offer_accepted</option>
-                  <option>offer_declined</option>
+                  <option value="">Select status</option>
+                  {statuses.map(status => (
+                    <option key={status.value} value={status.value}>
+                      {status.label}
+                    </option>
+                  ))}
                 </select>
               </div>
-              <InputError message={errors.status} />
+              <InputError className="mt-1" message={errors.status} />
             </div>
           </div>
+
+          {data.status === 'viewing' && (
+            <div className="mt-6">
+              <label
+                htmlFor="viewint_at"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Viewing date
+              </label>
+              <div className="mt-1">
+                <input
+                  onChange={e =>
+                    setData('viewing_at', e.target.value as unknown as null)
+                  }
+                  type="date"
+                  id="viewing_at"
+                  value={data.viewing_at || ''}
+                  name="viewing_at"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+            </div>
+          )}
+
           <div className="mt-6">
             <label
               htmlFor="title"
@@ -183,6 +219,7 @@ export default function Form({
                 onChange={e => setData('title', e.target.value)}
                 type="text"
                 id="title"
+                value={data.title}
                 name="title"
                 autoComplete="title"
                 className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -198,10 +235,11 @@ export default function Form({
               Description
             </label>
             <div className="mt-1">
-              <input
+              <textarea
                 onChange={e => setData('description', e.target.value)}
-                type="text"
+                cols={30}
                 id="description"
+                value={data.description}
                 name="description"
                 autoComplete="description"
                 className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
