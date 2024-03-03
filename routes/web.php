@@ -31,6 +31,7 @@ use Inertia\Inertia;
 |
 */
 
+# ----------------- HOME ROUTES ----------------- #
 Route::get('/', function (StripeController $stripeController) {
     return Inertia::render('LandingPage', [
         'canLogin' => Route::has('login'),
@@ -41,6 +42,8 @@ Route::get('/', function (StripeController $stripeController) {
     ]);
 })->name('home');
 
+
+# ----------------- CHECKOUT ROUTES ----------------- #
 Route::get('/checkout/item/{priceId}', function (Request $request) {
     $priceId = $request->priceId;
     return $request->user()
@@ -65,6 +68,8 @@ Route::get('/billing-portal', function (Request $request) {
     return $request->user()->redirectToBillingPortal();
 })->middleware(["auth:sanctum"])->name('stripe.billing-portal');
 
+
+# ----------------- DASHBOARD ROUTES ----------------- #
 Route::get('/dashboard', function (Request $request) {
     if ($request->user()->boards->isEmpty()) {
         return Inertia::render('AddBoard');
@@ -72,7 +77,13 @@ Route::get('/dashboard', function (Request $request) {
     return Inertia::render('Dashboard');
 })->middleware('auth:sanctum')->name('dashboard');
 
+
+# ----------------- PROFILE ROUTES ----------------- #
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/rental-profile', function (Request $request, ProfileController $profileController, Profile $profile) {
+        $fetchedProfile = $profileController->getProfile($request, $profile);
+        return Inertia::render('Profile', ['profile' => $fetchedProfile]);
+    })->name('profile.rental');
     Route::post('/rental-profile', function (AddProfileRequest $request, ProfileController $profileController) {
         $createdProfile = $profileController->addProfile($request);
         return Inertia::render('Profile', [
@@ -84,7 +95,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
+# ----------------- LISTING ROUTES ----------------- #
 Route::middleware('auth:sanctum')->prefix('listing')->group(function () {
 
     Route::get('/', function (Request $request, ListingController $listingController, Listing $listing) {
@@ -113,6 +124,8 @@ Route::middleware('auth:sanctum')->prefix('listing')->group(function () {
     });
 });
 
+
+# ----------------- BOARD ROUTES ----------------- #
 Route::middleware('auth:sanctum')->prefix('board')->group(function () {
     Route::post('/', function (Request $request, BoardController $boardController) {
         $boardController->addBoard($request);
@@ -132,13 +145,7 @@ Route::middleware('auth:sanctum')->prefix('board')->group(function () {
     });
 });
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/rental-profile', function (Request $request, ProfileController $profileController, Profile $profile) {
-        $fetchedProfile = $profileController->getProfile($request, $profile);
-        return Inertia::render('Profile', ['profile' => $fetchedProfile]);
-    })->name('profile.rental');
-});
-
+# ----------------- COVER LETTER ROUTES ----------------- #
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cover-letter', function (Request $request) {
         return Inertia::render('CoverLetter', ['listing_id' => $request->listing_id]);
@@ -159,6 +166,7 @@ Route::middleware('auth:sanctum')->group(function () {
     })->name('cover-letter.download');
 });
 
+# ----------------- CALENDAR ROUTES ----------------- #
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/calendar', function () {
         return Inertia::render('Calendar');
@@ -169,7 +177,7 @@ Route::middleware('auth:sanctum')->group(function () {
     })->name('calendar.update.listing');
 });
 
-
+# ----------------- FORMS ROUTES ----------------- #
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/forms/generate/{listing}/{id}', function (Request $request, ApplicationFormController $applicationFormController, Listing $listing, $id) {
         $main_profile = $request->user()->profiles()->where('main_applicant', 1)->first();
