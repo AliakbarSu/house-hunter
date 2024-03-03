@@ -42,7 +42,7 @@ const CardItem = ({
           {card.address}
         </div>
         <Menu as="div" className="relative ml-auto">
-          <Menu.Button className="-m-2.5 block p-2.5 text-gray-400 hover:text-gray-500">
+          <Menu.Button className="-m-2.5 block p-2.5 text-white hover:text-gray-400">
             <span className="sr-only">Open options</span>
             <EllipsisHorizontalIcon className="h-5 w-5" aria-hidden="true" />
           </Menu.Button>
@@ -61,7 +61,7 @@ const CardItem = ({
                   <span
                     onClick={onMoveLeft}
                     className={classNames(
-                      active ? 'bg-gray-50' : '',
+                      active ? 'bg-white' : '',
                       'block px-3 py-1 text-sm leading-6 text-gray-900 cursor-pointer'
                     )}
                   >
@@ -74,7 +74,7 @@ const CardItem = ({
                   <span
                     onClick={onMoveRight}
                     className={classNames(
-                      active ? 'bg-gray-50' : '',
+                      active ? 'bg-white' : '',
                       'block px-3 py-1 text-sm leading-6 text-gray-900 cursor-pointer'
                     )}
                   >
