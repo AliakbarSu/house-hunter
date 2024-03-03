@@ -51,10 +51,6 @@ export default function ApplicationForms({
     }
   }, [listing_id]);
 
-  const onDownload = (id: string) => {
-    window.open(route('forms.download', id));
-  };
-
   const onCreate = (e: React.FormEvent) => {
     e.preventDefault();
     if (selectedListingId) {

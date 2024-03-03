@@ -13,7 +13,10 @@ class CoverLetterController extends Controller
 {
     public function generateCoverLetter(Request $request, Listing $listing)
     {
-        $name = $listing->profile?->name ? $listing->profile?->name : '[Placeholder]';
+        $validated = $request->validate([
+            'context' => ['required', 'string', 'max:50']
+        ]);
+        $context = $this->getContext($validated['context'], $listing);
         try {
             $response = Http::withToken(config('services.openai.secret'))->post('https://api.openai.com/v1/chat/completions', [
                 'model' => 'gpt-3.5-turbo',
@@ -24,8 +27,7 @@ class CoverLetterController extends Controller
                     ],
                     [
                         'role' => 'user',
-                        'content' => "Generate me a cover letter for a rental property listing. My name is $name.
-                        the address address for property is $listing->address. I am interested in this house because it is super close to school"
+                        'content' => $context
                     ]
                 ]
             ]);
@@ -43,6 +45,16 @@ class CoverLetterController extends Controller
             return $e->getMessage();
         }
 
+    }
+
+    private function getContext(string $context, Listing $listing): string
+    {
+        $profile = $listing->profile;
+        return "User write me a cover letter for rental property. The address is $listing->address.
+        My name is $profile?->name. I am interested in this house because $context.
+        I am tidy, clean and will keep the house at a high standards. My email is $profile?->email. My phone number is $profile?->phone.
+        My current address is $profile?->address. Today's date is " . date('Y-m-d') . ".
+        I have a very good history of rental before and can provide references if needed. I always pay the rent on time.";
     }
 
     public function downloadCoverLetter(Request $request, CoverLetter $coverLetter)

@@ -37,7 +37,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => fn() => $request->user(),
             ],
-            'listings' => fn() => $request->user()?->listings->load('notes', 'board', 'images', 'coverLetter', 'applicationForms'),
+            'listings' => $request->user()?->listings->load('notes', 'board', 'images', 'coverLetter', 'applicationForms'),
             'hasSubscription' => fn() => $request->user()?->subscribed('default'),
             'isAuthenticated' => fn() => auth()->check(),
             'can' => [
