@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/20/solid';
 import { Menu, Transition } from '@headlessui/react';
 import { format, isSameDay } from 'date-fns';
-import { router } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 
 const getDaysInMonth = (
   month: number,
@@ -118,6 +118,7 @@ export default function Calendar({
 
   return (
     <AuthenticatedLayout user={auth.user} hasSubscription={hasSubscription}>
+      <Head title="Calendar" />
       <div className="p-8">
         <h2 className="text-base font-semibold leading-6 text-gray-900">
           Upcoming viewings
