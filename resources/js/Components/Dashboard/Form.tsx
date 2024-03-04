@@ -83,6 +83,13 @@ export default function Form({
     }
   }, [data.images]);
 
+  useEffect(() => {
+    if (listing?.images) {
+      const urls = listing.images.map(image => image.url);
+      setPreviews(urls);
+    }
+  }, [listing?.images]);
+
   return (
     <form onSubmit={onSubmit} className="px-10 py-10">
       <div className="flex flex-col gap-8 mx-auto max-w-lg lg:max-w-none">
@@ -279,7 +286,7 @@ export default function Form({
                 htmlFor="cover-photo"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Files & images
+                Images
               </label>
               <div className="mt-2 flex flex-wrap justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                 <div className="text-center">
@@ -292,7 +299,7 @@ export default function Form({
                       htmlFor="images"
                       className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                     >
-                      <span>Upload a file</span>
+                      <span>Upload </span>
                       <input
                         onChange={onFileChange}
                         multiple
@@ -302,7 +309,7 @@ export default function Form({
                         className="sr-only"
                       />
                     </label>
-                    <p className="pl-1">or drag and drop</p>
+                    <p className="pl-1">a single or multiple files</p>
                   </div>
                   <p className="text-xs leading-5 text-gray-600">
                     PNG, JPG, GIF up to 10MB
