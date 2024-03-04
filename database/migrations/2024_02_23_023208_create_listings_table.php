@@ -24,6 +24,9 @@ return new class extends Migration {
             $table->integer('garages')->default(0);
             $table->integer('toilets')->default(0);
             $table->string('status')->default('wishlist');
+            $table->string('real_estate')->nullable();
+            $table->string('agent')->nullable();
+            $table->string('landlord')->nullable();
             $table->boolean('deleted')->default(false)->nullable();
             $table->unsignedBigInteger('board_id');
             $table->foreign('board_id')->references('id')->on('boards')->onDelete('cascade');
