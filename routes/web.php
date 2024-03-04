@@ -9,11 +9,13 @@ use App\Http\Controllers\StripeController;
 use App\Http\Requests\AddListingNoteRequest;
 use App\Http\Requests\AddListingRequest;
 use App\Http\Requests\AddProfileRequest;
+use App\Http\Requests\UpdateListingNoteRequest;
 use App\Http\Requests\UpdateListingRequest;
 use App\Models\ApplicationForm;
 use App\Models\Board;
 use App\Models\CoverLetter;
 use App\Models\Listing;
+use App\Models\ListingNotes;
 use App\Models\Profile;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -116,12 +118,18 @@ Route::middleware('auth:sanctum')->prefix('listing')->group(function () {
         return $listingController->deleteListing($request, $listing);
     });
 
-    Route::post('/{listing_id}/note', function (AddListingNoteRequest $request, ListingController $listingController, Listing $listing) {
-        return $listingController->addNote($request, $listing);
-    });
-    Route::delete('/{listing_id}/note/{note_id}', function (Request $request, ListingController $listingController, Listing $listing) {
-        return $listingController->deleteNote($request, $listing);
-    });
+    Route::post('/{listing}/note', function (AddListingNoteRequest $request, ListingController $listingController, Listing $listing) {
+        $listingController->addNote($request, $listing);
+        return redirect()->route('dashboard');
+    })->name('listing.note.add');
+    Route::post('/{listing}/note/{note}', function (UpdateListingNoteRequest $request, ListingController $listingController, Listing $listing, ListingNotes $note) {
+        $listingController->updateNote($request, $listing, $note);
+        return redirect()->route('dashboard');
+    })->name('listing.note.update');
+    Route::delete('/note/{note}', function (Request $request, ListingController $listingController, ListingNotes $note) {
+        $listingController->deleteNote($request, $note);
+        return redirect()->route('dashboard');
+    })->name('listing.note.delete');
 });
 
 
