@@ -69,7 +69,7 @@ export default function Board({
   }, [data.status, data.listingId]);
 
   return (
-    <div className="flex h-full w-full absolute">
+    <div className="flex h-fit w-full absolute">
       <Modal show={isModal} maxWidth={'xl'} onClose={() => modalHandler(false)}>
         <Form
           listing={selectedCard}
