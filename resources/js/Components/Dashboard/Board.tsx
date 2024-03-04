@@ -3,8 +3,7 @@ import { useEffect, useState } from 'react';
 import Modal from '@/Components/Modal';
 import Form from '@/Components/Dashboard/Form';
 import { useForm } from '@inertiajs/react';
-import CardItem from '@/Components/Dashboard/CardItem';
-import AddItem from '@/Components/Dashboard/AddItem';
+import Column from '@/Components/Dashboard/Column';
 
 const columns = [
   { name: 'Wishlist', type: 'wishlist', color: 'bg-indigo-400' },
@@ -48,6 +47,11 @@ export default function Board({
     return null;
   };
 
+  const move = (index: number, listingId: string) => {
+    const column = columns[index];
+    setData(() => ({ status: column.type, listingId: listingId }));
+  };
+
   const cardClickedHandler = (listing: Listing) => {
     setSelectedCard(listing);
     modalHandler(true);
@@ -74,23 +78,17 @@ export default function Board({
         />
       </Modal>
       {columns.map((column, index) => (
-        <div className="border-r min-w-72 max-w-72" key={column.type}>
-          <AddItem title={column.name} onOpen={() => modalHandler(true)} />
-          <ul className="space-y-4 py-4 px-2 w-full">
-            {listings
-              .filter(({ status }) => status === column.type)
-              .map(listing => (
-                <CardItem
-                  className={column.color}
-                  onMoveLeft={() => moveLeft(index, listing.id)}
-                  onMoveRight={() => moveRight(index, listing.id)}
-                  onClick={() => cardClickedHandler(listing)}
-                  key={listing.id}
-                  card={listing}
-                />
-              ))}
-          </ul>
-        </div>
+        <Column
+          key={column.type}
+          column={column}
+          index={index}
+          moveLeft={moveLeft}
+          moveRight={moveRight}
+          move={move}
+          cardClickedHandler={cardClickedHandler}
+          modalHandler={modalHandler}
+          listings={listings}
+        />
       ))}
     </div>
   );

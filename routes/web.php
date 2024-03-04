@@ -108,7 +108,7 @@ Route::middleware('auth:sanctum')->prefix('listing')->group(function () {
         $listingController->addListing($request);
         return redirect()->route('dashboard');
     })->middleware('listing.limit')->name('listing.add');
-    Route::post('update//{listing}', function (UpdateListingRequest $request, ListingController $listingController, Listing $listing) {
+    Route::post('/update/{listing}', function (UpdateListingRequest $request, ListingController $listingController, Listing $listing) {
         $listingController->updateListing($request, $listing);
         return redirect()->route('dashboard');
     })->name('listing.update');

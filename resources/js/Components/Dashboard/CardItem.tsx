@@ -2,6 +2,7 @@ import { Listing } from '@/types';
 import { Menu, Transition } from '@headlessui/react';
 import { EllipsisHorizontalIcon } from '@heroicons/react/20/solid';
 import { Fragment } from 'react';
+import { useDrag } from 'react-dnd';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -20,8 +21,20 @@ const CardItem = ({
   onClick: () => void;
   className?: string;
 }) => {
+  const [{ opacity }, dragRef] = useDrag(
+    () => ({
+      type: 'CARD',
+      item: { id: card.id },
+      collect: monitor => ({
+        opacity: monitor.isDragging() ? 0.5 : 1,
+      }),
+    }),
+    []
+  );
   return (
     <li
+      ref={dragRef}
+      style={{ opacity }}
       key={card.id}
       className={'overflow-hidden rounded-xl border border-gray-200 '}
     >
