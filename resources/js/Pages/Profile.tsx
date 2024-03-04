@@ -53,6 +53,9 @@ export default function Profile({
     useForm(initialData);
 
   useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
     if (profile) {
       const previousAddress =
         profile.addresses.find(
@@ -92,7 +95,7 @@ export default function Profile({
         references: profile.references,
       } as never);
     }
-  }, [profile]);
+  }, [profile, errors]);
   const submit: FormEventHandler = e => {
     e.preventDefault();
     post(route('profile.add'));

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\Name;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateListingRequest extends FormRequest
@@ -15,18 +16,21 @@ class UpdateListingRequest extends FormRequest
     {
         return [
             'address' => ['string', 'min:2', 'max:255'],
-            'title' => ['nullable', 'string', 'max:255'],
+            'title' => ['nullable', 'string', 'max:60'],
             'description' => ['nullable', 'string', 'max:255'],
             'rent' => ['numeric'],
-            'bedrooms' => ['numeric'],
-            'bathrooms' => ['numeric'],
-            'garages' => ['numeric'],
-            'toilets' => ['numeric'],
+            'bedrooms' => ['numeric', 'max:15'],
+            'bathrooms' => ['numeric', 'max:15'],
+            'garages' => ['numeric', 'max:15'],
+            'toilets' => ['numeric', 'max:15'],
             'property_type' => ['string', 'in:house,apartment,condo'],
+            'real_estate' => ['nullable', 'string', 'max:255'],
+            'agent' => ['nullable', 'string', new Name()],
+            'landlord' => ['nullable', 'string', new Name()],
             'board_id' => ['numeric', "exists:boards,id"],
             'images' => ['nullable', 'array', 'max:3'],
             'images.*' => ['image', 'max:2048', 'mimes:jpeg,png,jpg,gif,svg'],
-            "status" => ["string", 'in:wishlist,viewing,viewed,applied,offer_accepted,offer_rejected'],
+            "status" => ["string", 'exists:board_columns,type'],
             'viewing_at' => ['nullable', 'date_format:Y-m-d'],
         ];
     }

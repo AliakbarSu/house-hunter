@@ -9,11 +9,13 @@ use App\Http\Controllers\StripeController;
 use App\Http\Requests\AddListingNoteRequest;
 use App\Http\Requests\AddListingRequest;
 use App\Http\Requests\AddProfileRequest;
+use App\Http\Requests\UpdateListingNoteRequest;
 use App\Http\Requests\UpdateListingRequest;
 use App\Models\ApplicationForm;
 use App\Models\Board;
 use App\Models\CoverLetter;
 use App\Models\Listing;
+use App\Models\ListingNotes;
 use App\Models\Profile;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -31,6 +33,7 @@ use Inertia\Inertia;
 |
 */
 
+# ----------------- HOME ROUTES ----------------- #
 Route::get('/', function (StripeController $stripeController) {
     return Inertia::render('LandingPage', [
         'canLogin' => Route::has('login'),
@@ -41,6 +44,8 @@ Route::get('/', function (StripeController $stripeController) {
     ]);
 })->name('home');
 
+
+# ----------------- CHECKOUT ROUTES ----------------- #
 Route::get('/checkout/item/{priceId}', function (Request $request) {
     $priceId = $request->priceId;
     return $request->user()
@@ -65,6 +70,8 @@ Route::get('/billing-portal', function (Request $request) {
     return $request->user()->redirectToBillingPortal();
 })->middleware(["auth:sanctum"])->name('stripe.billing-portal');
 
+
+# ----------------- DASHBOARD ROUTES ----------------- #
 Route::get('/dashboard', function (Request $request) {
     if ($request->user()->boards->isEmpty()) {
         return Inertia::render('AddBoard');
@@ -72,7 +79,13 @@ Route::get('/dashboard', function (Request $request) {
     return Inertia::render('Dashboard');
 })->middleware('auth:sanctum')->name('dashboard');
 
+
+# ----------------- PROFILE ROUTES ----------------- #
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/rental-profile', function (Request $request, ProfileController $profileController, Profile $profile) {
+        $fetchedProfile = $profileController->getProfile($request, $profile);
+        return Inertia::render('Profile', ['profile' => $fetchedProfile]);
+    })->name('profile.rental');
     Route::post('/rental-profile', function (AddProfileRequest $request, ProfileController $profileController) {
         $createdProfile = $profileController->addProfile($request);
         return Inertia::render('Profile', [
@@ -84,7 +97,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
+# ----------------- LISTING ROUTES ----------------- #
 Route::middleware('auth:sanctum')->prefix('listing')->group(function () {
 
     Route::get('/', function (Request $request, ListingController $listingController, Listing $listing) {
@@ -97,7 +110,7 @@ Route::middleware('auth:sanctum')->prefix('listing')->group(function () {
         $listingController->addListing($request);
         return redirect()->route('dashboard');
     })->middleware('listing.limit')->name('listing.add');
-    Route::post('update//{listing}', function (UpdateListingRequest $request, ListingController $listingController, Listing $listing) {
+    Route::post('/update/{listing}', function (UpdateListingRequest $request, ListingController $listingController, Listing $listing) {
         $listingController->updateListing($request, $listing);
         return redirect()->route('dashboard');
     })->name('listing.update');
@@ -105,14 +118,22 @@ Route::middleware('auth:sanctum')->prefix('listing')->group(function () {
         return $listingController->deleteListing($request, $listing);
     });
 
-    Route::post('/{listing_id}/note', function (AddListingNoteRequest $request, ListingController $listingController, Listing $listing) {
-        return $listingController->addNote($request, $listing);
-    });
-    Route::delete('/{listing_id}/note/{note_id}', function (Request $request, ListingController $listingController, Listing $listing) {
-        return $listingController->deleteNote($request, $listing);
-    });
+    Route::post('/{listing}/note', function (AddListingNoteRequest $request, ListingController $listingController, Listing $listing) {
+        $listingController->addNote($request, $listing);
+        return redirect()->route('dashboard');
+    })->name('listing.note.add');
+    Route::post('/{listing}/note/{note}', function (UpdateListingNoteRequest $request, ListingController $listingController, Listing $listing, ListingNotes $note) {
+        $listingController->updateNote($request, $listing, $note);
+        return redirect()->route('dashboard');
+    })->name('listing.note.update');
+    Route::delete('/note/{note}', function (Request $request, ListingController $listingController, ListingNotes $note) {
+        $listingController->deleteNote($request, $note);
+        return redirect()->route('dashboard');
+    })->name('listing.note.delete');
 });
 
+
+# ----------------- BOARD ROUTES ----------------- #
 Route::middleware('auth:sanctum')->prefix('board')->group(function () {
     Route::post('/', function (Request $request, BoardController $boardController) {
         $boardController->addBoard($request);
@@ -132,13 +153,7 @@ Route::middleware('auth:sanctum')->prefix('board')->group(function () {
     });
 });
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/rental-profile', function (Request $request, ProfileController $profileController, Profile $profile) {
-        $fetchedProfile = $profileController->getProfile($request, $profile);
-        return Inertia::render('Profile', ['profile' => $fetchedProfile]);
-    })->name('profile.rental');
-});
-
+# ----------------- COVER LETTER ROUTES ----------------- #
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cover-letter', function (Request $request) {
         return Inertia::render('CoverLetter', ['listing_id' => $request->listing_id]);
@@ -159,6 +174,7 @@ Route::middleware('auth:sanctum')->group(function () {
     })->name('cover-letter.download');
 });
 
+# ----------------- CALENDAR ROUTES ----------------- #
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/calendar', function () {
         return Inertia::render('Calendar');
@@ -169,7 +185,7 @@ Route::middleware('auth:sanctum')->group(function () {
     })->name('calendar.update.listing');
 });
 
-
+# ----------------- FORMS ROUTES ----------------- #
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/forms/generate/{listing}/{id}', function (Request $request, ApplicationFormController $applicationFormController, Listing $listing, $id) {
         $main_profile = $request->user()->profiles()->where('main_applicant', 1)->first();

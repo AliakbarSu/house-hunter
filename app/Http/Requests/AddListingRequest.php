@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\Name;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AddListingRequest extends FormRequest
@@ -15,13 +16,17 @@ class AddListingRequest extends FormRequest
     {
         return [
             'address' => ['required', 'string', 'max:255'],
-            'title' => ['nullable', 'string', 'max:30'],
+            'title' => ['nullable', 'string', 'max:60'],
             'description' => ['nullable', 'string', 'max:255'],
             'rent' => ['nullable', 'numeric'],
-            'status' => ['required', 'string', 'in:wishlist,viewing,viewed,applied,offer_accepted,offer_rejected', 'max:255'],
+            'status' => ['required', 'string', 'exists:board_columns,type', 'max:255'],
             'viewing_at' => ['nullable', 'date_format:Y-m-d'],
             'bedrooms' => ['required', 'numeric', 'min:0', 'max:15'],
             'bathrooms' => ['required', 'numeric', 'min:0', 'max:15'],
+            'garages' => ['required', 'numeric', 'max:15'],
+            'real_estate' => ['nullable', 'string', 'max:255'],
+            'agent' => ['nullable', 'string', new Name()],
+            'landlord' => ['nullable', 'string', new Name()],
             'images' => ['nullable', 'array', 'max:3'],
             'images.*' => ['image', 'max:2048', 'mimes:jpeg,png,jpg,gif,svg'],
             'board_id' => ['required', 'numeric', "exists:boards,id"],

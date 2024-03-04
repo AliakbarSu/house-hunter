@@ -2,6 +2,7 @@ import { Listing } from '@/types';
 import { Menu, Transition } from '@headlessui/react';
 import { EllipsisHorizontalIcon } from '@heroicons/react/20/solid';
 import { Fragment } from 'react';
+import { useDrag } from 'react-dnd';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -20,11 +21,26 @@ const CardItem = ({
   onClick: () => void;
   className?: string;
 }) => {
+  const [{ opacity }, dragRef] = useDrag(
+    () => ({
+      type: 'CARD',
+      item: { id: card.id },
+      collect: monitor => ({
+        opacity: monitor.isDragging() ? 0.5 : 1,
+      }),
+    }),
+    []
+  );
   return (
     <li
+      ref={dragRef}
+      style={{ opacity }}
       key={card.id}
       className={'overflow-hidden rounded-xl border border-gray-200 '}
     >
+      <div className="sr-only bg-indigo-400 bg-sky-400 bg-teal-400 bg-orange-400 bg-pink-400 bg-purple-400">
+        Optional
+      </div>
       <div
         className={
           'flex items-start gap-x-4 border-b border-gray-900/5 p-4 ' + className
@@ -42,7 +58,7 @@ const CardItem = ({
           {card.address}
         </div>
         <Menu as="div" className="relative ml-auto">
-          <Menu.Button className="-m-2.5 block p-2.5 text-gray-400 hover:text-gray-500">
+          <Menu.Button className="-m-2.5 block p-2.5 text-white hover:text-gray-400">
             <span className="sr-only">Open options</span>
             <EllipsisHorizontalIcon className="h-5 w-5" aria-hidden="true" />
           </Menu.Button>
@@ -61,7 +77,7 @@ const CardItem = ({
                   <span
                     onClick={onMoveLeft}
                     className={classNames(
-                      active ? 'bg-gray-50' : '',
+                      active ? 'bg-white' : '',
                       'block px-3 py-1 text-sm leading-6 text-gray-900 cursor-pointer'
                     )}
                   >
@@ -74,7 +90,7 @@ const CardItem = ({
                   <span
                     onClick={onMoveRight}
                     className={classNames(
-                      active ? 'bg-gray-50' : '',
+                      active ? 'bg-white' : '',
                       'block px-3 py-1 text-sm leading-6 text-gray-900 cursor-pointer'
                     )}
                   >

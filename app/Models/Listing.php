@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Listing extends Model
 {
@@ -19,6 +20,7 @@ class Listing extends Model
         'status',
         'bedrooms',
         'bathrooms',
+        'garages',
         'property_type',
         'viewing_at'
     ];
@@ -51,5 +53,10 @@ class Listing extends Model
     public function applicationForms(): HasMany
     {
         return $this->hasMany(ApplicationForm::class);
+    }
+
+    public function columns(): HasManyThrough
+    {
+        return $this->hasManyThrough(BoardColumn::class, Board::class, 'id', 'board_id', 'board_id', 'id');
     }
 }

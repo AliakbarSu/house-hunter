@@ -28,10 +28,20 @@ export interface Note {
   updated_at: string;
 }
 
+export interface BoardColumn {
+  id: string;
+  title: string;
+  type: string;
+  color: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Board {
   id: string;
   user_id: string;
   name: string;
+  columns: BoardColumn[];
   created_at: string;
   updated_at: string;
 }
@@ -64,6 +74,7 @@ export interface Listing {
   images: Image[];
   cover_letter: CoverLetter[];
   application_forms: ApplicationForm[];
+  columns: BoardColumn[];
   viewing_at: string;
   created_at: string;
   updated_at: string;
@@ -140,6 +151,7 @@ export type PageProps<
   isAuthenticated: boolean;
   listings: Listing[];
   hasSubscription: boolean;
+  board?: Board;
   can: {
     addListing: boolean;
   };

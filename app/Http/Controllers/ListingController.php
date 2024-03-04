@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddListingNoteRequest;
 use App\Http\Requests\AddListingRequest;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\UpdateListingNoteRequest;
 use App\Http\Requests\UpdateListingRequest;
 use App\Models\Image;
 use App\Models\Listing;
+use App\Models\ListingNotes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -116,17 +118,20 @@ class ListingController extends Controller
         return $toBeDeletedListing->delete();
     }
 
-    public function deleteNote(Request $request, Listing $listing)
+    public function deleteNote(Request $request, ListingNotes $note)
     {
-        $listingId = $request->listing_id;
-        $noteId = $request->note_id;
-        $note = $listing->find($listingId)->notes()->where('id', $noteId)->delete();
+        $note->delete();
         return $note;
     }
 
     public function addNote(AddListingNoteRequest $request, Listing $listing)
     {
-        $listingId = $request->listing_id;
-        return $listing->find($listingId)->notes()->create($request->validated());
+        return $listing->notes()->create($request->validated());
+    }
+
+    public function updateNote(UpdateListingNoteRequest $request, Listing $listing, ListingNotes $note)
+    {
+        $note->update($request->validated());
+        return $note;
     }
 }

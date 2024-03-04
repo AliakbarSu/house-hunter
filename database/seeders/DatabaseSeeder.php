@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Board;
+use App\Models\BoardColumn;
 use App\Models\Image;
 use App\Models\Listing;
 use App\Models\ListingNotes;
@@ -32,6 +33,12 @@ class DatabaseSeeder extends Seeder
         $boards = Board::factory(1)->create([
             'user_id' => $users->random()->id
         ]);
+
+        $boards->each(function ($board) {
+            BoardColumn::factory(4)->create([
+                'board_id' => $board->id
+            ]);
+        });
 
         $listings = Listing::factory(2)->create([
             'board_id' => $boards->random()->id
