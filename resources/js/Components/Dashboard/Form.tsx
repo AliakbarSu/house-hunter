@@ -1,7 +1,7 @@
 import { useForm } from '@inertiajs/react';
 import { PhotoIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import * as z from 'zod';
-import { Listing, User } from '@/types';
+import { BoardColumn, Listing, User } from '@/types';
 import { FormEvent, useEffect, useState } from 'react';
 import InputError from '@/Components/InputError';
 import { format } from 'date-fns';
@@ -33,10 +33,12 @@ export default function Form({
   user,
   closeModal,
   listing,
+  columns,
 }: {
   user: User;
   closeModal: () => void;
   listing?: Listing;
+  columns: BoardColumn[];
 }) {
   const { post, errors, data, processing, setData } = useForm({
     title: listing?.title || '',
@@ -221,7 +223,7 @@ export default function Form({
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     >
                       <option value="">Select status</option>
-                      {listing?.columns.map(status => (
+                      {columns.map(status => (
                         <option key={status.id} value={status.type}>
                           {status.title}
                         </option>

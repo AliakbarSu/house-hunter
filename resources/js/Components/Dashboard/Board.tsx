@@ -66,6 +66,7 @@ export default function Board({
       <Modal show={isModal} maxWidth={'xl'} onClose={() => modalHandler(false)}>
         <Form
           listing={selectedCard}
+          columns={columns}
           user={user}
           closeModal={closeModalHandler}
         />
