@@ -20,15 +20,6 @@ const schema = z.object({
   // images: z.any(),
 });
 
-const statuses = [
-  { value: 'wishlist', label: 'Wishlist' },
-  { value: 'viewed', label: 'Viewed' },
-  { value: 'viewing', label: 'Viewing' },
-  { value: 'applied', label: 'Applied' },
-  { value: 'offer_accepted', label: 'Offer Accepted' },
-  { value: 'offer_rejected', label: 'Offer Rejected' },
-];
-
 const tabs: Tab[] = [
   { name: 'Listing', value: 'listing' },
   { name: 'Notes', value: 'notes' },
@@ -230,9 +221,9 @@ export default function Form({
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     >
                       <option value="">Select status</option>
-                      {statuses.map(status => (
-                        <option key={status.value} value={status.value}>
-                          {status.label}
+                      {listing?.columns.map(status => (
+                        <option key={status.id} value={status.type}>
+                          {status.title}
                         </option>
                       ))}
                     </select>

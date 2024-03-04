@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class BoardColumn extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['title', 'type', 'board_id', 'color'];
 }

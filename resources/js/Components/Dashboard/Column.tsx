@@ -21,7 +21,7 @@ const Column = ({
   cardClickedHandler: (listing: Listing) => void;
   index: number;
   column: {
-    name: string;
+    title: string;
     type: string;
     color: string;
   };
@@ -46,13 +46,13 @@ const Column = ({
   }));
   return (
     <div ref={drop} className="border-r min-w-72 max-w-72" key={column.type}>
-      <AddItem title={column.name} onOpen={() => modalHandler(true)} />
+      <AddItem title={column.title} onOpen={() => modalHandler(true)} />
       <ul className="space-y-4 py-4 px-2 w-full">
         {listings
           .filter(({ status }) => status === column.type)
           .map(listing => (
             <CardItem
-              className={column.color}
+              className={`bg-${column.color}`}
               onMoveLeft={() => moveLeft(index, listing.id)}
               onMoveRight={() => moveRight(index, listing.id)}
               onClick={() => cardClickedHandler(listing)}

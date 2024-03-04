@@ -1,25 +1,18 @@
-import { Listing, User } from '@/types';
+import { BoardColumn, Listing, User } from '@/types';
 import { useEffect, useState } from 'react';
 import Modal from '@/Components/Modal';
 import Form from '@/Components/Dashboard/Form';
 import { useForm } from '@inertiajs/react';
 import Column from '@/Components/Dashboard/Column';
 
-const columns = [
-  { name: 'Wishlist', type: 'wishlist', color: 'bg-indigo-400' },
-  { name: 'Viewing', type: 'viewing', color: 'bg-sky-600' },
-  { name: 'Viewed', type: 'viewed', color: 'bg-purple-600' },
-  { name: 'Applied', type: 'applied', color: 'bg-pink-600' },
-  { name: 'Offer Rejected', type: 'offer_rejected', color: 'bg-orange-600' },
-  { name: 'Offer Accepted', type: 'offer_accepted', color: 'bg-teal-600' },
-];
-
 export default function Board({
   listings,
   user,
+  columns,
 }: {
   listings: Listing[];
   user: User;
+  columns: BoardColumn[];
   hasSubscription?: boolean;
 }) {
   const [isModal, setIsModal] = useState(false);

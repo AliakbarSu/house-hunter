@@ -38,6 +38,9 @@ const CardItem = ({
       key={card.id}
       className={'overflow-hidden rounded-xl border border-gray-200 '}
     >
+      <div className="sr-only bg-indigo-400 bg-sky-400 bg-teal-400 bg-orange-400 bg-pink-400 bg-purple-400">
+        Optional
+      </div>
       <div
         className={
           'flex items-start gap-x-4 border-b border-gray-900/5 p-4 ' + className

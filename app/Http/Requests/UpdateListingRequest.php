@@ -26,7 +26,7 @@ class UpdateListingRequest extends FormRequest
             'board_id' => ['numeric', "exists:boards,id"],
             'images' => ['nullable', 'array', 'max:3'],
             'images.*' => ['image', 'max:2048', 'mimes:jpeg,png,jpg,gif,svg'],
-            "status" => ["string", 'in:wishlist,viewing,viewed,applied,offer_accepted,offer_rejected'],
+            "status" => ["string", 'exists:board_columns,type'],
             'viewing_at' => ['nullable', 'date_format:Y-m-d'],
         ];
     }
