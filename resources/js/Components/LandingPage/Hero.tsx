@@ -1,8 +1,13 @@
-export default function Hero({
-  isAuthenticated,
-}: {
-  isAuthenticated: boolean;
-}) {
+import { forwardRef } from 'react';
+
+const Hero = forwardRef(function HeroSection(
+  {
+    isAuthenticated,
+  }: {
+    isAuthenticated: boolean;
+  },
+  ref: React.Ref<HTMLDivElement>
+) {
   return (
     <>
       <div className="relative isolate pt-14">
@@ -48,7 +53,10 @@ export default function Hero({
                 )}
               </div>
             </div>
-            <div className="mt-16 flow-root sm:mt-24">
+            <div
+              ref={ref}
+              className="mt-16 flow-root sm:mt-24 animation-hidden"
+            >
               <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
                 <img
                   src="https://res.cloudinary.com/dxuf2ssx6/image/upload/q_auto:eco/v1709190772/PropertyHunters/banner.png"
@@ -76,4 +84,6 @@ export default function Hero({
       </div>
     </>
   );
-}
+});
+
+export default Hero;

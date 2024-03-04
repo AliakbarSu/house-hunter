@@ -1,19 +1,23 @@
 import { CheckIcon } from '@heroicons/react/20/solid';
 import { Plan } from '@/types';
+import { forwardRef } from 'react';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Plans({
-  plans,
-  isAuthenticated,
-  hasSubscription,
-}: {
-  plans: Plan[];
-  hasSubscription: boolean;
-  isAuthenticated: boolean;
-}) {
+export default forwardRef(function Plans(
+  {
+    plans,
+    isAuthenticated,
+    hasSubscription,
+  }: {
+    plans: Plan[];
+    hasSubscription: boolean;
+    isAuthenticated: boolean;
+  },
+  ref: React.Ref<HTMLDivElement>
+) {
   const tiers = plans.map(plan => {
     return {
       ...plan,
@@ -35,8 +39,8 @@ export default function Plans({
   });
 
   return (
-    <div className="bg-white py-24 sm:py-32 px-8">
-      <div className="mx-auto max-w-2xl text-center lg:max-w-4xl">
+    <div ref={ref} className=" py-24 sm:py-32 px-8 animation-hidden">
+      <div className="mx-auto max-w-2xl text-center lg:max-w-4xl ">
         <h2 className="text-base font-semibold leading-7 text-indigo-600">
           Pricing
         </h2>
@@ -135,4 +139,4 @@ export default function Plans({
       </div>
     </div>
   );
-}
+});
