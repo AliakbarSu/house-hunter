@@ -36,6 +36,7 @@ const tabs: Tab[] = [
 
 const bedrooms = [1, 2, 3, 4, 5, 6, 7, 8];
 const bathrooms = [1, 2, 3, 4, 5, 6, 7, 8];
+const garages = [1, 2, 3];
 
 export default function Form({
   user,
@@ -53,6 +54,7 @@ export default function Form({
     rent: listing?.rent || 0,
     bedrooms: listing?.bedrooms || 0,
     bathrooms: listing?.bathrooms || 0,
+    garages: listing?.garages || 0,
     board_id: user.boards[0].id,
     status: listing?.status || '',
     viewing_at: listing?.viewing_at
@@ -198,8 +200,27 @@ export default function Form({
                   </div>
                   <InputError className="mt-1" message={errors.bathrooms} />
                 </div>
-
                 <div>
+                  <div className="mt-1">
+                    <select
+                      onChange={e => setData('garages', +e.target.value)}
+                      id="bedrooms"
+                      name="bedrooms"
+                      value={data.garages}
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    >
+                      <option value="">Garages</option>
+                      {garages.map(garage => (
+                        <option key={garage} value={garage}>
+                          {garage}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <InputError className="mt-1" message={errors.garages} />
+                </div>
+
+                <div className="col-span-full">
                   <div className="mt-1">
                     <select
                       onChange={e => setData('status', e.target.value)}

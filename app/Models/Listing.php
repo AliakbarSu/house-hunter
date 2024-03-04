@@ -19,6 +19,7 @@ class Listing extends Model
         'status',
         'bedrooms',
         'bathrooms',
+        'garages',
         'property_type',
         'viewing_at'
     ];

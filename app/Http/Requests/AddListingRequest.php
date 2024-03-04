@@ -22,6 +22,7 @@ class AddListingRequest extends FormRequest
             'viewing_at' => ['nullable', 'date_format:Y-m-d'],
             'bedrooms' => ['required', 'numeric', 'min:0', 'max:15'],
             'bathrooms' => ['required', 'numeric', 'min:0', 'max:15'],
+            'garages' => ['required', 'numeric', 'max:15'],
             'images' => ['nullable', 'array', 'max:3'],
             'images.*' => ['image', 'max:2048', 'mimes:jpeg,png,jpg,gif,svg'],
             'board_id' => ['required', 'numeric', "exists:boards,id"],
