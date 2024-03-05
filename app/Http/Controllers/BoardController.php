@@ -26,26 +26,40 @@ class BoardController extends Controller
     {
 
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:20']
+            'name' => ['required', 'string', 'max:20'],
+            'type' => ['required', 'string', 'in:buy,rent'],
         ]);
         $user = $request->user();
         $newBoard = new Board($validated);
         $newBoard->user()->associate($user);
         $newBoard->save();
-        $this->createColumns($newBoard->id);
+        $this->createColumns($newBoard);
         return $newBoard->makeHidden('user');
     }
 
-    private function createColumns($boardId)
+    private function createColumns(Board $board)
     {
-        $columns = [
-            ['title' => 'Wishlist', 'color' => 'indigo-400', 'type' => 'wishlist', 'board_id' => $boardId],
-            ['title' => 'Viewing', 'color' => 'sky-400', 'type' => "viewing", 'board_id' => $boardId],
-            ['title' => 'Viewed', 'color' => 'purple-400', 'type' => 'viewed', 'board_id' => $boardId],
-            ['title' => 'Applied', 'color' => 'pink-400', 'type' => 'applied', 'board_id' => $boardId],
-            ['title' => 'Application Rejected', 'color' => 'orange-400', 'type' => 'application_rejected', 'board_id' => $boardId],
-            ['title' => 'Application Accepted', 'color' => 'teal-400', 'type' => 'application_accepted', 'board_id' => $boardId]
+        $rent_columns = [
+            ['title' => 'Wishlist', 'color' => 'indigo-400', 'type' => 'wishlist', 'board_id' => $board->id],
+            ['title' => 'Viewing', 'color' => 'sky-400', 'type' => "viewing", 'board_id' => $board->id],
+            ['title' => 'Viewed', 'color' => 'purple-400', 'type' => 'viewed', 'board_id' => $board->id],
+            ['title' => 'Applied', 'color' => 'pink-400', 'type' => 'applied', 'board_id' => $board->id],
+            ['title' => 'Application Rejected', 'color' => 'orange-400', 'type' => 'application_rejected', 'board_id' => $board->id],
+            ['title' => 'Application Accepted', 'color' => 'teal-400', 'type' => 'application_accepted', 'board_id' => $board->id]
         ];
+        $buy_columns = [
+            ['title' => 'Wishlist', 'color' => 'indigo-400', 'type' => 'wishlist', 'board_id' => $board->id],
+            ['title' => 'Viewing', 'color' => 'sky-400', 'type' => "viewing", 'board_id' => $board->id],
+            ['title' => 'Viewed', 'color' => 'purple-400', 'type' => 'viewed', 'board_id' => $board->id],
+            ['title' => 'Applied', 'color' => 'pink-400', 'type' => 'applied', 'board_id' => $board->id],
+            ['title' => 'Offer Declined', 'color' => 'orange-400', 'type' => 'offer_declined', 'board_id' => $board->id],
+            ['title' => 'Offer Accepted', 'color' => 'teal-400', 'type' => 'offer_accepted', 'board_id' => $board->id]
+        ];
+        if ($board->type == 'buy') {
+            $columns = $buy_columns;
+        } else {
+            $columns = $rent_columns;
+        }
         foreach ($columns as $column) {
             $newColumn = new BoardColumn($column);
             $newColumn->save();

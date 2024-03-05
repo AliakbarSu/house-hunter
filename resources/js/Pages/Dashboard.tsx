@@ -27,7 +27,11 @@ export default function Dashboard({
   board,
 }: PageProps) {
   return (
-    <AuthenticatedLayout user={auth.user} hasSubscription={hasSubscription}>
+    <AuthenticatedLayout
+      user={auth.user}
+      board={board}
+      hasSubscription={hasSubscription}
+    >
       <DndProvider backend={HTML5Backend}>
         <div className="h-full bg-white relative">
           <Head title="Dashboard" />

@@ -128,10 +128,10 @@ export default function Profile({
   return (
     <Authenticated hasSubscription={hasSubscription} user={user}>
       <section className="bg-white">
-        <Head title="Rental Profile" />
+        <Head title="Rental | Buyer Profile" />
         <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
           <h1 className="mb-8 text-xl font-bold text-gray-900">
-            Add or update your rental profile
+            Add or update your profile
           </h1>
           <form onSubmit={submit}>
             <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
@@ -288,7 +288,7 @@ export default function Profile({
                     htmlFor="name"
                     className="block mb-2 text-md font-medium text-gray-900"
                   >
-                    Previous rental details
+                    Previous addresses
                   </label>
                 </div>
                 <div className="sm:col-span-2">
