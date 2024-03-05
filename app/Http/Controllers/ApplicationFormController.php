@@ -65,7 +65,7 @@ class ApplicationFormController extends Controller
             $data = [
                 "property" => [
                     "address" => $listing->address,
-                    "preferred_move_in_date" => null,
+                    "prefer_move_in_at" => null,
                 ],
                 "applicant" => [
                     "name" => $profile?->name,

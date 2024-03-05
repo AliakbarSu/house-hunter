@@ -111,7 +111,7 @@ constructs:
     certificate: arn:aws:acm:us-east-1:092355519212:certificate/1e692055-cf44-4ad4-81bf-bc5480a2a331
     assets:
       '/build/*': public/build/
-      'favicon.ico': public/favicon.ico
+      '/favicons/*': public/favicons/
       'robots.txt': public/robots.txt
     forwardedHeaders:
       - Accept

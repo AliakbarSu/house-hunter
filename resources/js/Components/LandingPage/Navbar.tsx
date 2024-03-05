@@ -28,8 +28,8 @@ export default function Navbar({
             <span className="sr-only">Your Company</span>
             <img
               className="h-8 w-auto"
-              src="https://res.cloudinary.com/dxuf2ssx6/image/upload/q_auto:eco/v1709355153/PropertyHunters/Group_12.webp"
-              alt=""
+              src="https://res.cloudinary.com/dxuf2ssx6/image/upload/v1709634940/PropertyHunters/logo.webp"
+              alt="app_logo"
             />
           </a>
         </div>
@@ -102,8 +102,8 @@ export default function Navbar({
               <span className="sr-only">House Hunter</span>
               <img
                 className="h-8 w-auto"
-                src="https://res.cloudinary.com/dxuf2ssx6/image/upload/q_auto:eco/v1709355153/PropertyHunters/Group_12.webp"
-                alt=""
+                src="https://res.cloudinary.com/dxuf2ssx6/image/upload/v1709634940/PropertyHunters/logo.webp"
+                alt="app_logo"
               />
             </a>
             <button
