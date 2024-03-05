@@ -202,7 +202,8 @@ Route::middleware('auth:sanctum')->group(function () {
     })->name('forms.view');
     Route::get('/forms/download/{form}', function (ApplicationForm $form) {
         try {
-            return Storage::disk('s3')->download($form->filename);
+            $link = Storage::disk('s3')->temporaryUrl($form->filename, now()->addMinutes(5));
+            return redirect($link);
         } catch (Exception $e) {
             Log::error($e->getMessage());
             return back()->withErrors(['error' => 'Something went wrong while downloading the file. Please try again later.']);
