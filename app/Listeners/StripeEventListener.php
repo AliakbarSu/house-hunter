@@ -21,9 +21,12 @@ class StripeEventListener
         if ($event->payload['type'] === 'invoice.paid') {
             try {
                 // Let's find the relevant user/billable
+                $billing_reason = $event->payload['data']['object']['billing_reason'];
+                if ($billing_reason === 'subscription_cycle') {
+                    return;
+                }
                 $stripeCustomerId = $event->payload['data']['object']['customer'];
-                $email = $event->payload['data']['object']['customer_email'];
-                $user = User::where('email', $email)->first();
+                $user = User::where('stripe_id', $stripeCustomerId)->first();
                 $billable = Cashier::findBillable($stripeCustomerId);
 
                 // Get the Laravel\Cashier\Invoice object
