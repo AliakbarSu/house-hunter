@@ -14,7 +14,7 @@ class CoverLetterController extends Controller
     public function generateCoverLetter(Request $request, Listing $listing)
     {
         $validated = $request->validate([
-            'context' => ['required', 'string', 'max:50']
+            'context' => ['required', 'string', 'max:100']
         ]);
         $context = $this->getContext($validated['context'], $listing);
         try {
