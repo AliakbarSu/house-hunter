@@ -6,11 +6,8 @@ import {
   HomeIcon,
   UsersIcon,
 } from '@heroicons/react/24/solid';
-import { Board } from '@/types'; // const navigation = [
-
-function classNames(...classes: string[]): string {
-  return classes.filter(Boolean).join(' ');
-}
+import { Board } from '@/types';
+import { classNames } from '@/utils';
 
 export default function Sidebar({
   hasSubscription,

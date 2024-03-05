@@ -1,10 +1,7 @@
 import { CheckIcon } from '@heroicons/react/20/solid';
 import { Plan } from '@/types';
 import { forwardRef } from 'react';
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
+import { classNames } from '@/utils';
 
 export default forwardRef(function Plans(
   {

@@ -3,10 +3,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { EllipsisHorizontalIcon } from '@heroicons/react/20/solid';
 import { Fragment } from 'react';
 import { useDrag } from 'react-dnd';
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
+import { classNames } from '@/utils';
 
 const CardItem = ({
   card,

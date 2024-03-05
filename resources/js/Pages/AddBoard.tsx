@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { PageProps } from '@/types';
 import { useForm } from '@inertiajs/react';
+import { ifElse } from '@/utils';
 
 export default function AddBoard({ auth, hasSubscription }: PageProps) {
   const { post, setData, data, processing } = useForm({
@@ -89,7 +90,7 @@ export default function AddBoard({ auth, hasSubscription }: PageProps) {
               disabled={processing}
               className="mt-8 inline-flex w-full items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:ml-3 sm:mt-0 sm:w-auto"
             >
-              {processing ? 'Creating...' : 'Create Board'}
+              {ifElse(processing, 'Creating...', 'Create Board')}
             </button>
           </form>
         </div>

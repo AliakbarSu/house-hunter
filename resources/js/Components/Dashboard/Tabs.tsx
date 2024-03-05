@@ -1,11 +1,9 @@
+import { classNames } from '@/utils';
+
 export type Tab = {
   name: string;
   value: string;
 };
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
 
 const Tabs = ({
   tabs,

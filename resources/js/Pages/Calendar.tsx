@@ -11,6 +11,7 @@ import {
 import { Menu, Transition } from '@headlessui/react';
 import { format, isSameDay } from 'date-fns';
 import { Head, router } from '@inertiajs/react';
+import { classNames } from '@/utils';
 
 const getDaysInMonth = (
   month: number,
@@ -37,10 +38,6 @@ const getDaysInMonth = (
   }
   return days;
 };
-
-function classNames(...classes: unknown[]) {
-  return classes.filter(Boolean).join(' ');
-}
 
 export default function Calendar({
   auth,
