@@ -67,7 +67,7 @@ Route::get('/checkout/fail', function () {
 })->name('stripe.checkout-fail');
 
 Route::get('/billing-portal', function (Request $request) {
-    return $request->user()->redirectToBillingPortal();
+    return $request->user()->redirectToBillingPortal(route('dashboard'));
 })->middleware(["auth:sanctum"])->name('stripe.billing-portal');
 
 
