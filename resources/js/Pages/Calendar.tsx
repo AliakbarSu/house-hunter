@@ -46,6 +46,7 @@ export default function Calendar({
   auth,
   hasSubscription,
   listings,
+  board,
 }: PageProps) {
   const [days, setDays] = useState<
     {
@@ -117,7 +118,11 @@ export default function Calendar({
   };
 
   return (
-    <AuthenticatedLayout user={auth.user} hasSubscription={hasSubscription}>
+    <AuthenticatedLayout
+      user={auth.user}
+      board={board}
+      hasSubscription={hasSubscription}
+    >
       <Head title="Calendar" />
       <div className="p-8">
         <h2 className="text-base font-semibold leading-6 text-gray-900">

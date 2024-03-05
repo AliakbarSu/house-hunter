@@ -5,15 +5,8 @@ import {
   FolderIcon,
   HomeIcon,
   UsersIcon,
-} from '@heroicons/react/24/solid'; // const navigation = [
-
-// const navigation = [
-//   { name: 'House Hunt', href: '#', icon: HomeIcon, current: true },
-//   { name: 'Contacts', href: '#', icon: UsersIcon, current: false },
-//   { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
-//   { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
-//   { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
-// ];
+} from '@heroicons/react/24/solid';
+import { Board } from '@/types'; // const navigation = [
 
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(' ');
@@ -21,8 +14,10 @@ function classNames(...classes: string[]): string {
 
 export default function Sidebar({
   hasSubscription,
+  board,
 }: {
   hasSubscription: boolean;
+  board?: Board;
 }) {
   const secondaryNavigation = [
     {
@@ -35,7 +30,7 @@ export default function Sidebar({
     },
     {
       id: 'listing',
-      name: 'Rental Profile',
+      name: board?.type == 'buy' ? 'Buyer Profile' : 'Rental Profile',
       href: route('profile.rental'),
       icon: UsersIcon,
       current: route().current('profile.rental'),

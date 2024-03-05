@@ -41,6 +41,7 @@ export interface Board {
   id: string;
   user_id: string;
   name: string;
+  type: 'buy' | 'rent';
   columns: BoardColumn[];
   created_at: string;
   updated_at: string;

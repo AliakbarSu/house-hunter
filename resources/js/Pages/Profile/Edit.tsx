@@ -9,6 +9,7 @@ export default function Edit({
   auth,
   mustVerifyEmail,
   status,
+  board,
 }: PageProps<{
   mustVerifyEmail: boolean;
   status?: string;
@@ -17,6 +18,7 @@ export default function Edit({
     <AuthenticatedLayout
       hasSubscription={false}
       user={auth.user}
+      board={board}
       header={
         <h2 className="font-semibold text-xl text-gray-800 leading-tight">
           Account
