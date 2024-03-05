@@ -16,6 +16,7 @@ export default defineConfig({
     alias: {
       // Alias @/ to /src
       '@/utils/*': path.resolve(__dirname, './resources/js/utils/*'),
+      '@/Context/*': path.resolve(__dirname, './resources/js/Context/*'),
     },
   },
 });

@@ -17,6 +17,9 @@
             "@/utils/*": [
                 "./resources/js/utils/*"
             ],
+            "@/Context/*": [
+                "./resources/js/Context/*"
+            ],
             "ziggy-js": [
                 "./vendor/tightenco/ziggy"
             ]
