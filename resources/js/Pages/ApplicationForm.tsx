@@ -22,6 +22,7 @@ export default function ApplicationForms({
   listings,
   listing_id,
   errors,
+  board,
 }: PageProps<{ listing_id: string }>) {
   const { processing, get, hasErrors, setData } = useForm({});
   const [selectedListingId, setSelectedListingId] = useRemember(
@@ -64,7 +65,11 @@ export default function ApplicationForms({
   };
 
   return (
-    <AuthenticatedLayout user={auth.user} hasSubscription={hasSubscription}>
+    <AuthenticatedLayout
+      user={auth.user}
+      board={board}
+      hasSubscription={hasSubscription}
+    >
       <div className="mx-auto max-w-lg p-8">
         <Head title="Cover Letter" />
         <div>

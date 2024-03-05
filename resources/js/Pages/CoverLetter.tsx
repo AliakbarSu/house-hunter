@@ -11,6 +11,7 @@ export default function CoverLetters({
   listings,
   error,
   errors,
+  board,
   listing_id = '',
 }: PageProps<{ listing_id?: string }>) {
   const { processing, hasErrors, data, setData } = useForm<{
@@ -50,7 +51,11 @@ export default function CoverLetters({
   };
 
   return (
-    <AuthenticatedLayout user={auth.user} hasSubscription={hasSubscription}>
+    <AuthenticatedLayout
+      user={auth.user}
+      board={board}
+      hasSubscription={hasSubscription}
+    >
       <div className="mx-auto max-w-lg p-8">
         <Head title="Cover Letter" />
         <div>

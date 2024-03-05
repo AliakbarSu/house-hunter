@@ -9,6 +9,7 @@ export default function Profile({
   auth: { user },
   profile,
   hasSubscription,
+  board,
 }: PageProps & {
   profile: ProfileType;
 }) {
@@ -126,7 +127,7 @@ export default function Profile({
   };
 
   return (
-    <Authenticated hasSubscription={hasSubscription} user={user}>
+    <Authenticated hasSubscription={hasSubscription} user={user} board={board}>
       <section className="bg-white">
         <Head title="Rental | Buyer Profile" />
         <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
