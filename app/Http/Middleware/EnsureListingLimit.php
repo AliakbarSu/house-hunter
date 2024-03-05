@@ -18,7 +18,7 @@ class EnsureListingLimit
     {
         $controller = new UserController();
         if (!$controller->canAddListing($request)) {
-            return redirect('/checkout/success');
+            return back()->withInput()->withErrors(['listing_limit' => 'You have reached the maximum number of listings']);
         }
         return $next($request);
     }

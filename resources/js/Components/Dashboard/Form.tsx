@@ -7,6 +7,7 @@ import InputError from '@/Components/InputError';
 import { format } from 'date-fns';
 import Tabs, { Tab } from '@/Components/Dashboard/Tabs';
 import Notes from '@/Components/Dashboard/Notes';
+import ListingLimitAlert from '@/Components/Dashboard/ListingLimitAlert';
 
 const schema = z.object({
   title: z.string(),
@@ -57,6 +58,7 @@ export default function Form({
   });
   const [previews, setPreviews] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<Tab | null>(tabs[0]);
+  const [modal, setModal] = useState(false);
   const updateMode = !!listing;
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -93,12 +95,19 @@ export default function Form({
     }
   }, [listing?.images]);
 
+  useEffect(() => {
+    if ((errors as unknown as { listing_limit?: string })?.listing_limit) {
+      setModal(true);
+    }
+  }, [processing, errors]);
+
   const isActiveTab = (tab: string) => {
     return activeTab?.value === tab;
   };
 
   return (
     <form onSubmit={onSubmit} className="px-10 py-10">
+      <ListingLimitAlert show={modal} onClose={() => setModal(false)} />
       <div className="flex justify-between items-start">
         <Tabs
           activeTab={activeTab}
