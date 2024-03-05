@@ -2,7 +2,7 @@ import { CoverLetter, PageProps } from '@/types';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { DocumentIcon } from '@heroicons/react/20/solid';
 import { useEffect, useState } from 'react';
-import { Head, router, useForm, useRemember } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import InputError from '@/Components/InputError';
 
 export default function CoverLetters({
@@ -12,41 +12,28 @@ export default function CoverLetters({
   error,
   errors,
   board,
-  listing_id = '',
-}: PageProps<{ listing_id?: string }>) {
-  const { processing, hasErrors, data, setData } = useForm<{
+}: PageProps) {
+  const { processing, hasErrors, data, post, setData } = useForm<{
     context: string;
-  }>({ context: '' });
-  const [selectedListingId, setSelectedListingId] = useRemember(
-    '',
-    'CoverLetter/Id'
-  );
+    listing_id: string;
+  }>({ context: '', listing_id: '' });
   const [coverLetters, setCoverLetters] = useState<CoverLetter[]>([]);
 
   const onAddressSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedListingId(e.target.value);
+    setData('listing_id', e.target.value);
   };
 
   useEffect(() => {
-    if (selectedListingId) {
-      const listing = listings.find(listing => listing.id == selectedListingId);
+    if (data.listing_id) {
+      const listing = listings.find(listing => listing.id == data.listing_id);
       setCoverLetters(listing?.cover_letter || []);
     }
-  }, [selectedListingId, listings]);
-
-  useEffect(() => {
-    if (listing_id) {
-      setSelectedListingId(listing_id);
-    }
-  }, [listing_id]);
+  }, [data.listing_id, listings]);
 
   const onCreate = (e: React.FormEvent) => {
     e.preventDefault();
-    if (selectedListingId) {
-      router.post(route('cover-letter.generate', selectedListingId), {
-        listing_id: selectedListingId,
-        context: data.context,
-      });
+    if (data.listing_id) {
+      post(route('cover-letter.generate', data.listing_id));
     }
   };
 
@@ -86,7 +73,7 @@ export default function CoverLetters({
                 onChange={onAddressSelect}
                 name="listing_id"
                 id="listing_id"
-                value={selectedListingId}
+                value={data.listing_id}
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               >
                 <option value="">Select an address</option>
@@ -102,16 +89,19 @@ export default function CoverLetters({
                 htmlFor="context"
                 className="block mb-2 text-md font-medium text-gray-900"
               >
-                Context
+                Context{' '}
+                <span className="text-sm text-gray-800">
+                  (max 100 characters)
+                </span>
               </label>
               <textarea
                 onChange={e => setData('context', e.target.value)}
-                cols={30}
+                cols={300}
                 name="context"
                 id="context"
                 value={data.context}
                 placeholder="Why are you interested in this address?"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full min-h-[100px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
               <InputError message={errors.context} className="mt-2" />
               <button
