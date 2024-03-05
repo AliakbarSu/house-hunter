@@ -309,6 +309,7 @@ export default function Form({
               <input
                 className="sr-only"
                 type="text"
+                readOnly={true}
                 value={user.boards[0].id}
                 name="board_id"
               />
