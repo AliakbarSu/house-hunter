@@ -53,6 +53,7 @@ class BoardController extends Controller
             ['title' => 'Viewed', 'color' => 'purple-400', 'type' => 'viewed', 'board_id' => $board->id],
             ['title' => 'Applied', 'color' => 'pink-400', 'type' => 'applied', 'board_id' => $board->id],
             ['title' => 'Offer Declined', 'color' => 'orange-400', 'type' => 'offer_declined', 'board_id' => $board->id],
+            ['title' => 'Pre Settlement Inspection', 'color' => 'yellow-400', 'type' => 'pre_settlement_inspection', 'board_id' => $board->id],
             ['title' => 'Offer Accepted', 'color' => 'teal-400', 'type' => 'offer_accepted', 'board_id' => $board->id]
         ];
         if ($board->type == 'buy') {
