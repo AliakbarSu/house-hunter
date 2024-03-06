@@ -13,12 +13,10 @@ const Con = ({
   return (
     <div
       id="alert-additional-content-5"
-      className="px-4 py-2  mb-2 border border-gray-300 rounded-lg bg-gray-50 dark:border-gray-600 dark:bg-gray-800"
+      className="px-4 py-2  mb-2 border border-gray-300 rounded-lg bg-gray-50"
       role="alert"
     >
-      <div className="mt-2 mb-4 text-sm text-gray-800 dark:text-gray-300">
-        {text}
-      </div>
+      <div className="mt-2 mb-4 text-sm text-gray-800">{text}</div>
       <div className="flex gap-1">
         <button
           onClick={() => deleteItem(text)}
@@ -64,15 +62,15 @@ const Cons = ({
   return (
     <div>
       <form>
-        <div className="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-          <div className="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
+        <div className="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50">
+          <div className="px-4 py-2 bg-white rounded-t-lg">
             <label htmlFor="item" className="sr-only">
               Cons
             </label>
             <textarea
               id="item"
               cols={30}
-              className="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+              className="w-full px-0 text-sm text-gray-900 bg-white border-0"
               placeholder="e.g No parking"
               value={text}
               onChange={e => setText(e.target.value)}
@@ -100,7 +98,7 @@ const Cons = ({
           <button
             onClick={onSubmit}
             type="button"
-            className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
+            className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
           >
             {ifElse(processing, 'Saving...', 'Save changes')}
           </button>
