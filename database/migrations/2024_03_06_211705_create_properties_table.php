@@ -15,6 +15,8 @@ return new class extends Migration {
             $table->string('property_type')->nullable();
             $table->string('property_id')->nullable();
             $table->string('property_data')->nullable(); // [{"land_area": "22m2" }]
+            $table->string('page_id')->nullable();
+            $table->string('link')->nullable();
             $table->integer('bedrooms')->nullable();
             $table->integer('bathrooms')->nullable();
             $table->integer('garages')->nullable();
