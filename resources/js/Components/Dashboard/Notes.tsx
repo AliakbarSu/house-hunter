@@ -14,12 +14,10 @@ const SingleNote = ({
   return (
     <div
       id="alert-additional-content-5"
-      className="p-4 mb-2 border border-gray-300 rounded-lg bg-gray-50 dark:border-gray-600 dark:bg-gray-800"
+      className="p-4 mb-2 border border-gray-300 rounded-lg bg-gray-50"
       role="alert"
     >
-      <div className="mt-2 mb-4 text-sm text-gray-800 dark:text-gray-300">
-        {note.note}
-      </div>
+      <div className="mt-2 mb-4 text-sm text-gray-800">{note.note}</div>
       <div className="flex gap-1">
         <button
           onClick={() => noteClicked(note)}
@@ -86,26 +84,26 @@ const Notes = ({
   return (
     <div>
       <form>
-        <div className="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-          <div className="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
+        <div className="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50">
+          <div className="px-4 py-2 bg-white rounded-t-lg">
             <label htmlFor="comment" className="sr-only">
               Your note
             </label>
             <textarea
               id="comment"
               cols={30}
-              className="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+              className="w-full px-0 text-sm text-gray-900 bg-white border-0 focus:ring-0"
               placeholder="Write a note..."
               value={data.note}
               onChange={e => setData('note', e.target.value)}
               required
             />
           </div>
-          <div className="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
+          <div className="flex items-center justify-between px-3 py-2 border-t">
             <button
               onClick={onSubmit}
               type="button"
-              className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
+              className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
             >
               {!updateMode
                 ? processing
