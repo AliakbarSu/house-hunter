@@ -68,6 +68,13 @@ export interface Listing {
   bathrooms: number;
   toilets: number;
   garages: number;
+  price: number;
+  size: number;
+  size_unit: string;
+  cons: string[];
+  pros: string[];
+  amenities: string[];
+  link: string;
   status: ListingStatusEnums;
   board_id: string;
   notes: Note[];

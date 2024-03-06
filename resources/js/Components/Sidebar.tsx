@@ -6,19 +6,18 @@ import {
   HomeIcon,
   UsersIcon,
 } from '@heroicons/react/24/solid';
-import { Board } from '@/types'; // const navigation = [
-
-function classNames(...classes: string[]): string {
-  return classes.filter(Boolean).join(' ');
-}
+import { Board } from '@/types';
+import { classNames } from '@/utils';
+import { useContext } from 'react';
+import BoardContext from '@/Context/BoardContext';
 
 export default function Sidebar({
   hasSubscription,
-  board,
 }: {
   hasSubscription: boolean;
   board?: Board;
 }) {
+  const board = useContext(BoardContext);
   const secondaryNavigation = [
     {
       id: 'dashboard',

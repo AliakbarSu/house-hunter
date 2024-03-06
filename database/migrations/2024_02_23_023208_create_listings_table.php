@@ -27,6 +27,13 @@ return new class extends Migration {
             $table->string('real_estate')->nullable();
             $table->string('agent')->nullable();
             $table->string('landlord')->nullable();
+            $table->float('price')->nullable();
+            $table->float('size')->nullable();
+            $table->string('size_unit')->default('sqm');
+            $table->string('link')->nullable();
+            $table->string('pros')->nullable();
+            $table->string('cons')->nullable();
+            $table->string('amenities')->nullable();
             $table->boolean('deleted')->default(false)->nullable();
             $table->unsignedBigInteger('board_id');
             $table->foreign('board_id')->references('id')->on('boards')->onDelete('cascade');

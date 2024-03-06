@@ -11,12 +11,23 @@
         "forceConsistentCasingInFileNames": true,
         "noEmit": true,
         "paths": {
-            "@/*": ["./resources/js/*"],
-            "@components/*": ["./resources/js/Components/*"],
-            "@layouts/*": ["./resources/js/Layouts/*"],
-            "@types/*": ["./resources/js/types/*"],
-            "ziggy-js": ["./vendor/tightenco/ziggy"]
+            "@/*": [
+                "./resources/js/*"
+            ],
+            "@/utils/*": [
+                "./resources/js/utils/*"
+            ],
+            "@/Context/*": [
+                "./resources/js/Context/*"
+            ],
+            "ziggy-js": [
+                "./vendor/tightenco/ziggy"
+            ]
         }
     },
-    "include": ["resources/js/**/*.ts", "resources/js/**/*.tsx", "resources/js/**/*.d.ts"]
+    "include": [
+        "resources/js/**/*.ts",
+        "resources/js/**/*.tsx",
+        "resources/js/**/*.d.ts"
+    ]
 }
