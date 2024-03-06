@@ -29,6 +29,12 @@ class ListingFactory extends Factory
             'real_estate' => $this->faker->company,
             'agent' => $this->faker->name,
             'landlord' => $this->faker->name,
+            'price' => $this->faker->numberBetween(100000, 1000000),
+            'size' => $this->faker->numberBetween(100, 500),
+            'link' => $this->faker->url,
+            'amenities' => '["pool", "gym", "parking"]',
+            'cons' => '["no pets", "no smoking"]',
+            'pros' => '["close to public transport", "close to shops"]',
             'viewing_at' => $this->faker->dateTimeBetween('now', '+1 month'),
         ];
     }

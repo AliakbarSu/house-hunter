@@ -1,13 +1,17 @@
 import { useForm } from '@inertiajs/react';
 import { PhotoIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import * as z from 'zod';
-import { BoardColumn, Listing, User } from '@/types';
-import { FormEvent, useEffect, useState } from 'react';
+import { Listing, User } from '@/types';
+import { FormEvent, useContext, useEffect, useState } from 'react';
 import InputError from '@/Components/InputError';
 import { format } from 'date-fns';
 import Tabs, { Tab } from '@/Components/Dashboard/Tabs';
 import Notes from '@/Components/Dashboard/Notes';
+import Pros from '@/Components/Dashboard/Pros';
+import Cons from '@/Components/Dashboard/Cons';
 import ListingLimitAlert from '@/Components/Dashboard/ListingLimitAlert';
+import { ifElse } from '@/utils';
+import BoardContext from '@/Context/BoardContext';
 
 const schema = z.object({
   title: z.string(),
@@ -21,11 +25,6 @@ const schema = z.object({
   // images: z.any(),
 });
 
-const tabs: Tab[] = [
-  { name: 'Listing', value: 'listing' },
-  { name: 'Notes', value: 'notes' },
-];
-
 const bedrooms = [1, 2, 3, 4, 5, 6, 7, 8];
 const bathrooms = [1, 2, 3, 4, 5, 6, 7, 8];
 const garages = [1, 2, 3];
@@ -34,18 +33,23 @@ export default function Form({
   user,
   closeModal,
   listing,
-  columns,
 }: {
   user: User;
   closeModal: () => void;
   listing?: Listing;
-  columns: BoardColumn[];
 }) {
+  const board = useContext(BoardContext);
+  const buyMode = board?.type === 'buy';
+  const updateMode = !!listing;
+
   const { post, errors, data, processing, setData } = useForm({
     title: listing?.title || '',
     description: listing?.description || '',
     address: listing?.address || '',
     rent: listing?.rent || 0,
+    price: listing?.price,
+    link: listing?.link || '',
+    size: listing?.size,
     bedrooms: listing?.bedrooms || 0,
     bathrooms: listing?.bathrooms || 0,
     garages: listing?.garages || 0,
@@ -56,10 +60,15 @@ export default function Form({
       : null,
     images: [] as unknown as FileList | null,
   });
+  const tabs: Tab[] = [
+    { name: 'Listing', value: 'listing', isActive: true },
+    { name: 'Notes', value: 'notes', isActive: updateMode },
+    { name: 'Pros', value: 'pros', isActive: updateMode },
+    { name: 'Cons', value: 'cons', isActive: updateMode },
+  ];
   const [previews, setPreviews] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<Tab | null>(tabs[0]);
   const [modal, setModal] = useState(false);
-  const updateMode = !!listing;
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -118,7 +127,7 @@ export default function Form({
           <XCircleIcon className="h-5 w-5 cursor-pointer" color="#64679a" />
         </div>
       </div>
-      {isActiveTab('listing') ? (
+      {isActiveTab('listing') && (
         <div className="flex flex-col gap-8 mx-auto max-w-lg lg:max-w-none">
           <section aria-labelledby="contact-info-heading">
             <div>
@@ -143,25 +152,47 @@ export default function Form({
                   <InputError className="mt-1" message={errors.address} />
                 </div>
 
-                <div className="sm:col-span-3">
-                  <label
-                    htmlFor="rent"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Rent*
-                  </label>
-                  <div className="mt-1">
-                    <input
-                      onChange={e => setData('rent', +e.target.value)}
-                      type="text"
-                      id="rent"
-                      value={data.rent}
-                      name="rent"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    />
+                {buyMode ? (
+                  <div className="sm:col-span-3">
+                    <label
+                      htmlFor="price"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Price*
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        onChange={e => setData('price', +e.target.value)}
+                        type="text"
+                        id="price"
+                        value={data.price}
+                        name="price"
+                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      />
+                    </div>
+                    <InputError className="mt-1" message={errors.price} />
                   </div>
-                  <InputError className="mt-1" message={errors.rent} />
-                </div>
+                ) : (
+                  <div className="sm:col-span-3">
+                    <label
+                      htmlFor="rent"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Rent*
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        onChange={e => setData('rent', +e.target.value)}
+                        type="text"
+                        id="rent"
+                        value={data.rent}
+                        name="rent"
+                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      />
+                    </div>
+                    <InputError className="mt-1" message={errors.rent} />
+                  </div>
+                )}
 
                 <div>
                   <div className="mt-1">
@@ -232,7 +263,7 @@ export default function Form({
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     >
                       <option value="">Select status</option>
-                      {columns.map(status => (
+                      {board?.columns.map(status => (
                         <option key={status.id} value={status.type}>
                           {status.title}
                         </option>
@@ -285,6 +316,29 @@ export default function Form({
                   />
                 </div>
               </div>
+
+              {buyMode && (
+                <div className="mt-6">
+                  <label
+                    htmlFor="size"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Size
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      onChange={e => setData('size', +e.target.value)}
+                      type="number"
+                      id="size"
+                      value={data.size}
+                      name="size"
+                      autoComplete="size"
+                      placeholder="Size in sqm"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    />
+                  </div>
+                </div>
+              )}
 
               <div className="mt-4">
                 <label
@@ -387,7 +441,7 @@ export default function Form({
                 type="submit"
                 className="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:order-last sm:ml-6 sm:w-auto"
               >
-                {processing ? 'Creating..' : 'Create'}
+                {ifElse(processing, 'Creating..', 'Create')}
               </button>
             )}
             <p className="mt-4 text-center text-sm text-gray-500 sm:mt-0 sm:text-left">
@@ -395,8 +449,15 @@ export default function Form({
             </p>
           </div>
         </div>
-      ) : (
+      )}{' '}
+      {isActiveTab('notes') && (
         <Notes listing={listing} closeModal={closeModal} />
+      )}
+      {isActiveTab('pros') && (
+        <Pros listing={listing} closeModal={closeModal} />
+      )}
+      {isActiveTab('cons') && (
+        <Cons listing={listing} closeModal={closeModal} />
       )}
     </form>
   );

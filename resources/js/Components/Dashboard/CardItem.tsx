@@ -28,6 +28,7 @@ const CardItem = ({
     }),
     []
   );
+  const buyMode = card?.board.type == 'buy';
   return (
     <li
       ref={dragRef}
@@ -118,12 +119,28 @@ const CardItem = ({
           <dd className="text-gray-700">
             <span>{card.garages}</span>
           </dd>
+          {buyMode && (
+            <>
+              <dt className="text-gray-500">Size</dt>
+              <dd className="text-gray-700">
+                <span>
+                  {card.size} {card.size_unit}
+                </span>
+              </dd>
+            </>
+          )}
         </div>
         <div className="flex justify-between gap-x-4 py-3">
           <dd className="flex items-start gap-x-2">
-            <div className="font-medium text-gray-900">
-              ${`${card.rent} - ${card.rent_frequency}`}
-            </div>
+            {buyMode ? (
+              <div className="font-medium text-gray-900">
+                Price: ${`${card.price}`}
+              </div>
+            ) : (
+              <div className="font-medium text-gray-900">
+                ${`${card.rent} - ${card.rent_frequency}`}
+              </div>
+            )}
             {/*<div*/}
             {/*  className={classNames(*/}
             {/*    statuses['Paid'],*/}
