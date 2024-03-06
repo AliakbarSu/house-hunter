@@ -6,6 +6,6 @@ export const ifElse = (
   return condition ? trueCase : falseCase;
 };
 
-export const classNames = (...classes: string[]) => {
+export const classNames = (...classes: unknown[]) => {
   return classes.filter(Boolean).join(' ');
 };
