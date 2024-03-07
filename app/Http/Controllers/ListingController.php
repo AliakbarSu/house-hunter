@@ -21,7 +21,6 @@ use Inertia\Response;
 class ListingController extends Controller
 {
 
-
     /**
      * Display the user's profile form.
      */

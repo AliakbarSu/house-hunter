@@ -82,7 +82,7 @@ export interface Listing {
   size_unit: string;
   cons: string[];
   pros: string[];
-  amenities: string[];
+  amenities: { id: string; name: string; checked: boolean }[];
   link: string;
   status: ListingStatusEnums;
   board_id: string;

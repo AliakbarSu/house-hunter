@@ -12,6 +12,8 @@ import Cons from '@/Components/Dashboard/Cons';
 import ListingLimitAlert from '@/Components/Dashboard/ListingLimitAlert';
 import { ifElse } from '@/utils';
 import BoardContext from '@/Context/BoardContext';
+import Amenities from '@/Components/Dashboard/Amenities';
+import AmenitiesSelector from '@/Components/Dashboard/AmenitiesSelector';
 
 const schema = z.object({
   title: z.string(),
@@ -59,6 +61,7 @@ export default function Form({
       ? format(new Date(listing?.viewing_at), 'yyyy-MM-dd')
       : null,
     images: [] as unknown as FileList | null,
+    amenities: listing?.amenities || [],
   });
   const tabs: Tab[] = [
     { name: 'Listing', value: 'listing', isActive: true },
@@ -367,6 +370,13 @@ export default function Form({
                 value={user.boards[0].id}
                 name="board_id"
               />
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <AmenitiesSelector
+                onSelect={amenities => setData('amenities', amenities)}
+                amenities={data.amenities}
+              />
+              <Amenities amenities={data.amenities} />
             </div>
           </section>
 
