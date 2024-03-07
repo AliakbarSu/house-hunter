@@ -1,18 +1,14 @@
 import { useEffect, useState } from 'react';
 
 const availableAmenities: { id: string; name: string; checked: boolean }[] = [
-  { id: '1', name: 'Air conditioning', checked: false },
-  { id: '2', name: 'Bed sheets', checked: false },
-  { id: '3', name: 'Cooking basics', checked: false },
-  { id: '4', name: 'Dishwasher', checked: false },
-  { id: '5', name: 'Dryer', checked: false },
-  { id: '6', name: 'Heating', checked: false },
-  { id: '7', name: 'Hot water', checked: false },
-  { id: '8', name: 'Microwave', checked: false },
-  { id: '9', name: 'Refrigerator', checked: false },
-  { id: '10', name: 'TV', checked: false },
-  { id: '11', name: 'Washer', checked: false },
-  { id: '12', name: 'Wifi', checked: false },
+  { id: 'air-conditioner', name: 'Air conditioning', checked: false },
+  { id: 'dish-washer', name: 'Dishwasher', checked: false },
+  { id: 'dryer', name: 'Dryer', checked: false },
+  { id: 'heating', name: 'Heating', checked: false },
+  { id: 'hot-water', name: 'Hot water', checked: false },
+  { id: 'microwave', name: 'Microwave', checked: false },
+  { id: 'fridge', name: 'Refrigerator', checked: false },
+  { id: 'washer', name: 'Washer', checked: false },
 ];
 
 const AmenitiesSelector = ({
