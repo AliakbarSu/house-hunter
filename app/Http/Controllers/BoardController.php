@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Board;
 use App\Models\BoardColumn;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class BoardController extends Controller
 {
@@ -31,10 +30,31 @@ class BoardController extends Controller
         ]);
         $user = $request->user();
         $newBoard = new Board($validated);
+        $newBoard->checklist = $this->getBoardChecklist($newBoard);
         $newBoard->user()->associate($user);
         $newBoard->save();
         $this->createColumns($newBoard);
         return $newBoard->makeHidden('user');
+    }
+
+    private function getBoardChecklist($board)
+    {
+        if ($board->type == 'buy') {
+            return [[
+                'id' => 1,
+                'title' => 'Buy Checklist',
+                'description' => 'This is a checklist for buying a property',
+                'checked' => false
+            ]];
+        } else {
+            return [[
+                'id' => 1,
+                'title' => 'Rent Checklist',
+                'description' => 'This is a checklist for renting a property',
+                'checked' => false
+            ]];
+        }
+
     }
 
     private function createColumns(Board $board)
@@ -51,7 +71,7 @@ class BoardController extends Controller
             ['title' => 'Wishlist', 'color' => 'indigo-400', 'type' => 'wishlist', 'board_id' => $board->id],
             ['title' => 'Viewing', 'color' => 'sky-400', 'type' => "viewing", 'board_id' => $board->id],
             ['title' => 'Viewed', 'color' => 'purple-400', 'type' => 'viewed', 'board_id' => $board->id],
-            ['title' => 'Applied', 'color' => 'pink-400', 'type' => 'applied', 'board_id' => $board->id],
+            ['title' => 'Offer Made', 'color' => 'pink-400', 'type' => 'offer_made', 'board_id' => $board->id],
             ['title' => 'Offer Declined', 'color' => 'orange-400', 'type' => 'offer_declined', 'board_id' => $board->id],
             ['title' => 'Pre Settlement Inspection', 'color' => 'yellow-400', 'type' => 'pre_settlement_inspection', 'board_id' => $board->id],
             ['title' => 'Offer Accepted', 'color' => 'teal-400', 'type' => 'offer_accepted', 'board_id' => $board->id]
@@ -69,16 +89,14 @@ class BoardController extends Controller
 
     public function updateBoard(Request $request, Board $board)
     {
-        try {
-            $validated = $request->validate([
-                'name' => ['required', 'string', 'max:255']
-            ]);
-        } catch (ValidationException $e) {
-            return response()->json([
-                'errors' => $e->errors(),
-                'status' => true
-            ], 422);
-        };
+        $validated = $request->validate([
+            'name' => ['string', 'max:255'],
+            'checklist' => ['array'],
+            'checklist.*.id' => ['required', 'integer'],
+            'checklist.*.title' => ['required', 'string', 'max:255'],
+            'checklist.*.description' => ['required', 'string', 'max:255'],
+            'checklist.*.checked' => ['required', 'boolean'],
+        ]);
 
         $boardId = $request->id;
         $updatedBoard = $board->find($boardId);

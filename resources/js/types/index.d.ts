@@ -28,6 +28,13 @@ export interface Note {
   updated_at: string;
 }
 
+export interface BoardChecklist {
+  id: number;
+  title: string;
+  description: string;
+  checked: boolean;
+}
+
 export interface BoardColumn {
   id: string;
   title: string;
@@ -43,6 +50,7 @@ export interface Board {
   name: string;
   type: 'buy' | 'rent';
   columns: BoardColumn[];
+  checklist: BoardChecklist[];
   created_at: string;
   updated_at: string;
 }

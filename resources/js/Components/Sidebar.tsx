@@ -1,5 +1,6 @@
 import {
   CalendarIcon,
+  CheckCircleIcon,
   CreditCardIcon,
   DocumentIcon,
   FolderIcon,
@@ -58,6 +59,14 @@ export default function Sidebar({
       icon: DocumentIcon,
       current: route().current('cover-letter.view'),
       active: true,
+    },
+    {
+      id: 'checklist',
+      name: 'Essential Checklist',
+      href: route('checklist.buy'),
+      icon: CheckCircleIcon,
+      current: route().current('checklist.buy'),
+      active: board?.type == 'buy',
     },
     {
       id: 'billing-portal',

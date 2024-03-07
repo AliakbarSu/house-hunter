@@ -85,6 +85,12 @@ Route::get('/dashboard', function (Request $request) {
 })->middleware('auth:sanctum')->name('dashboard');
 
 
+# ----------------- CHECKLIST ROUTES ----------------- #
+Route::get('/buy/checklist', function () {
+    return Inertia::render('BuyChecklist');
+})->middleware('auth:sanctum')->name('checklist.buy');
+
+
 # ----------------- PROFILE ROUTES ----------------- #
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/rental-profile', function (Request $request, ProfileController $profileController, Profile $profile) {
@@ -151,8 +157,9 @@ Route::middleware('auth:sanctum')->prefix('board')->group(function () {
         return $boardController->getBoard($request, $board);
     });
     Route::put('/{id}', function (Request $request, BoardController $boardController, Board $board) {
-        return $boardController->updateBoard($request, $board);
-    });
+        $boardController->updateBoard($request, $board);
+        return back()->withInput();
+    })->name('board.update');
     Route::delete('/{id}', function (Request $request, BoardController $boardController, Board $board) {
         return $boardController->deleteBoard($request, $board);
     });
