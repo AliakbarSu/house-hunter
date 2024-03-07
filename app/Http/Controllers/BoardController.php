@@ -40,19 +40,127 @@ class BoardController extends Controller
     private function getBoardChecklist($board)
     {
         if ($board->type == 'buy') {
-            return [[
-                'id' => 1,
-                'title' => 'Buy Checklist',
-                'description' => 'This is a checklist for buying a property',
-                'checked' => false
-            ]];
+            return [
+                [
+                    'id' => 1,
+                    'title' => 'Define Your Budget',
+                    'description' => 'Determine how much you can afford to spend on a property.',
+                    'checked' => false
+                ],
+                [
+                    'id' => 2,
+                    'title' => 'Get Pre-Approved for a Mortgage',
+                    'description' => 'Contact lenders to get pre-approved for a mortgage.
+                                        Understand the terms and conditions of the mortgage,
+                                        including interest rates, loan term, and repayment options.',
+                    'checked' => false
+                ],
+                [
+                    'id' => 3,
+                    'title' => 'Research Locations',
+                    'description' => 'Research different neighborhoods and suburbs to find the right location for your needs.
+                                        Consider factors such as proximity to schools, parks, shops, public transport, and work.',
+                    'checked' => false
+                ],
+                [
+                    'id' => 4,
+                    'title' => 'Property Search',
+                    'description' => 'Attend open homes and property viewings to inspect potential properties.
+                                        Take note of the property’s condition, features, and location.',
+                    'checked' => false
+                ],
+                [
+                    'id' => 5,
+                    'title' => 'Engage a Real Estate Agent',
+                    'description' => 'Choose an agent with local knowledge and experience in the area you\'re interested in.',
+                    'checked' => false
+                ],
+                [
+                    'id' => 6,
+                    'title' => 'Make an Offer',
+                    'description' => 'Submit an offer to purchase the property through your real estate agent.
+                                    Negotiate the terms of the sale, including the purchase price, settlement date,
+                                    and any conditions (e.g., subject to finance, subject to building inspection).',
+                    'checked' => false
+                ],
+                [
+                    'id' => 7,
+                    'title' => 'Finalize the Sale',
+                    'description' => 'Sign the sale and purchase agreement once all terms are agreed upon. Pay the deposit and arrange for a building inspection and a lawyer to review the contract.',
+                    'checked' => false
+                ],
+                [
+                    'id' => 8,
+                    'title' => 'Settlement',
+                    'description' => 'Pay the remaining balance of the purchase price on the settlement date. Complete all necessary paperwork and receive the keys to your new home.',
+                    'checked' => false
+                ],
+                [
+                    'id' => 9,
+                    'title' => 'Celebrate Your New Home',
+                    'description' => 'Celebrate your successful home purchase with family and friends!',
+                    'final' => true,
+                    'checked' => false
+                ]
+            ];
         } else {
-            return [[
-                'id' => 1,
-                'title' => 'Rent Checklist',
-                'description' => 'This is a checklist for renting a property',
-                'checked' => false
-            ]];
+            return [
+                [
+                    'id' => 1,
+                    'title' => 'Determine Your Budget',
+                    'description' => 'Calculate how much you can afford to spend on rent each week or month.',
+                    'checked' => false
+                ],
+                [
+                    'id' => 2,
+                    'title' => 'Research Locations',
+                    'description' => 'Research different neighborhoods and suburbs to find the right location for your needs. Consider factors such as proximity to public transport, schools, shops, parks, and work.',
+                    'checked' => false
+                ],
+                [
+                    'id' => 3,
+                    'title' => 'Property Search',
+                    'description' => 'Start your property search online through real estate websites, rental listings, and property management websites.',
+                    'checked' => false
+                ],
+                [
+                    'id' => 4,
+                    'title' => 'Conduct Property Inspections',
+                    'description' => 'Schedule property inspections to view the rental property in person. Check for any damage, defects, or maintenance issues and discuss with the landlord or property manager.',
+                    'checked' => false
+                ],
+                [
+                    'id' => 5,
+                    'title' => 'Submit Rental Application',
+                    'description' => 'Complete a rental application form provided by the landlord or property manager.',
+                    'checked' => false
+                ],
+                [
+                    'id' => 6,
+                    'title' => 'Review and Sign Lease Agreement',
+                    'description' => 'Review the terms of the Residential Tenancy Agreement (lease) carefully. Seek clarification on any terms or conditions you\'re unsure about.',
+                    'checked' => false
+                ],
+                [
+                    'id' => 7,
+                    'title' => 'Pay Bond (Security Deposit)',
+                    'description' => 'Pay the bond (security deposit) as specified in the lease agreement.',
+                    'checked' => false
+                ],
+                [
+                    'id' => 8,
+                    'title' => 'Set Up Utilities',
+                    'description' => 'Arrange for utilities (electricity, gas, water) to be connected in your name. Update your address with relevant utility providers.',
+                    'checked' => false
+                ],
+                [
+                    'id' => 9,
+                    'title' => 'Settle Into Your New Home',
+                    'description' => 'Settle into your new rental home and familiarize yourself with the property and neighborhood. Keep communication lines open with the landlord or property manager for any maintenance issues or concerns.',
+                    'checked' => false,
+                    'final' => true
+                ]
+            ];
         }
 
     }
@@ -94,7 +202,7 @@ class BoardController extends Controller
             'checklist' => ['array'],
             'checklist.*.id' => ['required', 'integer'],
             'checklist.*.title' => ['required', 'string', 'max:255'],
-            'checklist.*.description' => ['required', 'string', 'max:255'],
+            'checklist.*.description' => ['required', 'string', 'max:1000'],
             'checklist.*.checked' => ['required', 'boolean'],
         ]);
 

@@ -33,6 +33,7 @@ export interface BoardChecklist {
   title: string;
   description: string;
   checked: boolean;
+  final?: boolean;
 }
 
 export interface BoardColumn {

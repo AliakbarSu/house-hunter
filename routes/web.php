@@ -84,10 +84,15 @@ Route::get('/dashboard', function (Request $request) {
     return Inertia::render('Dashboard');
 })->middleware('auth:sanctum')->name('dashboard');
 
+# ----------------- CALCULATOR ROUTES ----------------- #
+Route::get('/calculators', function (Request $request) {
+    return Inertia::render('Calculators');
+})->middleware('auth:sanctum')->name('calculators');
+
 
 # ----------------- CHECKLIST ROUTES ----------------- #
 Route::get('/buy/checklist', function () {
-    return Inertia::render('BuyChecklist');
+    return Inertia::render('Checklist');
 })->middleware('auth:sanctum')->name('checklist.buy');
 
 

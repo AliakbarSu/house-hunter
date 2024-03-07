@@ -1,4 +1,5 @@
 import {
+  CalculatorIcon,
   CalendarIcon,
   CheckCircleIcon,
   CreditCardIcon,
@@ -62,10 +63,18 @@ export default function Sidebar({
     },
     {
       id: 'checklist',
-      name: 'Essential Checklist',
+      name: 'Checklist',
       href: route('checklist.buy'),
       icon: CheckCircleIcon,
       current: route().current('checklist.buy'),
+      active: true,
+    },
+    {
+      id: 'calculator',
+      name: 'Calculators',
+      href: route('calculators'),
+      icon: CalculatorIcon,
+      current: route().current('calculators'),
       active: board?.type == 'buy',
     },
     {
