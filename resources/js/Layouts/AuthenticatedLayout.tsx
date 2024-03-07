@@ -4,7 +4,7 @@ import { Board, User } from '@/types';
 import Sidebar from '@/Components/Sidebar';
 import Navbar from '@/Components/Navbar';
 
-export default function Example({
+const AuthenticatedLayout = ({
   user,
   hasSubscription,
   children,
@@ -16,7 +16,7 @@ export default function Example({
   hasSubscription: boolean;
   sidebar?: boolean;
   board?: Board;
-}>) {
+}>) => {
   return (
     <>
       <header className="absolute inset-x-0 top-0 z-50 h-16 border-b border-gray-900/10">
@@ -34,4 +34,6 @@ export default function Example({
       </div>
     </>
   );
-}
+};
+
+export default AuthenticatedLayout;

@@ -84,6 +84,17 @@ Route::get('/dashboard', function (Request $request) {
     return Inertia::render('Dashboard');
 })->middleware('auth:sanctum')->name('dashboard');
 
+# ----------------- CALCULATOR ROUTES ----------------- #
+Route::get('/calculators', function (Request $request) {
+    return Inertia::render('Calculators');
+})->middleware('auth:sanctum')->name('calculators');
+
+
+# ----------------- CHECKLIST ROUTES ----------------- #
+Route::get('/buy/checklist', function () {
+    return Inertia::render('Checklist');
+})->middleware('auth:sanctum')->name('checklist.buy');
+
 
 # ----------------- PROFILE ROUTES ----------------- #
 Route::middleware('auth:sanctum')->group(function () {
@@ -151,8 +162,9 @@ Route::middleware('auth:sanctum')->prefix('board')->group(function () {
         return $boardController->getBoard($request, $board);
     });
     Route::put('/{id}', function (Request $request, BoardController $boardController, Board $board) {
-        return $boardController->updateBoard($request, $board);
-    });
+        $boardController->updateBoard($request, $board);
+        return back()->withInput();
+    })->name('board.update');
     Route::delete('/{id}', function (Request $request, BoardController $boardController, Board $board) {
         return $boardController->deleteBoard($request, $board);
     });
