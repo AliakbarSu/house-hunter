@@ -141,14 +141,6 @@ const CardItem = ({
                 ${`${card.rent} - ${card.rent_frequency}`}
               </div>
             )}
-            {/*<div*/}
-            {/*  className={classNames(*/}
-            {/*    statuses['Paid'],*/}
-            {/*    'rounded-md py-1 px-2 text-xs font-medium ring-1 ring-inset'*/}
-            {/*  )}*/}
-            {/*>*/}
-            {/*  {card.status}*/}
-            {/*</div>*/}
           </dd>
         </div>
       </dl>
