@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->string('address')->nullable();
             $table->string('property_type')->nullable();
             $table->string('property_id')->nullable();
-            $table->string('property_data')->nullable(); // [{"land_area": "22m2" }]
+            $table->json('property_data')->nullable(); // [{"land_area": "22m2" }]
             $table->string('page_id')->nullable();
             $table->string('link')->nullable();
             $table->integer('bedrooms')->nullable();
@@ -26,11 +26,12 @@ return new class extends Migration {
             $table->string('images')->nullable();
             $table->string('type')->nullable();
             $table->string('status')->nullable();
-            $table->string('amenities')->nullable();
+            $table->json('amenities')->nullable();
             $table->string('real_state')->nullable();
-            $table->string('agents')->nullable(); // [{"name": "John Doe", "phone": "1234567890"}]
+            $table->json('agents')->nullable(); // [{"name": "John Doe", "phone": "1234567890"}]
             $table->boolean('deleted')->default(false);
             $table->date('available_on')->nullable();
+            $table->string('country_code')->nullable()->default('NZ');
             $table->date('listed_on')->nullable();
             $table->date('updated_on')->nullable();
             $table->timestamps();

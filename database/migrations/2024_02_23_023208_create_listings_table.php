@@ -31,9 +31,9 @@ return new class extends Migration {
             $table->float('size')->nullable();
             $table->string('size_unit')->default('sqm');
             $table->string('link')->nullable();
-            $table->string('pros')->nullable();
-            $table->string('cons')->nullable();
-            $table->string('amenities')->nullable();
+            $table->json('pros')->nullable();
+            $table->json('cons')->nullable();
+            $table->json('amenities')->nullable();
             $table->boolean('deleted')->default(false)->nullable();
             $table->unsignedBigInteger('board_id');
             $table->foreign('board_id')->references('id')->on('boards')->onDelete('cascade');
