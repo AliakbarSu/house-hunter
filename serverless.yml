@@ -1,4 +1,4 @@
-service: laravel
+service: property_hunters
 
 provider:
   name: aws
@@ -108,7 +108,7 @@ constructs:
   website:
     type: server-side-website
     domain: ${env:APP_DOMAIN}
-    certificate: arn:aws:acm:us-east-1:092355519212:certificate/1e692055-cf44-4ad4-81bf-bc5480a2a331
+    certificate: arn:aws:acm:us-east-1:730335596514:certificate/b716fd76-3c42-4fdf-ab94-d4344fa1a530
     assets:
       '/build/*': public/build/
       '/favicons/*': public/favicons/
