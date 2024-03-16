@@ -1,4 +1,4 @@
-service: property-hunters
+service: property_hunters
 
 provider:
   name: aws
